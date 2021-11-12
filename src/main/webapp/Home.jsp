@@ -8,9 +8,10 @@
 <title>Home</title>
 </head>
 <body>
-	<%@include file="Shared.jsp" %>
-	<% Usuario u= (Usuario)session.getAttribute("Usuario"); %>
+	<jsp:include page="Shared.jsp"></jsp:include>
+	<% Usuario u= (Usuario)session.getAttribute("usuario"); %>
 	<h1>Hola <%=u.getNombre() %></h1>
-
+	<br>
+	<table class="table "> </table>
 </body>
 </html>
