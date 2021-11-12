@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,6 +34,11 @@ public class ServLogin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession se= request.getSession();
+		if(se.getAttribute("usuario")!=null) {
+			response.sendRedirect("Home");
+			return;
+		}
 		request.getRequestDispatcher("./inicio.jsp").forward(request, response);
 	}
 
@@ -49,7 +55,8 @@ public class ServLogin extends HttpServlet {
 			if(ul.IniciaSesion(correo, clave)) {
 				Usuario u=ul.get(correo);
 				se.setAttribute("usuario", u);
-				request.getRequestDispatcher("./Home.jsp").forward(request, response);
+				response.sendRedirect("Home");
+				return;
 			}
 			else {
 				response.getWriter().append("error-no-log at:").append(request.getContextPath());

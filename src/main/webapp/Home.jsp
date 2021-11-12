@@ -9,7 +9,7 @@
 </head>
 <body>
 	<%@include file="Shared.jsp" %>
-	<% Usuario u= (Usuario)request.getSession().getAttribute("usuario"); %>
+	<% Usuario u= (Usuario)session.getAttribute("Usuario"); %>
 	<h1>Hola <%=u.getNombre() %></h1>
 
 </body>

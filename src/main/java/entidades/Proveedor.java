@@ -2,8 +2,9 @@ package entidades;
 
 public class Proveedor {
 	private int idProveedor;
+	private String RazonSocial;
 	private String direccion;
-	private int telefono;
+	private long telefono;
 	
 	public int getIdProveedor() {
 		return idProveedor;
@@ -17,11 +18,27 @@ public class Proveedor {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-	public int getTelefono() {
+	public long getTelefono() {
 		return telefono;
 	}
-	public void setTelefono(int telefono) {
+	public void setTelefono(long telefono) {
 		this.telefono = telefono;
 	}
+	
+	public String getRazonSocial() {
+		return RazonSocial;
+	}
+	public void setRazonSocial(String razonSocial) {
+		RazonSocial = razonSocial;
+	}
+	public Proveedor(int idProveedor, String razonsocial, String direccion, long telefono) {
+		super();
+		this.idProveedor = idProveedor;
+		this.direccion = direccion;
+		this.telefono = telefono;
+		this.RazonSocial=razonsocial;
+	}
+	
+	
 
 }

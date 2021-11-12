@@ -9,4 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>Provedores</display-name>
+    <servlet-name>Provedores</servlet-name>
+    <jsp-file>/Provedores.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Provedores</servlet-name>
+    <url-pattern>/Provedores</url-pattern>
+  </servlet-mapping>
 </web-app>
