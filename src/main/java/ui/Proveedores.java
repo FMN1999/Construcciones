@@ -47,19 +47,60 @@ public class Proveedores extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String accion=(String)request.getParameter("accion");
+		switch(accion) {
+		case "Registrar":{
+			registrar(request,response);
+			break;
+		}
+		case "Editar":{
+			actualizar(request,response);
+			break;
+		}
+		case "Eliminar":{
+			eliminar(request,response);
+			break;
+		}
+		}
+		doGet(request,response);
 	}
 	
-	private void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	protected void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		String rs=(String)request.getParameter("razonsocial");
+		String direccion=(String)request.getParameter("direccion");
+		long telefono=Long.parseLong(request.getParameter("telefono"));
+		Proveedor p=new Proveedor(0,rs,direccion,telefono);
+		try {
+			ProvedorLogic.Registrar(p);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
-	private void actualizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		
+	protected void actualizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		int id=Integer.parseInt(request.getParameter("idprov"));
+		String rs=(String)request.getParameter("razonsocial");
+		String direccion=(String)request.getParameter("direccion");
+		long telefono=Long.parseLong(request.getParameter("telefono"));
+		Proveedor p=new Proveedor(id,rs,direccion,telefono);
+		try {
+			ProvedorLogic.ActualizarDatos(p);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		
+	protected void eliminar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		int id=Integer.parseInt(request.getParameter("idprov"));
+		try {
+			ProvedorLogic.Eliminar(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

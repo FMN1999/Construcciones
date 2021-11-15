@@ -32,6 +32,16 @@ public class ProvedorLogic {
 		}
 	}
 	
+	public static void Eliminar(int id) throws Exception {
+		try {
+			source.Eliminar(id);
+		}
+		catch(Exception e) {
+			String msg=e.getMessage();
+			throw new Exception(msg);
+		}
+	}
+	
 	public static Proveedor getOne(int id) throws Exception {
 		Proveedor p;
 		try {
@@ -56,4 +66,5 @@ public class ProvedorLogic {
 		}
 		return provs;
 	}
+	
 }
