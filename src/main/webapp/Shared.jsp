@@ -17,7 +17,7 @@
         }
       }
     </style>
-<link href="./locals/headers.css" rel="stylesheet">
+<link href="locals/headers.css" rel="stylesheet">
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -92,6 +92,12 @@
       </div>
     </div>
   </header>
-  
+  <% String error=(String)request.getAttribute("error"); %>
+  <% if(error!=null){ %>
+  				<div class="alert alert-danger">
+  				<strong>ERROR</strong>
+                    <p><%=error %></p>
+                </div>
+  <% } %>
   <script src="./assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
