@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class AuthFilter
  */
-@WebFilter(urlPatterns = { "/AuthFilter", "/Home", "/", "/Proveedores" }, servletNames = { "Home", "Proveedores" })
+@WebFilter(urlPatterns = { "/AuthFilter", "/Home", "/", "/Proveedores", "/Materiales" }, servletNames = { "Home", "Proveedores", "Materiales" })
 public class AuthFilter implements Filter {
 
     /**
@@ -45,6 +45,7 @@ public class AuthFilter implements Filter {
 		if(se.getAttribute("usuario")==null) {
 			//request.getRequestDispatcher("ServLogin").include(request, response);
 			r.sendRedirect("ServLogin");
+			request.setAttribute("error", "Por favor inicie sesion!");
 			return;
 		}
 		

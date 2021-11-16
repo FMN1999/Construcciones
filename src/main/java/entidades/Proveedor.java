@@ -1,5 +1,7 @@
 package entidades;
 
+import java.util.ArrayList;
+
 public class Proveedor {
 	private int idProveedor;
 	private String RazonSocial;
@@ -31,6 +33,21 @@ public class Proveedor {
 	public void setRazonSocial(String razonSocial) {
 		RazonSocial = razonSocial;
 	}
+	
+	private ArrayList<Material> materiales;
+	
+	
+	
+	
+	public ArrayList<Material> getMateriales() {
+		return materiales;
+	}
+	public void setMateriales(ArrayList<Material> materiales) {
+		this.materiales = materiales;
+	}
+	
+	
+	
 	public Proveedor(int idProveedor, String razonsocial, String direccion, long telefono) {
 		super();
 		this.idProveedor = idProveedor;

@@ -59,7 +59,7 @@ public class ServLogin extends HttpServlet {
 				return;
 			}
 			else {
-				response.getWriter().append("error-no-log at:").append(request.getContextPath());
+				request.setAttribute("error", "Usuario y/o contraseña Incorrectos");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

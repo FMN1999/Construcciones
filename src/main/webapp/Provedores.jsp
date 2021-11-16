@@ -12,12 +12,14 @@
 <%@page import="java.util.ArrayList" %>
 <div class="container mt-3">
 <br>
-	<h1>Listado de provedores</h1>
+	<h1 class="text-center">Listado de provedores</h1>
 	<br>
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onClick="regMode()">
-    Registrar Provedor
-    </button>
-	
+	<div>
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onClick="regMode()">
+	    Registrar Provedor
+	    </button>
+    </div>
+	<br>
 	<table class="table table-dark table-hover" id="provedores">
 		<th>Razon social</th>
 		<th>Direccion</th>

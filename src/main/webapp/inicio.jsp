@@ -16,7 +16,7 @@
     
 
     <!-- Bootstrap core CSS -->
-<link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -60,6 +60,7 @@
         <input type="checkbox" value="remember-me"> Recordar
       </label>
     </div>
+    
     <button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar sesion</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
   </form>
