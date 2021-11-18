@@ -36,14 +36,14 @@
 
     
     <!-- Custom styles for this template -->
-    <link href="./assets/locals/inicio.css" rel="stylesheet">
+    <link href="assets/locals/inicio.css" rel="stylesheet">
   </head>
 </head>
   <body class="text-center">
     
 <main class="form-signin">
   <form method="post" action="ServLogin">
-    <img class="mb-4" src="./assets/brand/ctrsite.png" alt="" width="72" height="57">
+    <img class="mb-4" src="assets/brand/ctrsite.png" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">Inicie Sesion</h1>
 
     <div class="form-floating">

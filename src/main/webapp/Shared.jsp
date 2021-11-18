@@ -17,7 +17,7 @@
         }
       }
     </style>
-<link href="locals/headers.css" rel="stylesheet">
+<link href="./assets/locals/headers.css" rel="stylesheet">
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
