@@ -69,6 +69,25 @@ public class MaterialData extends Coneccion {
 			if(n==0) {
 				throw new Exception("No se ha registrado el producto, intentelo de nuevo");
 			}
+			if(m.getPrecio()!=0 && !Float.isNaN(m.getPrecio())) {
+				ps=this.getCon().prepareStatement("INSERT INTO precios_material(id_material, fecha_desde, precio) VALUES (?, sysdate(), ?)");
+				ArrayList<Material> mats=this.getAll();
+				//es necesario obtener el nuevo id_material
+				for(Material mat:mats) {
+					if(mat.getDescripcion().equalsIgnoreCase(m.getDescripcion()) && mat.getId_provedor()==m.getId_provedor()) {
+						ps.setInt(1, mat.getId_material());
+						break;
+					}
+				}
+				
+				ps.setFloat(2, m.getPrecio());
+				n=ps.executeUpdate();
+				//provoca error si no obtuvo el nuevo id_material
+				ps.close();
+				if(n==0) {
+					throw new Exception("No se ha guardado el precio, intentelo de nuevo");
+				}
+			}
 		}
 		catch(Exception e) {
 			throw e;
@@ -81,13 +100,14 @@ public class MaterialData extends Coneccion {
 	public void ActualizarDatos(Material m, boolean modificaPre) throws Exception {
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("UPDATE materiales SET descripcion=? WHERE idmaterial=?");
+			PreparedStatement ps=this.getCon().prepareStatement("UPDATE materiales SET descripcion=?, id_provedor=? WHERE idmaterial=?");
 			ps.setString(1, m.getDescripcion());
-			ps.setInt(2, m.getId_material());
+			ps.setInt(2, m.getId_provedor());
+			ps.setInt(3, m.getId_material());
 			int n=ps.executeUpdate();
 			ps.close();
 			if(n==0) {
-				throw new Exception("No se ha guardado los cambion en el producto, intentelo de nuevo");
+				throw new Exception("No se ha guardado los cambios en el producto, intentelo de nuevo");
 			}
 			if(modificaPre) {
 				ps=this.getCon().prepareStatement("INSERT INTO precios_material(id_material, fecha_desde, precio) VALUES (?, sysdate(), ?)");
@@ -96,7 +116,7 @@ public class MaterialData extends Coneccion {
 				n=ps.executeUpdate();
 				ps.close();
 				if(n==0) {
-					throw new Exception("No se ha guardado los cambion en precios, intentelo de nuevo");
+					throw new Exception("No se ha guardado el cambio en precios, intentelo de nuevo");
 				}
 				
 			}
@@ -114,7 +134,7 @@ public class MaterialData extends Coneccion {
 			this.open();
 			PreparedStatement ps=this.getCon().prepareStatement("DELETE FROM materiales WHERE (idmaterial=?)");
 			//primero hay que eliminar los precios
-			ps.setInt(0, id);
+			ps.setInt(1, id);
 			int n=ps.executeUpdate();
 			if(n==0) {
 				throw new Exception("No se ha eliminado el material, intentelo de nuevo");

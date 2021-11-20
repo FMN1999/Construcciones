@@ -35,20 +35,24 @@ public class Materiales extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		ArrayList<Proveedor> provs;
+		ArrayList<Material> mats=new ArrayList<Material>();
+		HashMap<Integer,Proveedor> provMap=new HashMap<Integer,Proveedor>();
 		try {
-			ArrayList<Proveedor> provs= ProvedorLogic.getAll();
-			HashMap<Integer,Proveedor> provMap=new HashMap<Integer,Proveedor>();
+			provs= ProvedorLogic.getAll();
 			for(Proveedor p:provs) {
 				provMap.put(p.getIdProveedor(), p);
 			}
-			request.setAttribute("provedores", provMap);
-			ArrayList<Material> mats=MaterialLogic.getAll();
-			request.setAttribute("materiales", mats);
+			
+			mats=MaterialLogic.getAll();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			request.setAttribute("error", e.getMessage());
+			request.setAttribute("error", "Un error ha ocurrido mientras procesabamos su solicitud: "+e.getMessage());
 		}
+		request.setAttribute("provedores", provMap);
+		request.setAttribute("materiales", mats);
 		request.getRequestDispatcher("./Materiales.jsp").forward(request, response);
 	}
 
@@ -57,7 +61,64 @@ public class Materiales extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		try {
+			String accion=(String)request.getParameter("accion");
+			switch(accion) {
+			case "Registrar":{
+				registrar(request,response);
+				break;
+			}
+			case "Editar":{
+				actualizar(request,response);
+				break;
+			}
+			case "Eliminar":{
+				eliminar(request,response);
+				break;
+			}
+			}
+		}
+		catch(Exception e) {
+			request.setAttribute("error", "Un error ha ocurrido mientras procesabamos su solicitud: "+e.getMessage());
+		}
 		doGet(request, response);
+	}
+	
+	protected void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		try {
+			String descripcion=(String)request.getParameter("descripcionmaterial");
+			int id_prov=Integer.parseInt(request.getParameter("idprovedor"));
+			float precio=Float.parseFloat(request.getParameter("preciomaterial"));
+			Material m=new Material(0,descripcion, id_prov, precio);
+			MaterialLogic.Registrar(m);
+		}
+		catch(Exception e) {
+			request.setAttribute("error", "No fue posible registrar el material>> "+e.getMessage());
+		}
+	}
+	
+	protected void actualizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		try {
+			int id=Integer.parseInt(request.getParameter("idmaterial"));
+			String descripcion=(String)request.getParameter("descripcionmaterial");
+			int id_prov=Integer.parseInt(request.getParameter("idprovedor"));
+			float precio=Float.parseFloat(request.getParameter("preciomaterial"));
+			Material m=new Material(id,descripcion, id_prov, precio);
+			MaterialLogic.ActualizarDatos(m);
+		}
+		catch(Exception e) {
+			request.setAttribute("error", "No fue posible actualizar los datos del material>> "+e.getMessage());
+		}
+	}
+
+	protected void eliminar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		try {
+			int id=Integer.parseInt(request.getParameter("idmaterial"));
+			MaterialLogic.Eliminar(id);
+		}
+		catch(Exception e) {
+			request.setAttribute("error", "No fue posible eliminar el material>> "+e.getMessage());
+		}
 	}
 
 }

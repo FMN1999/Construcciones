@@ -28,4 +28,8 @@ public class MaterialLogic {
 	public static void Registrar(Material m) throws Exception {
 		source.Registrar(m);
 	}
+	
+	public static void Eliminar(int id) throws Exception{
+		source.Eliminar(id);
+	}
 }
