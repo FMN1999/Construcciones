@@ -47,20 +47,25 @@ public class Proveedores extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String accion=(String)request.getParameter("accion");
-		switch(accion) {
-		case "Registrar":{
-			registrar(request,response);
-			break;
+		try {
+			String accion=(String)request.getParameter("accion");
+			switch(accion) {
+			case "Registrar":{
+				registrar(request,response);
+				break;
+			}
+			case "Editar":{
+				actualizar(request,response);
+				break;
+			}
+			case "Eliminar":{
+				eliminar(request,response);
+				break;
+			}
+			}
 		}
-		case "Editar":{
-			actualizar(request,response);
-			break;
-		}
-		case "Eliminar":{
-			eliminar(request,response);
-			break;
-		}
+		catch(Exception e) {
+			request.setAttribute("error", "Un error ha ocurrido mientras procesabamos su solicitud: "+e.getMessage());
 		}
 		doGet(request,response);
 	}

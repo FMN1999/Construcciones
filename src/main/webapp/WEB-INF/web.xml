@@ -9,6 +9,7 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+
   <servlet>
     <description></description>
     <display-name>Provedores</display-name>
@@ -19,8 +20,9 @@
     <servlet-name>Provedores</servlet-name>
     <url-pattern>/Provedores</url-pattern>
   </servlet-mapping>
+
 <servlet-mapping>
-    <servlet-name>default</servlet-name>
+	<servlet-name>default</servlet-name>
     <url-pattern>*.css</url-pattern>
   </servlet-mapping>
 <servlet-mapping>

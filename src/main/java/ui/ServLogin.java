@@ -59,7 +59,7 @@ public class ServLogin extends HttpServlet {
 				return;
 			}
 			else {
-				request.setAttribute("error", "Usuario y/o contrase�a Incorrectos");
+				request.setAttribute("error", "Usuario y/o contrasena Incorrectos");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
