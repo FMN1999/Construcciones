@@ -94,7 +94,7 @@
             </li>
              <!-- El de las maquinarias -->
              <li>
-              <a href="#" class="nav-link text-white">
+              <a href="Maquinarias" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#table"></use></svg>
                 Maquinarias
               </a>

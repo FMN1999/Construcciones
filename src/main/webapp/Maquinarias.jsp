@@ -63,7 +63,7 @@
 			  <label for="descripcion">Descripcion</label>
 		  </div>
 		  <div class="form-floating mb-3 mt-3">
-			  <input type="text" class="form-control" id="precioHora" placeholder="Precio por Hora" name="precioHora" required>
+			  <input type="number" class="form-control" id="precioHora" placeholder="Precio por Hora" name="precioHora" required>
 			  <label for="precioHora">Precio por hora</label>
 		  </div>
 			<!--input type="text" name="accion" id="accion" value="registrar" style="display:none;"-->
