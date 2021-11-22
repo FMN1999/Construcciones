@@ -1,11 +1,10 @@
 package entidades;
-import java.util.Date;
 
 public class Maquinaria {
 	
 	private int idMaquina;
 	private String descripcion;
-	private Date precioHora;
+	private float precioHora;
 	
 	public int getIdMaquina() {
 		return idMaquina;
@@ -19,12 +18,20 @@ public class Maquinaria {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public Date getPrecioHora() {
+	public float getPrecioHora() {
 		return precioHora;
 	}
-	public void setPrecioHora(Date precioHora) {
+	public void setPrecioHora(float precioHora) {
 		this.precioHora = precioHora;
 	}
+	
+	public Maquinaria(int idMaquina, String descripcion, float precioHora) {
+		super();
+		this.idMaquina = idMaquina;
+		this.descripcion = descripcion;
+		this.precioHora = precioHora;
+	}
+	
 	
 
 }
