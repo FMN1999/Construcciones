@@ -100,6 +100,7 @@
               </a>
             </li>
           </ul>
+          <a href="LogOut" class="btn btn-danger">Salir</a>
         </div>
       </div>
     </div>

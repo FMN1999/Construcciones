@@ -22,6 +22,7 @@
 	    Registrar Material
 	    </button>
 	</div>
+	<br>
 	<% HashMap<Integer,Proveedor> provs=(HashMap<Integer,Proveedor>)request.getAttribute("provedores"); %>
 	<table class="table table-dark table-hover" id="tab_materiales">
 		<th>Nombre del producto</th>
