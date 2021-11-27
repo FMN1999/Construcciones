@@ -2,17 +2,19 @@ package entidades;
 import java.util.Date;
 
 public class Trabajador {
-	private int cuil;
+	private long cuil;
 	private String tipo_doc;
 	private int n_doc;
 	private String nombreYApellido;
 	private Date fechaNac;
 	private boolean disponible;
+	private String tipoEmpleado;
+	private float precioHS;
 	
-	public int getCuil() {
+	public long getCuil() {
 		return cuil;
 	}
-	public void setCuil(int cuil) {
+	public void setCuil(long cuil) {
 		this.cuil = cuil;
 	}
 	public String getTipo_doc() {
@@ -44,6 +46,30 @@ public class Trabajador {
 	}
 	public void setDisponible(boolean disponible) {
 		this.disponible = disponible;
+	}
+	public String getTipoEmpleado() {
+		return tipoEmpleado;
+	}
+	public void setTipoEmpleado(String tipoEmpleado) {
+		this.tipoEmpleado = tipoEmpleado;
+	}
+	public float getPrecioHS() {
+		return precioHS;
+	}
+	public void setPrecioHS(float precioHS) {
+		this.precioHS = precioHS;
+	}
+	public Trabajador(long cuil, String tipo_doc, int n_doc, String nombreYApellido, Date fechaNac, boolean disponible,
+			String tipoEmpleado, float precioHS) {
+		super();
+		this.cuil = cuil;
+		this.tipo_doc = tipo_doc;
+		this.n_doc = n_doc;
+		this.nombreYApellido = nombreYApellido;
+		this.fechaNac = fechaNac;
+		this.disponible = disponible;
+		this.tipoEmpleado = tipoEmpleado;
+		this.precioHS = precioHS;
 	}
 	
 
