@@ -1,11 +1,10 @@
 package entidades;
 import java.util.Date;
 
-public class Trabajador {
+public class Trabajador extends Usuario {
 	private long cuil;
 	private String tipo_doc;
 	private int n_doc;
-	private String nombreYApellido;
 	private Date fechaNac;
 	private boolean disponible;
 	private String tipoEmpleado;
@@ -29,12 +28,7 @@ public class Trabajador {
 	public void setN_doc(int n_doc) {
 		this.n_doc = n_doc;
 	}
-	public String getNombreYApellido() {
-		return nombreYApellido;
-	}
-	public void setNombreYApellido(String nombreYApellido) {
-		this.nombreYApellido = nombreYApellido;
-	}
+	
 	public Date getFechaNac() {
 		return fechaNac;
 	}
@@ -59,13 +53,13 @@ public class Trabajador {
 	public void setPrecioHS(float precioHS) {
 		this.precioHS = precioHS;
 	}
-	public Trabajador(long cuil, String tipo_doc, int n_doc, String nombreYApellido, Date fechaNac, boolean disponible,
+	public Trabajador(int id, String nombre, String apellido, String email, String password, long cuil, String tipo, 
+			String tipo_doc, int n_doc, Date fechaNac, boolean disponible,
 			String tipoEmpleado, float precioHS) {
-		super();
+		super(id, nombre, apellido, email, password, cuil, tipo);
 		this.cuil = cuil;
 		this.tipo_doc = tipo_doc;
 		this.n_doc = n_doc;
-		this.nombreYApellido = nombreYApellido;
 		this.fechaNac = fechaNac;
 		this.disponible = disponible;
 		this.tipoEmpleado = tipoEmpleado;
