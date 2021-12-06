@@ -11,29 +11,35 @@ public class TrabajadorData extends Coneccion {
 	public ArrayList<Trabajador> getOficiales() throws Exception{
 		ArrayList<Trabajador> trs=new ArrayList<Trabajador>();
 		this.open();
-		PreparedStatement ps=this.getCon().prepareStatement("SELECT trabajadores.cuil,"
-				+ "    trabajadores.tipo_doc,"
-				+ "    trabajadores.n_doc,\n"
-				+ "    trabajadores.nombre_completo,"
-				+ "    trabajadores.fecha_nac,"
-				+ "    trabajadores.disponoble,"
-				+ "    tipo_trabajador.descripcion,"
-				+ "		tipo_trabajador.precioHora "
-				+ " FROM construccion.trabajadores "
-				+ " INNER JOIN tipo_trabajador on trabajadores.tipo_trabajador=tipo_trabajador.idtipo_trabajador "
-				+ " WHERE tipo_trabajador.descripcion='Oficial'");
+		PreparedStatement ps=this.getCon().prepareStatement("SELECT usuario.idusuario,\n" //1
+				+ "usuario.nombre,\n" //2
+				+ "usuario.apellido,\n" //3
+				+ "usuario.email,\n" //4
+				+ "usuario.password,\n" //5
+				+ "trabajadores.cuil,\n" //6
+				+ "tipo_trabajador.descripcion,\n" //7
+				+ "trabajadores.tipo_doc,\n" //8
+				+ "trabajadores.n_doc,\n" //9
+				+ "trabajadores.fecha_nac,\n" //10
+				+ "trabajadores.disponoble,\n" //11
+				+ "tipo_trabajador.precioHora \n" //12
+				+ "FROM construccion.trabajadores \n"
+				+ "LEFT JOIN usuario on trabajadores.cuil=usuario.cuil\n"
+				+ "INNER JOIN tipo_trabajador on trabajadores.tipo_trabajador=tipo_trabajador.idtipo_trabajador \n"
+				+ "WHERE tipo_trabajador.descripcion='Oficial'");
 		ResultSet rs=ps.executeQuery();
 		
 		while(rs.next()) {
 			boolean d;
-			if(rs.getInt(6)==1) {
+			if(rs.getInt(11)==1) {
 				d= true;
 				} 
 			else {
 				d= false;
 				}
 			
-			Trabajador t=new Trabajador(rs.getLong(1),rs.getString(2),rs.getInt(3),rs.getString(4), rs.getDate(5), d, rs.getString(7), rs.getFloat(8));
+			Trabajador t=new Trabajador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getLong(6),
+					rs.getString(7), rs.getString(8), rs.getInt(9), rs.getDate(10), d, "Oficial", rs.getFloat(12));
 			trs.add(t);
 		}
 		rs.close();
@@ -45,29 +51,34 @@ public class TrabajadorData extends Coneccion {
 	public ArrayList<Trabajador> getObreros() throws Exception{
 		ArrayList<Trabajador> trs=new ArrayList<Trabajador>();
 		this.open();
-		PreparedStatement ps=this.getCon().prepareStatement("SELECT trabajadores.cuil,\n"
-				+ "    trabajadores.tipo_doc,"
-				+ "    trabajadores.n_doc,"
-				+ "    trabajadores.nombre_completo,"
-				+ "    trabajadores.fecha_nac,"
-				+ "    trabajadores.disponoble,"
-				+ "    tipo_trabajador.descripcion,"
-				+ " 	tipo_trabajador.precioHora "
-				+ " FROM construccion.trabajadores"
-				+ " INNER JOIN tipo_trabajador on trabajadores.tipo_trabajador=tipo_trabajador.idtipo_trabajador"
-				+ " WHERE tipo_trabajador.descripcion='Obrero'");
+		PreparedStatement ps=this.getCon().prepareStatement("SELECT usuario.idusuario,\n"
+				+ "usuario.nombre,\n"
+				+ "usuario.apellido,\n"
+				+ "usuario.email,\n"
+				+ "usuario.password,\n"
+				+ "trabajadores.cuil,\n"
+				+ "tipo_trabajador.descripcion,\n"
+				+ "trabajadores.tipo_doc,\n"
+				+ "trabajadores.n_doc,\n"
+				+ "trabajadores.fecha_nac,\n"
+				+ "trabajadores.disponoble,\n"
+				+ "tipo_trabajador.precioHora \n"
+				+ "FROM construccion.trabajadores \n"
+				+ "LEFT JOIN usuario on trabajadores.cuil=usuario.cuil\n"
+				+ "INNER JOIN tipo_trabajador on trabajadores.tipo_trabajador=tipo_trabajador.idtipo_trabajador \n"
+				+ "WHERE tipo_trabajador.descripcion='Obrero'");
 		ResultSet rs=ps.executeQuery();
 		
 		while(rs.next()) {
 			boolean d;
-			if(rs.getInt(6)==1) {
+			if(rs.getInt(11)==1) {
 				d= true;
 				} 
 			else {
 				d= false;
 				}
-			
-			Trabajador t=new Trabajador(rs.getLong(1),rs.getString(2),rs.getInt(3),rs.getString(4), rs.getDate(5), d, rs.getString(7), rs.getFloat(8));
+			Trabajador t=new Trabajador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getLong(6),
+					rs.getString(7), rs.getString(8), rs.getInt(9), rs.getDate(10), d, "Obrero", rs.getFloat(12));
 			trs.add(t);
 		}
 		rs.close();

@@ -20,7 +20,9 @@
 			<th>Cuil</th>
 			<th>Tipo Doc.</th>
 			<th>Nº Documento</th>
-			<th>Nombre Completo</th>
+			<th>Nombre</th>
+			<th>Apellido</th>
+			<th>Email</th>
 			<th>Fecha de nacimiento</th>
 			<th>Disponibilidad</th>
 			<% for(Trabajador t: ofs){ %>
@@ -28,7 +30,9 @@
 					<td><%= t.getCuil() %></td>
 					<td><%= t.getTipo_doc() %></td>
 					<td><%= t.getN_doc() %></td>
-					<td><%= t.getNombreYApellido() %></td>
+					<td><%= t.getNombre() %></td>
+					<td><%= t.getApellido() %></td>
+					<td><%= t.getEmail() %></td>
 					<td><%= t.getFechaNac() %></td>
 					<% if(t.isDisponible()){ %>
 						<td class="text-success"><%= "Disponible" %></td>
@@ -48,7 +52,9 @@
 			<th>Cuil</th>
 			<th>Tipo Doc.</th>
 			<th>Nº Documento</th>
-			<th>Nombre Completo</th>
+			<th>Nombre</th>
+			<th>Apellido</th>
+			<th>Email</th>
 			<th>Fecha de nacimiento</th>
 			<th>Disponibilidad</th>
 			<% for(Trabajador t: obs){ %>
@@ -56,7 +62,9 @@
 					<td><%= t.getCuil() %></td>
 					<td><%= t.getTipo_doc() %></td>
 					<td><%= t.getN_doc() %></td>
-					<td><%= t.getNombreYApellido() %></td>
+					<td><%= t.getNombre() %></td>
+					<td><%= t.getApellido() %></td>
+					<td><%= t.getEmail() %></td>
 					<td><%= t.getFechaNac() %></td>
 					<% if(t.isDisponible()){ %>
 						<td class="text-success"><%= "Disponible" %></td>

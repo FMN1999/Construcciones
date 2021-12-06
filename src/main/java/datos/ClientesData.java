@@ -11,7 +11,7 @@ import entidades.Cliente;
 public class ClientesData extends Coneccion {
 	public Cliente getOne(int id) throws SQLException {
 		//return a Product objet from data base
-		this.open();
+		/*this.open();
 		PreparedStatement ps=this.getCon().prepareStatement("SELECT idCliente, razon_Social, telefono, email FROM clientes WHERE idCliente=?");
 		ps.setInt(1, id);
 		ResultSet rs=ps.executeQuery();
@@ -21,12 +21,13 @@ public class ClientesData extends Coneccion {
 		ps.close();
 		this.close();
 		
-		return cli;
+		return cli;*/
+		return null;
 	}
 	
 	public ArrayList<Cliente> getAll() throws SQLException {
 		//return a Product objet ArrayList from data base 
-		ArrayList<Cliente> clientes=new ArrayList<Cliente>();
+		/*ArrayList<Cliente> clientes=new ArrayList<Cliente>();
 		this.open();
 		Statement st=this.getCon().createStatement();
 		ResultSet rs=st.executeQuery("SELECT idCliente, razon_Social, telefono, email FROM clientes");
@@ -38,6 +39,7 @@ public class ClientesData extends Coneccion {
 		st.close();
 		this.close();
 		
-		return clientes;
+		return clientes;*/
+		return null;
 	}
 }
