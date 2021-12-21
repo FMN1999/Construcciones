@@ -13,13 +13,13 @@ public class MaterialData extends Coneccion {
 		ArrayList<Material> materiales=new ArrayList<Material>();
 		try {
 			this.open();
-			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, id_provedor, ifnull(precio,0.0) FROM materiales "
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, id_provedor, ifnull(precio,0.0) as precio FROM materiales "
 					+ "left join precios_material on materiales.idmaterial=id_material "
 					+ "where ifnull(fecha_desde= (select max(fecha_desde) from precios_material where id_material=idmaterial),true) "
 					+ "group by idmaterial");
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
-				Material m=new Material(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getFloat(4));
+				Material m=new Material(rs.getInt("materiales.idmaterial"), rs.getString("descripcion"), rs.getInt("id_provedor"), rs.getFloat("precio"));
 				materiales.add(m);
 			}
 			rs.close();
@@ -37,14 +37,14 @@ public class MaterialData extends Coneccion {
 	public Material getOne(int id) throws SQLException, Exception{
 		try {
 			this.open();
-			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, id_provedor, ifnull(precio,0.0) FROM materiales "
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, id_provedor, ifnull(precio,0.0) as precio FROM materiales "
 					+ "left join precios_material on materiales.idmaterial=id_material "
 					+ "where ifnull(fecha_desde= (select max(fecha_desde) from precios_material where id_material=idmaterial),true) and idmaterial=? "
 					+ "group by idmaterial");
 			ps.setInt(1, id);
 			ResultSet rs=ps.executeQuery();
 			rs.next();
-			Material m=new Material(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getFloat(4));
+			Material m=new Material(rs.getInt("materiales.idmaterial"), rs.getString("descripcion"), rs.getInt("id_provedor"), rs.getFloat("precio"));
 			rs.close();
 			ps.close();
 			return m;

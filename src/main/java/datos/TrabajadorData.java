@@ -88,7 +88,19 @@ public class TrabajadorData extends Coneccion {
 	}
 	
 	public void Registrar(Trabajador t) throws Exception{
+		this.open();
+		PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO usuario(nombre, apellido, cuil, id_tipo, password, email) "
+				+ "VALUES (?,?,?,?,?,?) ");
+		ps.setString(1, t.getNombre());
+		ps.setString(2, t.getApellido());
+		ps.setLong(3, t.getCuil());
 		
+		//revisar el tipo...
+		ps.setInt(4, 0);
+		ps.setString(5, t.getPassword());
+		ps.setString(6, t.getEmail());
+		
+		//falta registrar ademas en la tabla de trabajador
 	}
 	
 	public void ActualizarDatos(Trabajador t) throws Exception{
