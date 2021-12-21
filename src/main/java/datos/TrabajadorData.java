@@ -31,15 +31,17 @@ public class TrabajadorData extends Coneccion {
 		
 		while(rs.next()) {
 			boolean d;
-			if(rs.getInt(11)==1) {
+			if(rs.getInt("trabajadores.disponoble")==1) {
 				d= true;
 				} 
 			else {
 				d= false;
 				}
 			
-			Trabajador t=new Trabajador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getLong(6),
-					rs.getString(7), rs.getString(8), rs.getInt(9), rs.getDate(10), d, "Oficial", rs.getFloat(12));
+			Trabajador t=new Trabajador(rs.getInt("usuario.idusuario"), rs.getString("usuario.nombre"), rs.getString("usuario.apellido"),
+					rs.getString("usuario.email"), rs.getString("usuario.password"), rs.getLong("trabajadores.cuil"),
+					rs.getString("tipo_trabajador.descripcion"), rs.getString("trabajadores.tipo_doc"), rs.getInt("trabajadores.n_doc"),
+					rs.getDate("trabajadores.fecha_nac"), d, "Oficial", rs.getFloat("tipo_trabajador.precioHora"));
 			trs.add(t);
 		}
 		rs.close();
@@ -71,14 +73,16 @@ public class TrabajadorData extends Coneccion {
 		
 		while(rs.next()) {
 			boolean d;
-			if(rs.getInt(11)==1) {
+			if(rs.getInt("trabajadores.disponoble")==1) {
 				d= true;
 				} 
 			else {
 				d= false;
 				}
-			Trabajador t=new Trabajador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getLong(6),
-					rs.getString(7), rs.getString(8), rs.getInt(9), rs.getDate(10), d, "Obrero", rs.getFloat(12));
+			Trabajador t=new Trabajador(rs.getInt("usuario.idusuario"), rs.getString("usuario.nombre"), rs.getString("usuario.apellido"),
+					rs.getString("usuario.email"), rs.getString("usuario.password"), rs.getLong("trabajadores.cuil"),
+					rs.getString("tipo_trabajador.descripcion"), rs.getString("trabajadores.tipo_doc"), rs.getInt("trabajadores.n_doc"),
+					rs.getDate("trabajadores.fecha_nac"), d, "Obrero", rs.getFloat("tipo_trabajador.precioHora"));
 			trs.add(t);
 		}
 		rs.close();
