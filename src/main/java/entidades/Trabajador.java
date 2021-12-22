@@ -4,7 +4,7 @@ import java.util.Date;
 public class Trabajador extends Usuario {
 	private long cuil;
 	private String tipo_doc;
-	private int n_doc;
+	private long n_doc;
 	private Date fechaNac;
 	private boolean disponible;
 	private String tipoEmpleado;
@@ -22,10 +22,10 @@ public class Trabajador extends Usuario {
 	public void setTipo_doc(String tipo_doc) {
 		this.tipo_doc = tipo_doc;
 	}
-	public int getN_doc() {
+	public long getN_doc() {
 		return n_doc;
 	}
-	public void setN_doc(int n_doc) {
+	public void setN_doc(long n_doc) {
 		this.n_doc = n_doc;
 	}
 	
@@ -54,7 +54,7 @@ public class Trabajador extends Usuario {
 		this.precioHS = precioHS;
 	}
 	public Trabajador(int id, String nombre, String apellido, String email, String password, long cuil, String tipo, 
-			String tipo_doc, int n_doc, Date fechaNac, boolean disponible,
+			String tipo_doc, long n_doc, Date fechaNac, boolean disponible,
 			String tipoEmpleado, float precioHS) {
 		super(id, nombre, apellido, email, password, cuil, tipo);
 		this.cuil = cuil;

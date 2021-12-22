@@ -1,7 +1,9 @@
 package datos;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import entidades.Trabajador;
@@ -40,7 +42,7 @@ public class TrabajadorData extends Coneccion {
 			
 			Trabajador t=new Trabajador(rs.getInt("usuario.idusuario"), rs.getString("usuario.nombre"), rs.getString("usuario.apellido"),
 					rs.getString("usuario.email"), rs.getString("usuario.password"), rs.getLong("trabajadores.cuil"),
-					rs.getString("tipo_trabajador.descripcion"), rs.getString("trabajadores.tipo_doc"), rs.getInt("trabajadores.n_doc"),
+					rs.getString("tipo_trabajador.descripcion"), rs.getString("trabajadores.tipo_doc"), rs.getLong("trabajadores.n_doc"),
 					rs.getDate("trabajadores.fecha_nac"), d, "Oficial", rs.getFloat("tipo_trabajador.precioHora"));
 			trs.add(t);
 		}
@@ -81,7 +83,7 @@ public class TrabajadorData extends Coneccion {
 				}
 			Trabajador t=new Trabajador(rs.getInt("usuario.idusuario"), rs.getString("usuario.nombre"), rs.getString("usuario.apellido"),
 					rs.getString("usuario.email"), rs.getString("usuario.password"), rs.getLong("trabajadores.cuil"),
-					rs.getString("tipo_trabajador.descripcion"), rs.getString("trabajadores.tipo_doc"), rs.getInt("trabajadores.n_doc"),
+					rs.getString("tipo_trabajador.descripcion"), rs.getString("trabajadores.tipo_doc"), rs.getLong("trabajadores.n_doc"),
 					rs.getDate("trabajadores.fecha_nac"), d, "Obrero", rs.getFloat("tipo_trabajador.precioHora"));
 			trs.add(t);
 		}
@@ -92,19 +94,44 @@ public class TrabajadorData extends Coneccion {
 	}
 	
 	public void Registrar(Trabajador t) throws Exception{
-		this.open();
-		PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO usuario(nombre, apellido, cuil, id_tipo, password, email) "
-				+ "VALUES (?,?,?,?,?,?) ");
-		ps.setString(1, t.getNombre());
-		ps.setString(2, t.getApellido());
-		ps.setLong(3, t.getCuil());
+		//las verificaciones de existencia ya fueron realizadas previamente
+		//en la capa de logica
+		int n=0;
 		
-		//revisar el tipo...
-		ps.setInt(4, 0);
-		ps.setString(5, t.getPassword());
-		ps.setString(6, t.getEmail());
-		
-		//falta registrar ademas en la tabla de trabajador
+		try {
+			this.open();
+			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO trabajadores(cuil, tipo_doc, n_doc, fecha_nac,"
+					+ " disponoble, tipo_trabajador) "
+					+ "VALUES (?,?,?,?,?,?) ");
+			ps.setLong(1, t.getCuil());
+			ps.setString(2, t.getTipo_doc());
+			ps.setLong(3, t.getN_doc());
+			ps.setDate(4, (Date) t.getFechaNac());
+			ps.setInt(5, 1); //--> True
+			switch(t.getTipoEmpleado()){
+			case "Obrero":{
+				ps.setInt(6, 2);
+				break;
+			}
+			case "Oficial":{
+				ps.setInt(6, 1);
+				break;
+			}
+			}
+			
+			n=ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado: "+e.getMessage());
+		}
+		finally {
+			this.close();
+			if(n==0) {
+				throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado");
+				//deberia eliminarse el usuario en caso de error al registrar en trabajadores
+			}
+			
+		}
 	}
 	
 	public void ActualizarDatos(Trabajador t) throws Exception{
