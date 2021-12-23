@@ -51,7 +51,40 @@ public class Empleados extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String accion=(String)request.getParameter("accion");
+		switch(accion) {
+		case "Registrar":{
+			Registrar(request, response);
+			break;
+		}
+		case "Modificar":{
+			Modificar(request, response);
+			break;
+		}
+		case "Eliminar":{
+			Eliminar(request, response);
+			break;
+		}
+		}
 		doGet(request, response);
+	}
+	
+	/**
+	 * @see Registra oficial/obrero y su correspondiente usuario
+	 */
+	protected void Registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+	}
+	
+	protected void Modificar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+	}
+	
+	protected void Eliminar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
 	}
 
 }

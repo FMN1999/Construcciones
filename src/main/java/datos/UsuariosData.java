@@ -59,6 +59,9 @@ public class UsuariosData extends Coneccion {
 		return usuarios;
 	}
 	
+	/**
+	 *@see -> Recupera usuario segun direccion de correo electronico 
+	 */
 	public Usuario get(String dir) throws SQLException {
 		//int id, String nombre, String apellido, String email, String password, int cuil, String tipo
 		Usuario usr=null;
@@ -83,7 +86,9 @@ public class UsuariosData extends Coneccion {
 		}
 		return usr;
 	}
-	
+	/**
+	 *@see -> Recupera usuario segun cuil 
+	 */
 	public Usuario get(long cuil) throws SQLException {
 		//int id, String nombre, String apellido, String email, String password, int cuil, String tipo
 		Usuario usr=null;
@@ -109,7 +114,6 @@ public class UsuariosData extends Coneccion {
 		return usr;
 	}
 
-	//devuelve el id de usuario
 	public void Registrar(Usuario u) throws Exception{
 		//las verificaciones de existencia ya fueron realizadas previamente
 		//en la capa de logica
