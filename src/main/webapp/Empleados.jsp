@@ -93,7 +93,7 @@
       </div>
 
       
-      <form method="post" action="Proveedores" >
+      <form method="post" action="Empleados" >
       	  <!-- Modal body -->
 	      <div class="form-floating mb-3 mt-3">
 			  <input type="text" class="form-control" id="idusu" placeholder="id" name="idusu" readonly>

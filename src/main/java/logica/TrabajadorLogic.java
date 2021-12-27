@@ -1,5 +1,6 @@
 package logica;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import datos.TrabajadorData;
@@ -25,14 +26,25 @@ public class TrabajadorLogic {
 	public static void Registrar(Trabajador t) throws Exception {
 		//
 		//primero se debe verificar que no exista un usuario/trabajador con el mismo cuil
-		Usuario u=usuariodata.get(t.getCuil());
+		Usuario u=null;
+		try {
+			u = usuariodata.get(t.getCuil());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			u=null;
+		}
 		if(u!=null) {
 			throw new Exception("¡El CUIL ingresado no esta disponible! El cuil "+u.getCuil()+" pertenece al "+u.getTipo()+" "+u.getApellido()
 			+" "+u.getNombre());
 		}
 		
 		//luego verificar existencia de usuario con mismo email
-		u=usuariodata.get(t.getEmail());
+		try {
+			u=usuariodata.get(t.getEmail());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			u=null;
+		}
 		if(u!=null) {
 			throw new Exception("¡La direccion de correo electronico no esta disponible! Pertenece al "+u.getTipo()+" "+u.getApellido()
 			+" "+u.getNombre());
