@@ -90,9 +90,12 @@ public class Empleados extends HttpServlet {
 		long cuil=Long.parseLong(request.getParameter("cuil"));
 		String tipo_doc=(String)request.getParameter("tipodoc");
 		long ndoc=Long.parseLong(request.getParameter("ndoc"));
+		//
+		String date=request.getParameter("fnac");
+		//
 		Date fnac=null;
 		try {
-			fnac = new SimpleDateFormat("dd-MM-yyyy").parse(request.getParameter("fnac"));
+			fnac = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 		}catch(Exception e) {
 			throw new Exception("Error al procesar fecha");
 		}

@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import entidades.Trabajador;
@@ -106,7 +108,12 @@ public class TrabajadorData extends Coneccion {
 			ps.setLong(1, t.getCuil());
 			ps.setString(2, t.getTipo_doc());
 			ps.setLong(3, t.getN_doc());
-			ps.setDate(4, (Date) t.getFechaNac());
+			
+			//ps.setDate(4, (Date) t.getFechaNac());
+			java.sql.Date sqlDate = new java.sql.Date(t.getFechaNac().getTime());
+			ps.setDate(4, sqlDate);
+			
+			
 			ps.setInt(5, 1); //--> True
 			switch(t.getTipoEmpleado()){
 			case "Obrero":{
