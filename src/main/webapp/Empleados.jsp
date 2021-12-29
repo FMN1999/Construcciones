@@ -30,11 +30,12 @@
 			<th style="display:none;">Password</th>
 			<th>Fecha de nacimiento</th>
 			<th>Disponibilidad</th>
+			<th style="display:none;">ID</th>
 			<th></th>
 			<th></th>
 			<% for(Trabajador t: ofs){ %>
 				<tr>
-					<td value=<%= t.getId() %>><%= t.getCuil() %></td>
+					<td><%= t.getCuil() %></td>
 					<td><%= t.getTipo_doc() %></td>
 					<td><%= t.getN_doc() %></td>
 					<td><%= t.getNombre() %></td>
@@ -47,6 +48,7 @@
 					<% } else{  %>
 						<td class="text-danger"><%= "No Disponible" %></td>
 					<% } %>
+					<td style="display:none;"><%= t.getId() %></td>
 					<td><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" onClick="editMode()">Editar</button>
 					<td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" onClick="deleteMode()">Eliminar</button>
 				</tr>
@@ -68,11 +70,12 @@
 			<th style="display:none;">Password</th>
 			<th>Fecha de nacimiento</th>
 			<th>Disponibilidad</th>
+			<th style="display:none;">ID</th>
 			<th></th>
 			<th></th>
 			<% for(Trabajador t: obs){ %>
 				<tr>
-					<td value=<%= t.getId() %>><%= t.getCuil() %></td>
+					<td><%= t.getCuil() %></td>
 					<td><%= t.getTipo_doc() %></td>
 					<td><%= t.getN_doc() %></td>
 					<td><%= t.getNombre() %></td>
@@ -85,6 +88,7 @@
 					<% } else{  %>
 						<td class="text-danger"><%= "No Disponible" %></td>
 					<% } %>
+					<td style="display:none;"><%= t.getId() %></td>
 					<td><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" onClick="editMode()">Editar</button>
 					<td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" onClick="deleteMode()">Eliminar</button>
 				</tr>
@@ -191,7 +195,7 @@
 	for (i = 0; i < table1.rows.length; i++) {
 	    table1.rows[i].onclick = function () {
 	        rIndex1 = this.rowsIndex;
-	        document.getElementById('idusu').value = this.cells[0].value;
+	        document.getElementById('idusu').value = this.cells[9].innerHTML;
 	        document.getElementById('nombre').value = this.cells[3].innerHTML;
 	        document.getElementById('apellido').value = this.cells[4].innerHTML;
 	        document.getElementById('email').value = this.cells[5].innerHTML;
@@ -218,7 +222,7 @@
 	for (i = 0; i < table2.rows.length; i++) {
 		table2.rows[i].onclick = function () {
 			rIndex2 = this.rowsIndex;
-			document.getElementById('idusu').value = this.cells[0].value;
+			document.getElementById('idusu').value = this.cells[9].innerHTML;
 	        document.getElementById('nombre').value = this.cells[3].innerHTML;
 	        document.getElementById('apellido').value = this.cells[4].innerHTML;
 	        document.getElementById('email').value = this.cells[5].innerHTML;

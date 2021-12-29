@@ -163,4 +163,55 @@ public class UsuariosData extends Coneccion {
 			
 		}
 
+	public void ActualizarDatos(Usuario u) throws Exception{
+		String sql="UPDATE usuario SET nombre=?, apellido=?, email=?, password=?, cuil=? WHERE idusuario=?"; 
+		int n=0;
+		this.open();
+		try {
+			PreparedStatement ps=this.getCon().prepareStatement(sql);
+			ps.setString(1, u.getNombre());
+			ps.setString(2, u.getApellido());
+			ps.setString(3, u.getEmail());
+			ps.setString(4, u.getPassword());
+			ps.setLong(5, u.getCuil());
+			ps.setInt(6, u.getId());
+			
+			n=ps.executeUpdate();
+			
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new Exception("No fue posible actualizar los cambios en el usuario :"+e.getMessage());
+		}
+		finally {
+			this.close();
+			
+			if(n==0) {
+				throw new Exception("No fue posible actualizar los cambios en el usuario");
+			}
+		}
+		
+	}
+	
+	public void Eliminar(int id) throws Exception {
+		String sql="DELETE FROM usuario WHERE (idusuario=?)";
+		int n=0;
+		this.open();
+		try {
+			PreparedStatement ps=this.getCon().prepareStatement(sql);
+			ps.setInt(1, id);
+			
+			n=ps.executeUpdate();
+			
+			ps.close();
+		}catch(SQLException e) {
+			throw new Exception("No fue posible eliminar al usuario "+id+": "+e.getMessage());
+		}
+		finally {
+			this.close();
+			if(n==0) {
+				throw new Exception("No fue posible eliminar al usuario "+id);
+			}
+		}
+	}
 }

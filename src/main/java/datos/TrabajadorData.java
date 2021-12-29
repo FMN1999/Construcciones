@@ -113,8 +113,12 @@ public class TrabajadorData extends Coneccion {
 			java.sql.Date sqlDate = new java.sql.Date(t.getFechaNac().getTime());
 			ps.setDate(4, sqlDate);
 			
-			
-			ps.setInt(5, 1); //--> True
+			if(t.isDisponible()) {
+				ps.setInt(5, 1); //--> True
+			}
+			else {
+				ps.setInt(5, 0);
+			}
 			switch(t.getTipoEmpleado()){
 			case "Obrero":{
 				ps.setInt(6, 2);
@@ -142,10 +146,63 @@ public class TrabajadorData extends Coneccion {
 	}
 	
 	public void ActualizarDatos(Trabajador t) throws Exception{
-		
+		String sql="UPDATE trabajadores SET tipo_doc=?, n_doc=?, fecha_nac=?, disponoble=?, tipo_trabajador=? WHERE cuil=?"; 
+		int n=0;
+		this.open();
+		try {
+			PreparedStatement ps=this.getCon().prepareStatement(sql);
+			ps.setString(1, t.getTipo_doc());
+			ps.setLong(2, t.getN_doc());
+			java.sql.Date sqlDate = new java.sql.Date(t.getFechaNac().getTime());
+			ps.setDate(3, sqlDate);
+			if(t.isDisponible()) {
+				ps.setInt(4, 1);
+			}else {
+				ps.setInt(4, 0);
+			}
+			if(t.getTipoEmpleado().equalsIgnoreCase("Oficial")) {
+				ps.setInt(5, 1);
+			}else {
+				//Obrero
+				ps.setInt(5, 2);
+			}
+			ps.setLong(6, t.getCuil());
+			
+			n=ps.executeUpdate();
+			
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new Exception("No fue posible actualizar los cambios en el trabajador "+t.getApellido()+" "+t.getNombre()+":"+e.getMessage());
+		}
+		finally {
+			this.close();
+			
+			if(n==0) {
+				throw new Exception("No fue posible actualizar los cambios en el trabajador "+t.getApellido()+" "+t.getNombre());
+			}
+		}
 	}
 	
-	public void Eliminar(int id) throws Exception{
-		
+	public void Eliminar(long cuil) throws Exception{
+		String sql="DELETE FROM trabajadores WHERE (cuil=?)";
+		int n=0;
+		this.open();
+		try {
+			PreparedStatement ps=this.getCon().prepareStatement(sql);
+			ps.setLong(1, cuil);
+			
+			n=ps.executeUpdate();
+			
+			ps.close();
+		}catch(SQLException e) {
+			throw new Exception("No fue posible eliminar al trabajador: "+e.getMessage());
+		}
+		finally {
+			this.close();
+			if(n==0) {
+				throw new Exception("No fue posible eliminar al trabajador");
+			}
+		}
 	}
 }

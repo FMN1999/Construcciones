@@ -62,7 +62,7 @@ public class Empleados extends HttpServlet {
 				Registrar(request, response);
 				break;
 			}
-			case "Modificar":{
+			case "Editar":{
 				Modificar(request, response);
 				break;
 			}
@@ -128,16 +128,14 @@ public class Empleados extends HttpServlet {
 		String disponible=request.getParameter("disponible");
 		boolean disp=disponible.equalsIgnoreCase("Disponible");
 		Trabajador t=new Trabajador(id, nombre, apellido, email, password, cuil, "Trabajador", tipo_doc, ndoc, fnac, disp, tipo_e, 0);
-		//editar
+		TrabajadorLogic.ActualizarDatos(t);
 	}
 	
-	protected void Eliminar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void Eliminar(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		int id=Integer.parseInt(request.getParameter("idusu"));
 		long cuil=Long.parseLong(request.getParameter("cuil"));
-		//eliminar
-		
-		
+		TrabajadorLogic.Eliminar(id, cuil);
 	}
 
 }
