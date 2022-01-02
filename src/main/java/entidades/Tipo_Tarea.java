@@ -4,7 +4,9 @@ public class Tipo_Tarea {
 	
 	private int id_tipo_tarea;
 	private String descripcion;
+	private float precio;
 	
+
 	public int getId_tipo_tarea() {
 		return id_tipo_tarea;
 	}
@@ -18,6 +20,18 @@ public class Tipo_Tarea {
 		this.descripcion = descripcion;
 	}
 	
+	
+	public float getPrecio() {
+		return precio;
+	}
+	public void setPrecio(float precio) {
+		this.precio = precio;
+	}
+	public Tipo_Tarea(int idtipotarea, String descr, float prec) {
+		this.id_tipo_tarea = idtipotarea;
+		this.descripcion = descr;
+		this.precio = prec;
+	}
 	
 
 }
