@@ -8,6 +8,8 @@ public class Usuario {
 	private String password;
 	private long cuil;
 	private String tipo;
+	private Usuario persona;	//no se guardan de tipo Usuario sino de sus subclases-->Cliente o Trabajador
+	
 	public int getId() {
 		return id;
 	}
@@ -50,6 +52,16 @@ public class Usuario {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+	
+	
+	public Usuario getPersona() {
+		return persona;
+	}
+	public void setPersona(Usuario persona) {
+		this.persona = persona;
+	}
+	
+	
 	public Usuario(int id, String nombre, String apellido, String email, String password, long cuil, String tipo) {
 		super();
 		this.id = id;
@@ -59,6 +71,7 @@ public class Usuario {
 		this.password = password;
 		this.cuil = cuil;
 		this.tipo = tipo;
+		//el cliente / trabajador se debe asignar por fuera
 	}
 	@Override
 	public String toString() {

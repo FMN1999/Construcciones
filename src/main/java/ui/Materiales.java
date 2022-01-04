@@ -35,24 +35,17 @@ public class Materiales extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ArrayList<Proveedor> provs;
-		ArrayList<Material> mats=new ArrayList<Material>();
-		HashMap<Integer,Proveedor> provMap=new HashMap<Integer,Proveedor>();
+		ArrayList<Proveedor> provs=null;
 		try {
 			provs= ProvedorLogic.getAll();
-			for(Proveedor p:provs) {
-				provMap.put(p.getIdProveedor(), p);
-			}
-			
-			mats=MaterialLogic.getAll();
+			provs=MaterialLogic.getAll(provs);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			request.setAttribute("error", "Un error ha ocurrido mientras procesabamos su solicitud: "+e.getMessage());
 		}
-		request.setAttribute("provedores", provMap);
-		request.setAttribute("materiales", mats);
+		request.setAttribute("provedores", provs);
 		request.getRequestDispatcher("./Materiales.jsp").forward(request, response);
 	}
 
@@ -89,8 +82,8 @@ public class Materiales extends HttpServlet {
 			String descripcion=(String)request.getParameter("descripcionmaterial");
 			int id_prov=Integer.parseInt(request.getParameter("idprovedor"));
 			float precio=Float.parseFloat(request.getParameter("preciomaterial"));
-			Material m=new Material(0,descripcion, id_prov, precio);
-			MaterialLogic.Registrar(m);
+			Material m=new Material(0,descripcion, precio);
+			MaterialLogic.Registrar(m, id_prov);
 		}
 		catch(Exception e) {
 			request.setAttribute("error", "No fue posible registrar el material>> "+e.getMessage());
@@ -103,8 +96,8 @@ public class Materiales extends HttpServlet {
 			String descripcion=(String)request.getParameter("descripcionmaterial");
 			int id_prov=Integer.parseInt(request.getParameter("idprovedor"));
 			float precio=Float.parseFloat(request.getParameter("preciomaterial"));
-			Material m=new Material(id,descripcion, id_prov, precio);
-			MaterialLogic.ActualizarDatos(m);
+			Material m=new Material(id,descripcion, precio);
+			MaterialLogic.ActualizarDatos(m, id_prov);
 		}
 		catch(Exception e) {
 			request.setAttribute("error", "No fue posible actualizar los datos del material>> "+e.getMessage());

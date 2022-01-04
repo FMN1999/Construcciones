@@ -1,7 +1,11 @@
 package ui;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,7 +55,87 @@ public class Empleados extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String accion=(String)request.getParameter("accion");
+		try {
+		switch(accion) {
+			case "Registrar":{
+				Registrar(request, response);
+				break;
+			}
+			case "Editar":{
+				Modificar(request, response);
+				break;
+			}
+			case "Eliminar":{
+				Eliminar(request, response);
+				break;
+			}
+			}
+		}catch(Exception e) {
+			request.setAttribute("error", e.getMessage());
+		}
 		doGet(request, response);
+	}
+	
+	/**
+	 * @throws Exception 
+	 * @see Registra oficial/obrero y su correspondiente usuario
+	 */
+	protected void Registrar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		String nombre=(String)request.getParameter("nombre");
+		String apellido=(String)request.getParameter("apellido");
+		String email=(String)request.getParameter("email");
+		String password=(String)request.getParameter("password");
+		long cuil=Long.parseLong(request.getParameter("cuil"));
+		String tipo_doc=(String)request.getParameter("tipodoc");
+		long ndoc=Long.parseLong(request.getParameter("ndoc"));
+		//
+		String date=request.getParameter("fnac");
+		//
+		Date fnac=null;
+		try {
+			fnac = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+		}catch(Exception e) {
+			throw new Exception("Error al procesar fecha");
+		}
+		String tipo_e=(String)request.getParameter("tipo_e");
+		String disponible=request.getParameter("disponible");
+		boolean disp=disponible.equalsIgnoreCase("Disponible");
+		Trabajador t=new Trabajador(0, nombre, apellido, email, password, cuil, "Trabajador", tipo_doc, ndoc, fnac, disp, tipo_e, 0);
+		TrabajadorLogic.Registrar(t);
+	}
+	
+	protected void Modificar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int id=Integer.parseInt(request.getParameter("idusu"));
+		String nombre=(String)request.getParameter("nombre");
+		String apellido=(String)request.getParameter("apellido");
+		String email=(String)request.getParameter("email");
+		String password=(String)request.getParameter("password");
+		long cuil=Long.parseLong(request.getParameter("cuil"));
+		String tipo_doc=(String)request.getParameter("tipodoc");
+		long ndoc=Long.parseLong(request.getParameter("ndoc"));
+		//
+		String date=request.getParameter("fnac");
+		//
+		Date fnac=null;
+		try {
+			fnac = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+		}catch(Exception e) {
+			throw new Exception("Error al procesar fecha");
+		}
+		String tipo_e=(String)request.getParameter("tipo_e");
+		String disponible=request.getParameter("disponible");
+		boolean disp=disponible.equalsIgnoreCase("Disponible");
+		Trabajador t=new Trabajador(id, nombre, apellido, email, password, cuil, "Trabajador", tipo_doc, ndoc, fnac, disp, tipo_e, 0);
+		TrabajadorLogic.ActualizarDatos(t);
+	}
+	
+	protected void Eliminar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		int id=Integer.parseInt(request.getParameter("idusu"));
+		long cuil=Long.parseLong(request.getParameter("cuil"));
+		TrabajadorLogic.Eliminar(id, cuil);
 	}
 
 }

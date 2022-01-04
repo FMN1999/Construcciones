@@ -50,10 +50,9 @@ public class ServLogin extends HttpServlet {
 		String correo=request.getParameter("correo");
 		String clave=request.getParameter("contra");
 		HttpSession se= request.getSession();
-		UsuarioLogic ul=new UsuarioLogic();
 		try {
-			if(ul.IniciaSesion(correo, clave)) {
-				Usuario u=ul.get(correo);
+			if(UsuarioLogic.IniciaSesion(correo, clave)) {
+				Usuario u=UsuarioLogic.get(correo);
 				se.setAttribute("usuario", u);
 				response.sendRedirect("Home");
 				return;

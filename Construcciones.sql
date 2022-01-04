@@ -26,13 +26,12 @@ DROP TABLE IF EXISTS `clientes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clientes` (
   `idCliente` int NOT NULL AUTO_INCREMENT,
-  `razon_social` varchar(45) DEFAULT NULL,
+  `cuil` bigint DEFAULT NULL,
   `telefono` varchar(45) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  `idUsuario` int NOT NULL,
+  `razon_social` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idCliente`),
-  KEY `usuario_c_idx` (`idUsuario`),
-  CONSTRAINT `usuario_c` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idusuario`)
+  KEY `usuario_idx` (`cuil`),
+  CONSTRAINT `usuario_c` FOREIGN KEY (`cuil`) REFERENCES `usuario` (`cuil`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,7 +41,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (1,'Los arboles','3413123456','arboles@mail.com',5),(2,'Complejo Baigorria','3413987456','cb@mail.com',6);
+INSERT INTO `clientes` VALUES (1,20000000003,'3413123456','Los Paraisos'),(2,20000000008,'3413987456','Puente Alto');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -448,16 +447,13 @@ CREATE TABLE `trabajadores` (
   `cuil` bigint NOT NULL,
   `tipo_doc` varchar(45) DEFAULT NULL,
   `n_doc` int DEFAULT NULL,
-  `nombre_completo` varchar(80) DEFAULT NULL,
   `fecha_nac` datetime DEFAULT NULL,
   `disponoble` tinyint DEFAULT NULL,
   `tipo_trabajador` int NOT NULL,
-  `id_usuario` int NOT NULL,
   PRIMARY KEY (`cuil`),
-  KEY `usuario_idx` (`id_usuario`),
   KEY `tipo_trabajador` (`tipo_trabajador`),
-  CONSTRAINT `tipo_trabajador` FOREIGN KEY (`tipo_trabajador`) REFERENCES `tipo_trabajador` (`idtipo_trabajador`),
-  CONSTRAINT `usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`idusuario`)
+  CONSTRAINT `tipo_trabajador` FOREIGN KEY (`tipo_trabajador`) REFERENCES `tipo_trabajador` (`idtipo_trabajador`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `usuario` FOREIGN KEY (`cuil`) REFERENCES `usuario` (`cuil`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -467,7 +463,7 @@ CREATE TABLE `trabajadores` (
 
 LOCK TABLES `trabajadores` WRITE;
 /*!40000 ALTER TABLE `trabajadores` DISABLE KEYS */;
-INSERT INTO `trabajadores` VALUES (20000000099,'DNI',9,'Juan Lopez','1988-10-10 00:00:00',1,1,7),(20000000126,'DNI',12,'Miguel Jager','1994-11-11 00:00:00',1,2,8);
+INSERT INTO `trabajadores` VALUES (20000000099,'DNI',9,'1988-10-10 00:00:00',1,1),(20000000126,'DNI',12,'1994-11-11 00:00:00',1,2);
 /*!40000 ALTER TABLE `trabajadores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -514,4 +510,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-27  1:58:53
+-- Dump completed on 2021-12-02 15:48:33

@@ -9,17 +9,50 @@ import entidades.Material;
 
 public class MaterialData extends Coneccion {
 
+	//*****************************************************
+	//** Devuelve la lista de materiales de un proveedor **
+	//*****************************************************
+	public ArrayList<Material> getMateriales(int idprov) throws SQLException, Exception{
+		ArrayList<Material> materiales=new ArrayList<Material>();
+		try {
+			this.open();
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, id_provedor, ifnull(precio,0.0) as precio FROM materiales "
+					+ "left join precios_material on materiales.idmaterial=id_material "
+					+ "where ifnull(fecha_desde= (select max(fecha_desde) from precios_material where id_material=idmaterial),true) "
+					+ "and id_provedor=? "
+					+ "group by idmaterial");
+			ps.setInt(1, idprov);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				Material m=new Material(rs.getInt("materiales.idmaterial"), rs.getString("descripcion"), rs.getFloat("precio"));
+				materiales.add(m);
+			}
+			rs.close();
+			ps.close();
+		}
+		catch(Exception e) {
+			throw e;
+		}
+		finally {
+			this.close();
+		}
+		return materiales;
+	}
+	
+	//*************************************************
+	//** Devuelve todos los materiales en existencia **
+	//*************************************************
 	public ArrayList<Material> getAll() throws SQLException, Exception{
 		ArrayList<Material> materiales=new ArrayList<Material>();
 		try {
 			this.open();
-			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, id_provedor, ifnull(precio,0.0) FROM materiales "
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, id_provedor, ifnull(precio,0.0) as precio FROM materiales "
 					+ "left join precios_material on materiales.idmaterial=id_material "
 					+ "where ifnull(fecha_desde= (select max(fecha_desde) from precios_material where id_material=idmaterial),true) "
 					+ "group by idmaterial");
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
-				Material m=new Material(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getFloat(4));
+				Material m=new Material(rs.getInt("materiales.idmaterial"), rs.getString("descripcion"), rs.getFloat("precio"));
 				materiales.add(m);
 			}
 			rs.close();
@@ -37,14 +70,14 @@ public class MaterialData extends Coneccion {
 	public Material getOne(int id) throws SQLException, Exception{
 		try {
 			this.open();
-			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, id_provedor, ifnull(precio,0.0) FROM materiales "
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, id_provedor, ifnull(precio,0.0) as precio FROM materiales "
 					+ "left join precios_material on materiales.idmaterial=id_material "
 					+ "where ifnull(fecha_desde= (select max(fecha_desde) from precios_material where id_material=idmaterial),true) and idmaterial=? "
 					+ "group by idmaterial");
 			ps.setInt(1, id);
 			ResultSet rs=ps.executeQuery();
 			rs.next();
-			Material m=new Material(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getFloat(4));
+			Material m=new Material(rs.getInt("materiales.idmaterial"), rs.getString("descripcion"), rs.getFloat("precio"));
 			rs.close();
 			ps.close();
 			return m;
@@ -57,12 +90,12 @@ public class MaterialData extends Coneccion {
 		}
 	}
 	
-	public void Registrar(Material m) throws Exception {
+	public void Registrar(Material m,int id_prov) throws Exception {
 		try {
 			this.open();
 			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO materiales(descripcion, id_provedor) VALUES (?,?)");
 			ps.setString(1, m.getDescripcion());
-			ps.setInt(2, m.getId_provedor());
+			ps.setInt(2, id_prov);
 			
 			int n=ps.executeUpdate();
 			ps.close();
@@ -71,10 +104,10 @@ public class MaterialData extends Coneccion {
 			}
 			if(m.getPrecio()!=0 && !Float.isNaN(m.getPrecio())) {
 				ps=this.getCon().prepareStatement("INSERT INTO precios_material(id_material, fecha_desde, precio) VALUES (?, sysdate(), ?)");
-				ArrayList<Material> mats=this.getAll();
+				ArrayList<Material> mats=this.getMateriales(id_prov);
 				//es necesario obtener el nuevo id_material
 				for(Material mat:mats) {
-					if(mat.getDescripcion().equalsIgnoreCase(m.getDescripcion()) && mat.getId_provedor()==m.getId_provedor()) {
+					if(mat.getDescripcion().equalsIgnoreCase(m.getDescripcion())) {
 						ps.setInt(1, mat.getId_material());
 						break;
 					}
@@ -97,12 +130,12 @@ public class MaterialData extends Coneccion {
 		}
 	}
 	
-	public void ActualizarDatos(Material m, boolean modificaPre) throws Exception {
+	public void ActualizarDatos(Material m, boolean modificaPre, int id_prov) throws Exception {
 		try {
 			this.open();
 			PreparedStatement ps=this.getCon().prepareStatement("UPDATE materiales SET descripcion=?, id_provedor=? WHERE idmaterial=?");
 			ps.setString(1, m.getDescripcion());
-			ps.setInt(2, m.getId_provedor());
+			ps.setInt(2, id_prov);
 			ps.setInt(3, m.getId_material());
 			int n=ps.executeUpdate();
 			ps.close();

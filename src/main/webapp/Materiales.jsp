@@ -23,23 +23,25 @@
 	    </button>
 	</div>
 	<br>
-	<% HashMap<Integer,Proveedor> provs=(HashMap<Integer,Proveedor>)request.getAttribute("provedores"); %>
+	<% ArrayList<Proveedor> provs=(ArrayList<Proveedor>)request.getAttribute("provedores"); %>
 	<table class="table table-dark table-hover" id="tab_materiales">
 		<th>Nombre del producto</th>
 		<th>Provedor</th>
 		<th>Precio</th>
 		<th></th>
 		<th></th>
-		<% if(request.getAttribute("materiales")!=null && request.getAttribute("provedores")!=null) { %>
-			<% for(Material m:(ArrayList<Material>)request.getAttribute("materiales")){ %>
-		 	<tr>
-		 		<td style="display:none;"><%= m.getId_material() %></td>
-		 		<td><%= m.getDescripcion() %></td>
-		 		<td value=<%= m.getId_provedor() %>><%= provs.get(m.getId_provedor()).getRazonSocial() %></td>
-		 		<td><%= m.getPrecio() %></td>
-		 		<td><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" onClick="editMode()">Editar</button>
-				<td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" onClick="deleteMode()">Eliminar</button>
-		 	</tr>
+		<% if(provs!=null) { %>
+			<% for(Proveedor p: provs){ %>
+				<% for(Material m: p.getMateriales()){ %>
+			 	<tr>
+			 		<td style="display:none;"><%= m.getId_material() %></td>
+			 		<td><%= m.getDescripcion() %></td>
+			 		<td value=<%= p.getIdProveedor() %>><%= p.getRazonSocial() %></td>
+			 		<td><%= m.getPrecio() %></td>
+			 		<td><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" onClick="editMode()">Editar</button>
+					<td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" onClick="deleteMode()">Eliminar</button>
+			 	</tr>
+		 		<% } %>
 			<% } %>
 		<% } %>
 	</table>
@@ -72,7 +74,7 @@
 		  </div>
 		  <label for="idprovedor">Provedor</label>
 		  <select id="idprovedor" name="idprovedor">
-		  <% for(Proveedor p:provs.values()){ %>
+		  <% for(Proveedor p:provs){ %>
 		  	<option value=<%=p.getIdProveedor() %>><%=p.getRazonSocial() %></option>
 		  <% } %>
 		  </select>
