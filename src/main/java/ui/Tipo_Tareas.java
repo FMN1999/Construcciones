@@ -2,17 +2,13 @@ package ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import entidades.Material;
 import entidades.Tipo_Tarea;
-import logica.MaterialLogic;
 import logica.Tipo_TareaLogic;
 
 import javax.servlet.ServletException;
@@ -24,14 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Tipo_Tarea
  */
-@WebServlet("/Tipo_Tarea")
-public class Tipo_Tarea extends HttpServlet {
+@WebServlet("/Tipo_Tareas")
+public class Tipo_Tareas extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor. 
      */
-    public Tipo_Tarea() {
+    public Tipo_Tareas() {
     	super();
         // TODO Auto-generated constructor stub
     }
@@ -41,7 +37,7 @@ public class Tipo_Tarea extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ArrayList<entidades.Tipo_Tarea> tps=null;
+		ArrayList<Tipo_Tarea> tps=null;
 		try {
 			tps= Tipo_TareaLogic.getAll();
 
@@ -51,7 +47,7 @@ public class Tipo_Tarea extends HttpServlet {
 			request.setAttribute("error", "Un error ha ocurrido mientras procesabamos su solicitud: "+e.getMessage());
 		}
 		request.setAttribute("tipos_tarea", tps);
-		request.getRequestDispatcher("./Tipos_Tarea.jsp").forward(request, response);
+		request.getRequestDispatcher("./Tipo_Tarea.jsp").forward(request, response);
 	}
 
 	/**
@@ -86,7 +82,7 @@ public class Tipo_Tarea extends HttpServlet {
 		try {
 			String descripcion=(String)request.getParameter("descripciontipotarea");
 			float precio=Float.parseFloat(request.getParameter("preciotipotarea"));
-			entidades.Tipo_Tarea tt=new entidades.Tipo_Tarea(0,descripcion, precio);
+			Tipo_Tarea tt=new Tipo_Tarea(0,descripcion, precio);
 			Tipo_TareaLogic.Registrar(tt);
 		}
 		catch(Exception e) {
@@ -99,7 +95,7 @@ public class Tipo_Tarea extends HttpServlet {
 			int id=Integer.parseInt(request.getParameter("idtipotarea"));
 			String descripcion=(String)request.getParameter("descripciontipotarea");
 			float precio=Float.parseFloat(request.getParameter("preciotipotarea"));
-			entidades.Tipo_Tarea t=new entidades.Tipo_Tarea(id,descripcion, precio);
+			Tipo_Tarea t=new Tipo_Tarea(id,descripcion, precio);
 			Tipo_TareaLogic.ActualizarDatos(t);
 		}
 		catch(Exception e) {
@@ -110,7 +106,7 @@ public class Tipo_Tarea extends HttpServlet {
 	protected void eliminar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		try {
 			int id=Integer.parseInt(request.getParameter("idtipotarea"));
-			MaterialLogic.Eliminar(id);
+			Tipo_TareaLogic.Eliminar(id);
 		}
 		catch(Exception e) {
 			request.setAttribute("error", "No fue posible eliminar el tipo de tarea>> "+e.getMessage());

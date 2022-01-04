@@ -18,7 +18,7 @@
 	<br>
 	<div>
 		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onClick="regMode()">
-	    Registrar Tipo_Tarea
+	    Registrar Tipo de Tarea
 	    </button>
 	</div>
 	<br>
@@ -39,7 +39,6 @@
 			 	</tr>
 		 		<% } %>
 			<% } %>
-		<% } %>
 	</table>
 </div>
 
@@ -49,12 +48,12 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title" id="modalHead">Registrar Tipo_tarea</h4>
+        <h4 class="modal-title" id="modalHead">Registrar Tipo de Tarea</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       
-      <form method="post" action="TiposTarea" >
+      <form method="post" action="Tipo_Tareas" >
       	  <!-- Modal body -->
 	      <div class="form-floating mb-3 mt-3">
 			  <input type="text" class="form-control" id="idtipotarea" placeholder="idtipotarea" name="idtipotarea" readonly>
@@ -99,7 +98,7 @@ for (i = 0; i < table.rows.length; i++) {
 }
 
 function regMode(){
-	document.getElementById('modalHead').innerHTML="Registrar TipoTarea";
+	document.getElementById('modalHead').innerHTML="Registrar Tipo de Tarea";
 	document.getElementById('btn').className="btn btn-success";
 	document.getElementById('btn').innerHTML="Registrar";
 	document.getElementById('accion').selectedIndex=0;
@@ -112,7 +111,7 @@ function regMode(){
     document.getElementById('preciotipotarea').value = null;
 }
 function editMode(){
-	document.getElementById('modalHead').innerHTML="Editar datos del TipoTarea";
+	document.getElementById('modalHead').innerHTML="Editar datos del Tipo de Tarea";
 	document.getElementById('btn').className="btn btn-success";
 	document.getElementById('btn').innerHTML="Guardar";
 	
@@ -122,7 +121,7 @@ function editMode(){
 	document.getElementById('accion').selectedIndex=1;
 }
 function deleteMode(){
-	document.getElementById('modalHead').innerHTML="Eliminar TipoTarea";
+	document.getElementById('modalHead').innerHTML="Eliminar Tipo de Tarea";
 	document.getElementById('btn').className="btn btn-danger";
 	document.getElementById('btn').innerHTML="Eliminar";
 	

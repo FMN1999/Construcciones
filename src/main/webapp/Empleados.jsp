@@ -10,12 +10,12 @@
 	<jsp:include page="Shared.jsp"></jsp:include>
 	<%@page import="java.util.ArrayList" %>
 	<%@page import="entidades.Trabajador" %>
-	<div>
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onClick="regMode()">
-	    Registrar empleado
-	    </button>
-    </div>
 	<div class="container mt-3">
+		<div>
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onClick="regMode()">
+		    Registrar empleado
+		    </button>
+	    </div>
 		<br>
 		<h1 class="text-center">Oficiales</h1>
 		<br>

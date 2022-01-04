@@ -14,8 +14,8 @@ public class Tipo_TareaLogic {
 	
 	public static void ActualizarDatos(Tipo_Tarea tt) throws SQLException, Exception {
 		boolean modificaPre=false;
-		Tipo_Tarea mVerif=source.getOne(tt.getId_tipo_tarea());
-		if(mVerif.getPrecio()-tt.getPrecio()!=0) {
+		Tipo_Tarea ttVerif=source.getOne(tt.getId_tipo_tarea());
+		if(ttVerif.getPrecio()-tt.getPrecio()!=0) {
 			modificaPre=true;
 		}
 		source.ActualizarDatos(tt, modificaPre);
