@@ -38,6 +38,7 @@ public class ClientesData extends Coneccion {
 	}
 	
 	public void Registrar(Cliente c) throws Exception{
+		int n = 0;
 		
 		try {
 			this.open();
