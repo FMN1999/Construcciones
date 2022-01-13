@@ -1,9 +1,16 @@
-package entidades;
+package main.java.entidades;
 
 public class Cliente extends Usuario{
 	private String razonSocial;
 	private String telefono;
+	private long cuil;
 	
+	public long getCuil() {
+		return cuil;
+	}
+	public void setCuil(long cuil) {
+		this.cuil = cuil;
+	}
 	public String getRazonSocial() {
 		return razonSocial;
 	}
@@ -21,6 +28,7 @@ public class Cliente extends Usuario{
 			String razonSocial, String telefono)
 	{
 		super(id, nombre, apellido, email, password, cuil, tipo);
+		this.cuil = cuil;
 		this.razonSocial = razonSocial;
 		this.telefono = telefono;
 	}
