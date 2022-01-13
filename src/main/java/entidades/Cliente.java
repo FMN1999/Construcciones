@@ -1,4 +1,4 @@
-package main.java.entidades;
+package entidades;
 
 public class Cliente extends Usuario{
 	private String razonSocial;

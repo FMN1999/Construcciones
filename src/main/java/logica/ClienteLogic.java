@@ -1,12 +1,12 @@
-package main.java.logica;
+package logica;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import main.java.datos.ClientesData;
-import main.java.datos.UsuariosData;
-import main.java.entidades.Cliente;
-import main.java.entidades.Usuario;
+import datos.ClientesData;
+import datos.UsuariosData;
+import entidades.Cliente;
+import entidades.Usuario;
 
 public class ClienteLogic {
 

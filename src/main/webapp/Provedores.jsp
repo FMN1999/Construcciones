@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+	pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,88 +7,97 @@
 <title>Provedores</title>
 </head>
 <body>
-<jsp:include page="Shared.jsp"></jsp:include>
-<%@page import="entidades.Proveedor" %>
-<%@page import="java.util.ArrayList" %>
-<div class="container mt-3">
-<br>
-	<h1 class="text-center">Listado de provedores</h1>
-	<br>
-	<div>
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onClick="regMode()">
-	    Registrar Provedor
-	    </button>
-    </div>
-	<br>
-	<table class="table table-dark table-hover" id="provedores">
-		<th>Razon social</th>
-		<th>Direccion</th>
-		<th>Telefono</th>
-		<th></th>
-		<th></th>
-		
-		<% for(Proveedor prov: (ArrayList<Proveedor>)request.getAttribute("provedores")){ %>
-		<tr>
-			<td style="display:none;"><%=prov.getIdProveedor() %></td>
-			<td><%=prov.getRazonSocial() %></td>
-			<td><%=prov.getDireccion() %></td>
-			<td><%=prov.getTelefono() %></td>
-			<td><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" onClick="editMode()">Editar</button>
-			<td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" onClick="deleteMode()">Eliminar</button>
-		</tr>
-		<% } %>
-		
-	</table>
-</div>
+	<jsp:include page="Shared.jsp"></jsp:include>
+	<%@page import="entidades.Proveedor"%>
+	<%@page import="java.util.ArrayList"%>
+	<div class="container mt-3">
+		<br>
+		<h1 class="text-center">Listado de provedores</h1>
+		<br>
+		<div>
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+				data-bs-target="#myModal" onClick="regMode()">Registrar
+				Provedor</button>
+		</div>
+		<br>
+		<table class="table table-dark table-hover" id="provedores">
+			<th>Razon social</th>
+			<th>Direccion</th>
+			<th>Telefono</th>
+			<th></th>
+			<th></th>
+
+			<% for(Proveedor prov: (ArrayList<Proveedor>)request.getAttribute("provedores")){ %>
+			<tr>
+				<td style="display: none;"><%=prov.getIdProveedor() %></td>
+				<td><%=prov.getRazonSocial() %></td>
+				<td><%=prov.getDireccion() %></td>
+				<td><%=prov.getTelefono() %></td>
+				<td><button type="button" class="btn btn-success"
+						data-bs-toggle="modal" data-bs-target="#myModal"
+						onClick="editMode()">Editar</button>
+				<td><button type="button" class="btn btn-danger"
+						data-bs-toggle="modal" data-bs-target="#myModal"
+						onClick="deleteMode()">Eliminar</button>
+			</tr>
+			<% } %>
+
+		</table>
+	</div>
 
 
-<div class="modal" id="myModal">
-  <div class="modal-dialog modal-fullscreen-xxl-down">
-    <div class="modal-content">
+	<div class="modal" id="myModal">
+		<div class="modal-dialog modal-fullscreen-xxl-down">
+			<div class="modal-content">
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title" id="modalHead">Registrar Proveedor</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalHead">Registrar Proveedor</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
 
-      
-      <form method="post" action="Proveedores" >
-      	  <!-- Modal body -->
-	      <div class="form-floating mb-3 mt-3">
-			  <input type="text" class="form-control" id="idprov" placeholder="id" name="idprov" readonly>
-			  <label for="idprov">ID PROVEDOR</label>
-		  </div>
-		  <div class="form-floating mb-3 mt-3">
-			  <input type="text" class="form-control" id="razonsocial" placeholder="Razon social" name="razonsocial" required>
-			  <label for="razonsocial">Razon Social</label>
-		  </div>
-		  <div class="form-floating mb-3 mt-3">
-			  <input type="text" class="form-control" id="direccion" placeholder="Direccion" name="direccion" required>
-			  <label for="direccion">Direccion</label>
-		  </div>
-		  <div class="form-floating mb-3 mt-3">
-			  <input type="number" class="form-control" id="telefono" placeholder="Telefono" name="telefono" required>
-			  <label for="idprov">Telefono</label>
-		  </div>
-			<!--input type="text" name="accion" id="accion" value="registrar" style="display:none;"-->
-			<select name="accion" id="accion" style="display:none;">
-				<option>Registrar</option>
-				<option>Editar</option>
-				<option>Eliminar</option>
-			</select>
-	      <!-- Modal footer -->
-	      <div class="modal-footer">
-	      	<button type="sumbit" class="btn btn-primary" id="btn">Registrar</button>
-	        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-	      </div>
-      </form>
 
-    </div>
-  </div>
-</div>
+				<form method="post" action="Proveedores">
+					<!-- Modal body -->
+					<div class="form-floating mb-3 mt-3">
+						<input type="text" class="form-control" id="idprov"
+							placeholder="id" name="idprov" readonly> <label
+							for="idprov">ID PROVEDOR</label>
+					</div>
+					<div class="form-floating mb-3 mt-3">
+						<input type="text" class="form-control" id="razonsocial"
+							placeholder="Razon social" name="razonsocial" required> <label
+							for="razonsocial">Razon Social</label>
+					</div>
+					<div class="form-floating mb-3 mt-3">
+						<input type="text" class="form-control" id="direccion"
+							placeholder="Direccion" name="direccion" required> <label
+							for="direccion">Direccion</label>
+					</div>
+					<div class="form-floating mb-3 mt-3">
+						<input type="number" class="form-control" id="telefono"
+							placeholder="Telefono" name="telefono" required> <label
+							for="idprov">Telefono</label>
+					</div>
+					<!--input type="text" name="accion" id="accion" value="registrar" style="display:none;"-->
+					<select name="accion" id="accion" style="display: none;">
+						<option>Registrar</option>
+						<option>Editar</option>
+						<option>Eliminar</option>
+					</select>
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="sumbit" class="btn btn-primary" id="btn">Registrar</button>
+						<button type="button" class="btn btn-danger"
+							data-bs-dismiss="modal">Close</button>
+					</div>
+				</form>
 
-<script type="text/javascript">
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
 var table = document.getElementById('provedores'), rIndex;
 for (i = 0; i < table.rows.length; i++) {
     table.rows[i].onclick = function () {

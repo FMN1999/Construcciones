@@ -1,4 +1,4 @@
-package main.java.ui;
+package ui;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -13,14 +13,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.entidades.Cliente;
-import main.java.entidades.Material;
-import main.java.entidades.Trabajador;
-import main.java.logica.ClienteLogic;
-import main.java.logica.MaterialLogic;
-import main.java.logica.TrabajadorLogic;
+import entidades.Cliente;
+import entidades.Material;
+import entidades.Trabajador;
+import logica.ClienteLogic;
+import logica.MaterialLogic;
+import logica.TrabajadorLogic;
 
-
+@WebServlet("/Clientes")
 public class Clientes extends HttpServlet{
 	private static final long serialVersionUID = 1L;
     public Clientes() {

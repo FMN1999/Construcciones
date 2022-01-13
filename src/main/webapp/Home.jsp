@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
-    <%@page import="entidades.Usuario" %>
+	pageEncoding="utf-8"%>
+<%@page import="entidades.Usuario"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +10,11 @@
 <body>
 	<jsp:include page="Shared.jsp"></jsp:include>
 	<% Usuario u= (Usuario)session.getAttribute("usuario"); %>
-	<h1>Hola <%=u.getNombre() %></h1>
+	<h1>
+		Hola
+		<%=u.getNombre() %></h1>
 	<br>
-	<table class="table "> </table>
+	<table class="table ">
+	</table>
 </body>
 </html>

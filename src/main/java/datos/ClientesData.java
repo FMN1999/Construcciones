@@ -1,8 +1,8 @@
-package main.java.datos;
+package datos;
 
 
 import java.sql.PreparedStatement;
-import main.java.entidades.Cliente;
+import entidades.Cliente;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,15 +21,16 @@ public class ClientesData extends Coneccion {
 				+ "u.password,\n"
 				+ "u.cuil,\n"
 				+ "c.razon_social,\n"
-				+ "c.telefono,\n"
+				+ "c.telefono \n"
 				+ "FROM usuario u \n"
-				+ "INNER JOIN clientes c u on c.cuil=u.cuil");
+				+ "INNER JOIN clientes c on c.cuil=u.cuil");
 		ResultSet rs=ps.executeQuery();
-		rs.next();
+		while(rs.next()) {
 		Cliente c = new Cliente(rs.getInt("u.idusuario"), rs.getString("u.nombre"), rs.getString("u.apellido"),
 				rs.getString("u.email"), rs.getString("u.password"), rs.getLong("u.cuil"),
 				"Cliente", rs.getString("c.razon_social"), rs.getString("c.telefono"));
-		cal.add(c);
+				cal.add(c);
+		}
 		rs.close();
 		ps.close();
 		this.close();
@@ -65,14 +66,14 @@ public class ClientesData extends Coneccion {
 	}
 	
 	public void ActualizarDatos(Cliente c) throws Exception{
-		String sql="UPDATE clientes SET cuil=?, telefono=?, razon_social=? WHERE cuil=?"; 
+		String sql="UPDATE clientes SET telefono=?, razon_social=? WHERE cuil=?"; 
 		int n=0;
 		this.open();
 		try {
 			PreparedStatement ps=this.getCon().prepareStatement(sql);
-			ps.setLong(1, c.getCuil());
+			ps.setString(1, c.getTelefono());
 			ps.setString(2, c.getRazonSocial());
-			ps.setString(3, c.getRazonSocial());
+			ps.setLong(3, c.getCuil());
 			
 			n=ps.executeUpdate();
 			
@@ -85,7 +86,7 @@ public class ClientesData extends Coneccion {
 			this.close();
 			
 			if(n==0) {
-				throw new Exception("No fue posible actualizar los cambios en el trabajador "+c.getApellido()+" "+c.getNombre());
+				throw new Exception("No fue posible actualizar los cambios en el cliente "+c.getApellido()+" "+c.getNombre());
 			}
 		}
 	}
