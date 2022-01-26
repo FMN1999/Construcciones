@@ -3,7 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="utf-8">
+
 <title>Provedores</title>
 </head>
 <body>
@@ -20,7 +22,7 @@
 				Provedor</button>
 		</div>
 		<br>
-		<table class="table table-dark table-hover" id="provedores">
+		<table class="table table-hover" style="background-image: linear-gradient(to bottom right, orange, white);" id="provedores">
 			<th>Razon social</th>
 			<th>Direccion</th>
 			<th>Telefono</th>
@@ -96,7 +98,6 @@
 			</div>
 		</div>
 	</div>
-
 	<script type="text/javascript">
 var table = document.getElementById('provedores'), rIndex;
 for (i = 0; i < table.rows.length; i++) {

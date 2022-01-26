@@ -17,7 +17,7 @@ import entidades.Usuario;
 /**
  * Servlet Filter implementation class AdminFilter
  */
-@WebFilter(urlPatterns = { "/AdminFilter" }, servletNames = {  "Home", "Proveedores", "Materiales", "Maquinarias", "Empleados", "Clientes", "Tipo_Tareas"  })
+@WebFilter(urlPatterns = { "/AdminFilter", "/Proveedores", "/Materiales", "/Maquinarias", "/Empleados", "/Clientes", "/Tipo_Tareas" }, servletNames = {"Proveedores", "Materiales", "Maquinarias", "Empleados", "Clientes", "Tipo_Tareas"  })
 public class AdminFilter implements Filter {
 
     /**
@@ -45,7 +45,7 @@ public class AdminFilter implements Filter {
 		
 		if(!user.getTipo().equalsIgnoreCase("Administrador")) {
 			r.sendRedirect("Home");
-			request.setAttribute("error", "No tiene los permisos necesarios para ingresar a la página! >:c.");
+			request.setAttribute("error", "No tiene los permisos necesarios para ingresar a la pï¿½gina! >:c.");
 			return;
 		}
 		chain.doFilter(request, response);

@@ -24,7 +24,7 @@
 		</div>
 		<br>
 		<% ArrayList<Proveedor> provs=(ArrayList<Proveedor>)request.getAttribute("provedores"); %>
-		<table class="table table-dark table-hover" id="tab_materiales">
+		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_materiales">
 			<th>Nombre del producto</th>
 			<th>Provedor</th>
 			<th>Precio</th>

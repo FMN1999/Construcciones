@@ -22,7 +22,7 @@
 		<h1 class="text-center">Nuevo Cliente</h1>
 		<br>
 		<% ArrayList<Cliente> cli=(ArrayList<Cliente>)request.getAttribute("clientes"); %>
-		<table class="table table-dark table-hover" id="tab_clientes">
+		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_clientes">
 			<th>Cuil</th>
 			<th>Nombre</th>
 			<th>Apellido</th>
