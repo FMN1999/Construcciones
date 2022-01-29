@@ -20,6 +20,7 @@ public class ClientesData extends Coneccion {
 				+ "u.email,\n"
 				+ "u.password,\n"
 				+ "u.cuil,\n"
+				+ "c.idCliente,"
 				+ "c.razon_social,\n"
 				+ "c.telefono \n"
 				+ "FROM usuario u \n"
@@ -28,7 +29,7 @@ public class ClientesData extends Coneccion {
 		while(rs.next()) {
 		Cliente c = new Cliente(rs.getInt("u.idusuario"), rs.getString("u.nombre"), rs.getString("u.apellido"),
 				rs.getString("u.email"), rs.getString("u.password"), rs.getLong("u.cuil"),
-				"Cliente", rs.getString("c.razon_social"), rs.getString("c.telefono"));
+				"Cliente", rs.getString("c.razon_social"), rs.getString("c.telefono"), rs.getInt("c.idCliente"));
 				cal.add(c);
 		}
 		rs.close();
