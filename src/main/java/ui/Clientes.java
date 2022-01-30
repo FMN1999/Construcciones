@@ -74,7 +74,7 @@ public class Clientes extends HttpServlet{
 		long cuil=Long.parseLong(request.getParameter("cuil"));
 		String rzon_social=(String)request.getParameter("razon_social");
 		String telefono=(String)request.getParameter("telefono");
-		Cliente c =new Cliente(0, nombre, apellido, email, password, cuil, "Cliente", rzon_social, telefono);
+		Cliente c =new Cliente(0, nombre, apellido, email, password, cuil, "Cliente", rzon_social, telefono, 0/*id_cliente no tiene uso en abm*/);
 		ClienteLogic.Registrar(c);
 	}
 	
@@ -88,7 +88,7 @@ public class Clientes extends HttpServlet{
 		String rzon_social=(String)request.getParameter("razon_social");
 		String telefono=(String)request.getParameter("telefono");
 		
-		Cliente c = new Cliente(id, nombre, apellido, email, password, cuil, "Cliente", rzon_social, telefono);
+		Cliente c = new Cliente(id, nombre, apellido, email, password, cuil, "Cliente", rzon_social, telefono,0/*id_cliente no tiene uso en abm*/);
 		ClienteLogic.ActualizarDatos(c);
 	}
 	

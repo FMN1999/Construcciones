@@ -112,7 +112,7 @@ public class ObraData extends Coneccion {
 			int n=ps.executeUpdate();
 			ps.close();
 			if(n==0) {
-				throw new Exception("No se ha registrado la obra, intentelo de nuevo");
+				throw new Exception("No se han actualizado los cambios en la obra, intentelo de nuevo");
 			}
 		}
 		catch(Exception e) {
@@ -132,7 +132,7 @@ public class ObraData extends Coneccion {
 			int n=ps.executeUpdate();
 			ps.close();
 			if(n==0) {
-				throw new Exception("No se ha registrado la obra, intentelo de nuevo");
+				throw new Exception("No fue posible eliminar la obra, intentelo de nuevo");
 			}
 		}
 		catch(Exception e) {
