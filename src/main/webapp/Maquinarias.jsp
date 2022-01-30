@@ -21,7 +21,7 @@
 				Maquinaria</button>
 		</div>
 		<br>
-		<table class="table table-dark table-hover" id="maquinarias">
+		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="maquinarias">
 			<th>Descripcion</th>
 			<th>Precio por Hora</th>
 			<th></th>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+
 <head>
 <link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
@@ -20,8 +21,9 @@
 <link href="./assets/locals/headers.css" rel="stylesheet">
 </head>
 <body>
+<%@page import="entidades.Usuario"%>
 	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-  <symbol id="bootstrap" viewBox="0 0 118 94">
+  	<symbol id="bootstrap" viewBox="0 0 118 94">
     <title>Bootstrap</title>
     <path fill-rule="evenodd" clip-rule="evenodd"
 			d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"></path>
@@ -65,7 +67,17 @@
 			d="m0 1 1-1 3.081 2.2a1 1 0 0 1 .419.815v.07a1 1 0 0 0 .293.708L10.5 9.5l.914-.305a1 1 0 0 1 1.023.242l3.356 3.356a1 1 0 0 1 0 1.414l-1.586 1.586a1 1 0 0 1-1.414 0l-3.356-3.356a1 1 0 0 1-.242-1.023L9.5 10.5 3.793 4.793a1 1 0 0 0-.707-.293h-.071a1 1 0 0 1-.814-.419L0 1zm11.354 9.646a.5.5 0 0 0-.708.708l3 3a.5.5 0 0 0 .708-.708l-3-3z" />
   </symbol>
   
+  <symbol id="obra" viewBox="0 0 16 16">
+  	<path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+  	<path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+  </symbol>
+  
+  <symbol id="tareas" viewBox="0 0 16 16">
+  	<path d="M9.972 2.508a.5.5 0 0 0-.16-.556l-.178-.129a5.009 5.009 0 0 0-2.076-.783C6.215.862 4.504 1.229 2.84 3.133H1.786a.5.5 0 0 0-.354.147L.146 4.567a.5.5 0 0 0 0 .706l2.571 2.579a.5.5 0 0 0 .708 0l1.286-1.29a.5.5 0 0 0 .146-.353V5.57l8.387 8.873A.5.5 0 0 0 14 14.5l1.5-1.5a.5.5 0 0 0 .017-.689l-9.129-8.63c.747-.456 1.772-.839 3.112-.839a.5.5 0 0 0 .472-.334z"/>
+  </symbol>
+  
 </svg>
+<% Usuario us= (Usuario)session.getAttribute("usuario"); %>
 	<header>
 		<div class="px-3 py-2 bg-dark text-white">
 			<div class="container">
@@ -81,6 +93,8 @@
 									class="bi d-block mx-auto mb-1" width="24" height="24">
 									<use xlink:href="#home"></use></svg> Home
 						</a></li>
+						
+						<% if(us.getTipo().equalsIgnoreCase("Administrador")) { %>
 						<li><a href="#" class="nav-link text-white"> <svg
 									class="bi d-block mx-auto mb-1" width="24" height="24">
 									<use xlink:href="#speedometer2"></use></svg> Dashboard
@@ -112,7 +126,22 @@
 									class="bi d-block mx-auto mb-1 text-white" width="24"
 									height="24">
 									<use xlink:href="#person-badge"></use></svg> Empleados
-						</a>
+						</a></li>
+						<% } %>
+						<% if(us.getTipo().equalsIgnoreCase("Trabajador")) { %>
+						<li><a href="#" class="nav-link text-white"> <svg
+									class="bi d-block mx-auto mb-1" width="24" height="24">
+									<use xlink:href="#tareas"></use></svg> Tareas
+						</a></li>
+						<li><a href="#" class="nav-link text-white"> <svg
+									class="bi d-block mx-auto mb-1" width="24" height="24">
+									<use xlink:href="#obra"></use></svg> Obras
+						</a></li>
+						<% } %>
+						
+						<% if(us.getTipo().equalsIgnoreCase("Cliente")) { %>
+						<% } %>
+
 					</ul>
 					<a href="LogOut" class="btn btn-danger">Salir</a>
 				</div>
