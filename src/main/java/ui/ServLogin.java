@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entidades.Cliente;
 import entidades.Usuario;
+import logica.ClienteLogic;
 import logica.UsuarioLogic;
 
 /**
@@ -53,6 +55,23 @@ public class ServLogin extends HttpServlet {
 		try {
 			if(UsuarioLogic.IniciaSesion(correo, clave)) {
 				Usuario u=UsuarioLogic.get(correo);
+				switch(u.getTipo()) {
+				case "Cliente":{
+					//el try esta recuperando el cliente y las obras del cliente.
+					try {
+						Cliente c = ClienteLogic.getOne(u.getCuil());
+						se.setAttribute("cliente", c);
+					}
+					catch(Exception e) {
+						request.setAttribute("error", e.getMessage());
+						return;
+					}
+					break;
+				}
+				case "Trabajador":{
+					break;
+				}
+				}
 				se.setAttribute("usuario", u);
 				response.sendRedirect("Home");
 				return;

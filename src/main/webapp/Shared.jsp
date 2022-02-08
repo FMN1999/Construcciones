@@ -127,6 +127,10 @@
 									height="24">
 									<use xlink:href="#person-badge"></use></svg> Empleados
 						</a></li>
+						<li><a href="Obras" class="nav-link text-white"> <svg
+									class="bi d-block mx-auto mb-1" width="24" height="24">
+									<use xlink:href="#obra"></use></svg> Obras
+						</a></li>
 						<% } %>
 						<% if(us.getTipo().equalsIgnoreCase("Trabajador")) { %>
 						<li><a href="#" class="nav-link text-white"> <svg
@@ -135,7 +139,7 @@
 						</a></li>
 						<li><a href="#" class="nav-link text-white"> <svg
 									class="bi d-block mx-auto mb-1" width="24" height="24">
-									<use xlink:href="#obra"></use></svg> Obras
+									<use xlink:href="#obra"></use></svg> Mis Obras
 						</a></li>
 						<% } %>
 						

@@ -85,8 +85,8 @@ public class Obras extends HttpServlet {
 		try {
 			String direccion=(String)request.getParameter("direccion");
 			int id_cli=Integer.parseInt(request.getParameter("idcliente"));
-			Obra o=new Obra(0,direccion, id_cli);
-			ObraLogic.Registrar(o);
+			Obra o=new Obra(0,direccion);
+			ObraLogic.Registrar(o, id_cli);
 		}
 		catch(Exception e) {
 			request.setAttribute("error", "No fue posible registrar la obra>> "+e.getMessage());
@@ -98,7 +98,7 @@ public class Obras extends HttpServlet {
 			int id_obra=Integer.parseInt(request.getParameter("idobra"));
 			String direccion=(String)request.getParameter("direccion");
 			int id_cli=Integer.parseInt(request.getParameter("idcliente"));
-			Obra o=new Obra(id_obra, direccion, id_cli);
+			Obra o=new Obra(id_obra, direccion);
 			ObraLogic.Actualizar(o);
 		}
 		catch(Exception e) {
@@ -115,5 +115,6 @@ public class Obras extends HttpServlet {
 			request.setAttribute("error", "No fue posible eliminar la obra>> "+e.getMessage());
 		}
 	}
+	
 
 }
