@@ -11,40 +11,6 @@ import entidades.Proveedor;
 public class ObraLogic {
 	public static ObraData source=new ObraData();
 	
-//	public static void Registrar(Proveedor p) throws Exception {
-//		
-//		try {
-//			source.Registrar(p);
-//		}
-//		catch(Exception e){
-//			//a presentacion solo deben llegar exceptciones de la clase Exception
-//			String msg=e.getMessage();
-//			throw new Exception(msg);
-//		}
-//		
-//	}
-//	
-//	public static void ActualizarDatos(Proveedor p) throws Exception {
-//		
-//		try {
-//			source.ActualizarDatos(p);
-//		}
-//		catch(Exception e) {
-//			String msg=e.getMessage();
-//			throw new Exception(msg);
-//		}
-//	}
-//	
-//	public static void Eliminar(int id) throws Exception {
-//		try {
-//			source.Eliminar(id);
-//		}
-//		catch(Exception e) {
-//			String msg=e.getMessage();
-//			throw new Exception(msg);
-//		}
-//	}
-	
 	public static Obra getOne(int id) throws Exception {
 		Obra o;
 		try {

@@ -38,7 +38,7 @@ public class ObraData extends Coneccion {
 		ArrayList<Obra> obras=new ArrayList<Obra>();
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion, o.id_cliente FROM obras o ");
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion, o.id_cliente FROM obras o ORDER BY o.idobra ");
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				obras.add(new Obra(rs.getInt("o.idobra"), rs.getString("o.direccion"), rs.getInt("o.id_cliente")));
@@ -61,7 +61,7 @@ public class ObraData extends Coneccion {
 		ArrayList<Obra> obras=new ArrayList<Obra>();
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion, o.id_cliente FROM obras o WHERE o.id_cliente=? ");
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion, o.id_cliente FROM obras o WHERE o.id_cliente=?");
 			ps.setInt(1, idCli);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
