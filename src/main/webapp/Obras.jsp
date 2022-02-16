@@ -24,7 +24,7 @@
 		</div>
 		<br>
 		<% ArrayList<Cliente> clientes=(ArrayList<Cliente>)request.getAttribute("clientes"); %>
-		<table class="table table-dark table-hover" id="tab_obras">
+		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_obras">
 			<th>ID Obra</th>
 			<th>Direccion</th>
 			<th>Cliente</th>
@@ -136,8 +136,11 @@ function editMode(){
 	
 	
     document.getElementById('direccion').removeAttribute("readonly"  , false);
+    var selected=document.getElementById('idcliente').selectedIndex;
     for (x = 0; x < document.getElementById('idcliente').options.length; x++){
-    	document.getElementById('idcliente').options[x].disabled=false;
+    	if(x!=selected){
+    		document.getElementById('idcliente').options[x].setAttribute("disabled","disabled",false);
+    	}
     }
 	
 	document.getElementById('accion').selectedIndex=1;

@@ -13,6 +13,8 @@
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 
+
+	
 	<servlet>
 		<description></description>
 		<display-name>Provedores</display-name>
@@ -36,4 +38,6 @@
 		<servlet-name>default</servlet-name>
 		<url-pattern>*.png</url-pattern>
 	</servlet-mapping>
+	
+	
 </web-app>

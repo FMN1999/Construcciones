@@ -15,15 +15,15 @@ import javax.servlet.http.HttpSession;
 import entidades.Usuario;
 
 /**
- * Servlet Filter implementation class AdminFilter
+ * Servlet Filter implementation class ClienteFilter
  */
-@WebFilter(urlPatterns = { "/AdminFilter", "/Proveedores", "/Materiales", "/Maquinarias", "/Empleados", "/Clientes", "/Tipo_Tareas" }, servletNames = {"Proveedores", "Materiales", "Maquinarias", "Empleados", "Clientes", "Tipo_Tareas"  })
-public class AdminFilter implements Filter {
+@WebFilter("/ClienteFilter")
+public class ClienteFilter implements Filter {
 
     /**
      * Default constructor. 
      */
-    public AdminFilter() {
+    public ClienteFilter() {
         // TODO Auto-generated constructor stub
     }
 
@@ -43,11 +43,12 @@ public class AdminFilter implements Filter {
 		
 		Usuario user = (Usuario)se.getAttribute("usuario");
 		
-		if(!user.getTipo().equalsIgnoreCase("Administrador")) {
+		if(!user.getTipo().equalsIgnoreCase("Cliente")) {
 			r.sendRedirect("Home");
-			request.setAttribute("error", "No tiene los permisos necesarios para ingresar a la pï¿½gina! >:c.");
+			request.setAttribute("error", "No tiene los permisos necesarios para ingresar a la página! >:c.");
 			return;
 		}
+		
 		chain.doFilter(request, response);
 	}
 

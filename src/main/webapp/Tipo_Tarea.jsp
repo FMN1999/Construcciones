@@ -23,7 +23,7 @@
 		</div>
 		<br>
 		<% ArrayList<Tipo_Tarea> tps=(ArrayList<Tipo_Tarea>)request.getAttribute("tipos_tarea"); %>
-		<table class="table table-dark table-hover" id="tab_tipos_tarea">
+		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_tipos_tarea">
 			<th>Descripcion tipo tarea</th>
 			<th>Precio</th>
 			<th></th>

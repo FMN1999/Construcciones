@@ -20,7 +20,7 @@
 		<h1 class="text-center">Oficiales</h1>
 		<br>
 		<% ArrayList<Trabajador> ofs=(ArrayList<Trabajador>)request.getAttribute("oficiales"); %>
-		<table class="table table-dark table-hover" id="tab_oficiales">
+		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_oficiales">
 			<th>Cuil</th>
 			<th>Tipo Doc.</th>
 			<th>Nº Documento</th>
@@ -64,7 +64,7 @@
 		<h1 class="text-center">Obreros</h1>
 		<br>
 		<% ArrayList<Trabajador> obs=(ArrayList<Trabajador>)request.getAttribute("obreros"); %>
-		<table class="table table-dark table-hover" id="tab_obreros">
+		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_obreros">
 			<th>Cuil</th>
 			<th>Tipo Doc.</th>
 			<th>Nº Documento</th>

@@ -23,6 +23,10 @@ public class ObraLogic {
 		
 		return o;
 	}
+	public static Cliente setObras(Cliente c) throws Exception{
+		c.setObras(source.getObras(c.getIdCliente()));
+		return c;
+	}
 	
 	
 	public static ArrayList<Cliente> getAll(ArrayList<Cliente> clientes) throws Exception{
@@ -33,8 +37,8 @@ public class ObraLogic {
 		return clientes;
 	}
 	
-	public static void Registrar(Obra o) throws Exception {
-		source.Registrar(o);
+	public static void Registrar(Obra o, int cliente ) throws Exception {
+		source.Registrar(o, cliente);
 	}
 	
 	public static void Actualizar(Obra o) throws Exception {
