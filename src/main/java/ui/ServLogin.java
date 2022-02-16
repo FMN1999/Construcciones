@@ -49,42 +49,52 @@ public class ServLogin extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String correo=request.getParameter("correo");
-		String clave=request.getParameter("contra");
-		HttpSession se= request.getSession();
-		try {
-			if(UsuarioLogic.IniciaSesion(correo, clave)) {
-				Usuario u=UsuarioLogic.get(correo);
-				switch(u.getTipo()) {
-				case "Cliente":{
-					//el try esta recuperando el cliente y las obras del cliente.
-					try {
-						Cliente c = ClienteLogic.getOne(u.getCuil());
-						se.setAttribute("cliente", c);
+		String accion=(String)request.getParameter("accion");
+		switch(accion) {
+		case "Ingresar":{
+			String correo=request.getParameter("correo");
+			String clave=request.getParameter("contra");
+			HttpSession se= request.getSession();
+			try {
+				if(UsuarioLogic.IniciaSesion(correo, clave)) {
+					Usuario u=UsuarioLogic.get(correo);
+					switch(u.getTipo()) {
+					case "Cliente":{
+						//el try esta recuperando el cliente y las obras del cliente.
+						try {
+							Cliente c = ClienteLogic.getOne(u.getCuil());
+							se.setAttribute("cliente", c);
+						}
+						catch(Exception e) {
+							request.setAttribute("error", e.getMessage());
+							return;
+						}
+						break;
 					}
-					catch(Exception e) {
-						request.setAttribute("error", e.getMessage());
-						return;
+					case "Trabajador":{
+						break;
 					}
-					break;
+					}
+					se.setAttribute("usuario", u);
+					response.sendRedirect("Home");
+					return;
 				}
-				case "Trabajador":{
-					break;
+				else {
+					request.setAttribute("error", "Usuario y/o contrasena Incorrectos");
 				}
-				}
-				se.setAttribute("usuario", u);
-				response.sendRedirect("Home");
-				return;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else {
-				request.setAttribute("error", "Usuario y/o contrasena Incorrectos");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			request.getRequestDispatcher("./inicio.jsp").forward(request, response);
 		}
 		
-		request.getRequestDispatcher("./inicio.jsp").forward(request, response);
+		case "Registrar":{
+			request.getRequestDispatcher("./Registrarse.jsp").forward(request, response);
+		}
+		}
+		
 	}
 
 }

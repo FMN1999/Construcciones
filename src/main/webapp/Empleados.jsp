@@ -195,7 +195,7 @@
 					</select>
 					<!-- Modal footer -->
 					<div class="modal-footer">
-						<button type="sumbit" class="btn btn-primary" id="btn">Registrar</button>
+						<button type="submit" class="btn btn-primary" id="btn">Registrar</button>
 						<button type="button" class="btn btn-danger"
 							data-bs-dismiss="modal">Close</button>
 					</div>

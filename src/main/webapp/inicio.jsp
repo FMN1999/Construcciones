@@ -40,7 +40,6 @@
 <!-- Custom styles for this template -->
 <link href="assets/locals/inicio.css" rel="stylesheet">
 </head>
-</head>
 <body class="text-center">
 
 	<main class="form-signin">
@@ -72,13 +71,25 @@
 				<p><%=error %></p>
 			</div>
 			<% } %>
-			<button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar
-				sesion</button>
+			<button class="w-100 btn btn-lg btn-primary" type="submit" style="margin: 5px" onClick="nuevoMode()">Iniciar sesion</button>
+			<button class="w-100 btn btn-lg btn-secondary" type="submit" style="margin: 5px" onClick="registrarMode()">Registrarse</button>
 			<p class="mt-5 mb-3 text-muted">&copy; 2021</p>
+			
+			<select name="accion" id="accion" style="display: none;">
+						<option>Ingresar</option>
+						<option>Registrar</option>
+			</select>
 		</form>
+		
 	</main>
-
-
-
+	<script type ="text/javascript">
+		function nuevoMode(){
+			document.getElementById('accion').selectedIndex=0;
+		}
+		
+		function registrarMode(){
+			document.getElementById('accion').selectedIndex=1;
+		}
+	</script>
 </body>
 </html>
