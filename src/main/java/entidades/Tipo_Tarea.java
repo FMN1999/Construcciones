@@ -6,7 +6,6 @@ public class Tipo_Tarea {
 	private String descripcion;
 	private float precio;
 	
-
 	public int getId_tipo_tarea() {
 		return id_tipo_tarea;
 	}

@@ -25,12 +25,13 @@
 		  <div class="row">
 		    <% for(Obra o: c.getObras()){ %>
 		    	<div class="col-sm-3 border border-4 rounded border-primary" style="margin:3px;">
-		    		
-			    		<a class="text-bold flex-auto min-width-0" href="#" style="font-size:30px;"><%= o.getDireccion() %></a>
+		    			<form action="Tareas" method="get">
+		    				<input id="idObra" name="idObra" style="display:None;" value=<%= o.getIdObra() %>>
+		    				<button type="submit"><%= o.getDireccion() %></button>
+		    			</form>
 			    		<p>Obra numero: <%= o.getIdObra() %></p>
 			    		<p>Tareas presupuestadas: </p>
 			    		<p>Tareas no presupuestadas: </p>
-			    
 		    	</div>
 		    	
 		    <% } %>
@@ -38,4 +39,7 @@
 		</div>
 	<% } %>
 </body>
+<script type="text/javascript">
+	
+</script>
 </html>

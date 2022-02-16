@@ -38,6 +38,13 @@ public class Tarea {
 	public void setId_tipo_tarea(int id_tipo_tarea) {
 		this.id_tipo_tarea = id_tipo_tarea;
 	}
+	public Tarea(int idTarea, String descripcion, Float cant_m2, int id_presupuesto, int id_tipo_tarea ) {
+		this.idTarea = idTarea;
+		this.descripcion = descripcion;
+		this.cant_m2 = cant_m2;
+		this.id_presupuesto = id_presupuesto;
+		this.id_tipo_tarea = id_tipo_tarea;
+	}
 	
 	
 
