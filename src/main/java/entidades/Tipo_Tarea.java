@@ -1,21 +1,11 @@
 package entidades;
 
-import java.util.ArrayList;
-
 public class Tipo_Tarea {
 	
 	private int id_tipo_tarea;
 	private String descripcion;
 	private float precio;
-	private ArrayList<Tarea> tareas;
 	
-
-	public ArrayList<Tarea> getTareas() {
-		return tareas;
-	}
-	public void setTareas(ArrayList<Tarea> tareas) {
-		this.tareas = tareas;
-	}
 	public int getId_tipo_tarea() {
 		return id_tipo_tarea;
 	}

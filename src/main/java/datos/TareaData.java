@@ -15,11 +15,11 @@ public class TareaData extends Coneccion
 		//*************************************************
 		//** Devuelve todos los materiales en existencia **
 		//*************************************************
-		public ArrayList<Tarea> getAll() throws SQLException, Exception{
+		public ArrayList<Tarea> getTareas(int idObra) throws SQLException, Exception{
 			ArrayList<Tarea> tareas=new ArrayList<Tarea>();
 			try {
 				this.open();
-				PreparedStatement ps= this.getCon().prepareStatement("SELECT idtarea, descripcion, cant_m2, id_presupuesto, id_tipo_tarea FROM tareas "
+				PreparedStatement ps= this.getCon().prepareStatement("SELECT idtarea, descripcion, cant_m2 FROM tareas WHERE  "
 						+ "ORDER BY idtarea");
 				ResultSet rs=ps.executeQuery();
 				while(rs.next()) {
@@ -38,7 +38,7 @@ public class TareaData extends Coneccion
 			return tareas;
 		}
 		
-		public ArrayList<Tarea> getTareas(int idTipo) throws SQLException{
+		public ArrayList<Tarea> getTarea(int idTipo) throws SQLException{
 			ArrayList<Tarea> tareas=new ArrayList<Tarea>();
 			try {
 				this.open();

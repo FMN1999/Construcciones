@@ -7,10 +7,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import entidades.Cliente;
+import entidades.Obra;
 import entidades.Tarea;
 import entidades.Tipo_Tarea;
+import entidades.Usuario;
 import logica.ClienteLogic;
 import logica.ObraLogic;
 import logica.TareaLogic;
@@ -43,7 +46,7 @@ public class Tareas extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ArrayList<Tipo_Tarea> tipos=null;
+		/*ArrayList<Tipo_Tarea> tipos=null;
 		try {
 			tipos=Tipo_TareaLogic.getAll();
 			tipos=TareaLogic.getAll(tipos);
@@ -53,7 +56,13 @@ public class Tareas extends HttpServlet {
 			request.setAttribute("error", e.getMessage());
 		}
 		request.setAttribute("tipos", tipos);
-		request.getRequestDispatcher("./Tareas.jsp").forward(request, response);
+		request.getRequestDispatcher("./Tareas.jsp").forward(request, response); */
+		int idObra;
+		idObra = Integer.parseInt(request.getParameter("idObra"));
+		HttpSession se = request.getSession();
+		Cliente c = (Cliente)se.getAttribute("cliente");
+		Obra o = c.getObra(idObra);
+		
 	}
 
 	/**

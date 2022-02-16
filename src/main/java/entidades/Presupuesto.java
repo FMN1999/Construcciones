@@ -1,4 +1,5 @@
 package entidades;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Presupuesto {
@@ -6,7 +7,7 @@ public class Presupuesto {
 	private int id_presupuesto;
 	private Date fecha_aceptacion;
 	private Date fecha_emision;
-	private int idObra;
+	private ArrayList<Tarea> tareas;
 	
 	public int getId_presupuesto() {
 		return id_presupuesto;
@@ -26,11 +27,18 @@ public class Presupuesto {
 	public void setFecha_emision(Date fecha_emision) {
 		this.fecha_emision = fecha_emision;
 	}
-	public int getIdObra() {
-		return idObra;
+	
+	public ArrayList<Tarea> getTareas() {
+		return tareas;
 	}
-	public void setIdObra(int idObra) {
-		this.idObra = idObra;
+	public void setTareas(ArrayList<Tarea> tareas) {
+		this.tareas = tareas;
+	}
+	public Presupuesto(int id_presupuesto, Date fecha_aceptacion, Date fecha_emision) {
+		super();
+		this.id_presupuesto = id_presupuesto;
+		this.fecha_aceptacion = fecha_aceptacion;
+		this.fecha_emision = fecha_emision;
 	}
 	
 }
