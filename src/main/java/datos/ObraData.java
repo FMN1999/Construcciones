@@ -15,11 +15,11 @@ public class ObraData extends Coneccion {
 		Obra p=null;
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion, o.id_cliente FROM obras o  WHERE idObra=?");
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion FROM obras o  WHERE idObra=?");
 			ps.setInt(1, id);
 			ResultSet rs=ps.executeQuery();
 			rs.next();
-			p = new Obra(rs.getInt("o.idobra"), rs.getString("o.direccion"), rs.getInt("o.id_cliente"));
+			p = new Obra(rs.getInt("o.idobra"), rs.getString("o.direccion"));
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
@@ -34,38 +34,15 @@ public class ObraData extends Coneccion {
 		
 	}
 	
-	public ArrayList<Obra> getAll() throws SQLException{
-		ArrayList<Obra> obras=new ArrayList<Obra>();
-		try {
-			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion, o.id_cliente FROM obras o ");
-			ResultSet rs=ps.executeQuery();
-			while(rs.next()) {
-				obras.add(new Obra(rs.getInt("o.idobra"), rs.getString("o.direccion"), rs.getInt("o.id_cliente")));
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException e) {
-			throw e;
-		}
-		finally {
-			this.close();
-		}
-		return obras;
-		
-		
-	}
-	
-	
 	public ArrayList<Obra> getObras(int idCli) throws SQLException{
 		ArrayList<Obra> obras=new ArrayList<Obra>();
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion, o.id_cliente FROM obras o WHERE o.id_cliente=? ");
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion FROM obras o WHERE o.id_cliente=? ");
 			ps.setInt(1, idCli);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
-				obras.add(new Obra(rs.getInt("o.idobra"), rs.getString("o.direccion"), rs.getInt("o.id_cliente")));
+				obras.add(new Obra(rs.getInt("o.idobra"), rs.getString("o.direccion")));
 			}
 			rs.close();
 			ps.close();
@@ -80,12 +57,12 @@ public class ObraData extends Coneccion {
 		
 	}
 	
-	public void Registrar(Obra o) throws Exception {
+	public void Registrar(Obra o, int id) throws Exception {
 		try {
 			this.open();
 			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO obras (direccion, id_cliente) VALUES (?,?)");
 			ps.setString(1, o.getDireccion());
-			ps.setInt(2, o.getIdCliente());
+			ps.setInt(2, id);
 			
 			int n=ps.executeUpdate();
 			ps.close();
@@ -104,15 +81,14 @@ public class ObraData extends Coneccion {
 	public void Actualizar(Obra o) throws Exception {
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("UPDATE obras SET direccion=?, id_cliente=? WHERE idobra=?");
+			PreparedStatement ps=this.getCon().prepareStatement("UPDATE obras SET direccion=? WHERE idobra=?");
 			ps.setString(1, o.getDireccion());
-			ps.setInt(2, o.getIdCliente());
-			ps.setInt(3, o.getIdObra());
+			ps.setInt(2, o.getIdObra());
 			
 			int n=ps.executeUpdate();
 			ps.close();
 			if(n==0) {
-				throw new Exception("No se ha registrado la obra, intentelo de nuevo");
+				throw new Exception("No se han actualizado los cambios en la obra, intentelo de nuevo");
 			}
 		}
 		catch(Exception e) {
@@ -132,7 +108,7 @@ public class ObraData extends Coneccion {
 			int n=ps.executeUpdate();
 			ps.close();
 			if(n==0) {
-				throw new Exception("No se ha registrado la obra, intentelo de nuevo");
+				throw new Exception("No fue posible eliminar la obra, intentelo de nuevo");
 			}
 		}
 		catch(Exception e) {
