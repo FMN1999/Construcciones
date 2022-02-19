@@ -15,11 +15,11 @@ public class ObraData extends Coneccion {
 		Obra p=null;
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion FROM obras o  WHERE idObra=?");
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion, o.descripcion FROM obras o  WHERE idObra=?");
 			ps.setInt(1, id);
 			ResultSet rs=ps.executeQuery();
 			rs.next();
-			p = new Obra(rs.getInt("o.idobra"), rs.getString("o.direccion"));
+			p = new Obra(rs.getInt("o.idobra"), rs.getString("o.direccion"), rs.getString("o.descripcion"));
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
@@ -38,11 +38,11 @@ public class ObraData extends Coneccion {
 		ArrayList<Obra> obras=new ArrayList<Obra>();
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion FROM obras o WHERE o.id_cliente=? ");
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT o.idobra, o.direccion, o.descripcion FROM obras o WHERE o.id_cliente=? ");
 			ps.setInt(1, idCli);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
-				obras.add(new Obra(rs.getInt("o.idobra"), rs.getString("o.direccion")));
+				obras.add(new Obra(rs.getInt("o.idobra"), rs.getString("o.direccion"), rs.getString("o.descripcion")));
 			}
 			rs.close();
 			ps.close();
@@ -60,9 +60,10 @@ public class ObraData extends Coneccion {
 	public void Registrar(Obra o, int id) throws Exception {
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO obras (direccion, id_cliente) VALUES (?,?)");
+			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO obras (direccion, id_cliente, descripcion) VALUES (?,?, ?)");
 			ps.setString(1, o.getDireccion());
 			ps.setInt(2, id);
+			ps.setString(3, o.getDescripcion());
 			
 			int n=ps.executeUpdate();
 			ps.close();
@@ -81,9 +82,10 @@ public class ObraData extends Coneccion {
 	public void Actualizar(Obra o) throws Exception {
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("UPDATE obras SET direccion=? WHERE idobra=?");
+			PreparedStatement ps=this.getCon().prepareStatement("UPDATE obras SET direccion=?, descripcion=? WHERE idobra=?");
 			ps.setString(1, o.getDireccion());
-			ps.setInt(2, o.getIdObra());
+			ps.setString(2, o.getDescripcion());
+			ps.setInt(3, o.getIdObra());
 			
 			int n=ps.executeUpdate();
 			ps.close();

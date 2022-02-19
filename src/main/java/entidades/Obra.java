@@ -6,6 +6,7 @@ public class Obra {
 	private int idObra;
 	private String direccion;
 	private ArrayList<Presupuesto> presupuestos;
+	private String descripcion;
 	
 	public ArrayList<Presupuesto> getPresupuestos() {
 		return presupuestos;
@@ -32,10 +33,19 @@ public class Obra {
 	}
 
 	
-	public Obra(int idObra, String direccion) {
+	public Obra(int idObra, String direccion, String descripcion) {
 		super();
 		this.idObra = idObra;
 		this.direccion = direccion;
+		this.descripcion = descripcion;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 	
 	
