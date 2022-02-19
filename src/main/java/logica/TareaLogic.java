@@ -16,7 +16,7 @@ public class TareaLogic {
 	
 	//no se captura ningun error, todos van a capa de presentacion
 	
-	public static ArrayList<Tipo_Tarea> getAll(ArrayList<Tipo_Tarea> tipos) throws Exception{
+	/*public static ArrayList<Tipo_Tarea> getAll(ArrayList<Tipo_Tarea> tipos) throws Exception{
 		for(Tipo_Tarea tipo:tipos) {
 			tipo.setTareas(source.getTareas(tipo.getId_tipo_tarea()));
 		}
@@ -32,5 +32,5 @@ public class TareaLogic {
 	
 	public static void Eliminar(int id) throws Exception {
 		source.Eliminar(id);
-	}
+	}*/
 }

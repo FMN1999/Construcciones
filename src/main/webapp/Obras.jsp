@@ -31,6 +31,7 @@
 			<th>Cliente</th>
 			<th></th>
 			<th></th>
+			<th></th>
 			
 			<% if(clientes!=null) { %>
 			<% for(Cliente c: clientes){ %>
@@ -43,10 +44,15 @@
 				<td value=<%= c.getIdCliente() %>><%= c.getRazonSocial() %></td>
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal"
-						onClick="editMode()">Editar</button>
+						onClick="editMode()">Editar</button></td>
 				<td><button type="button" class="btn btn-danger"
 						data-bs-toggle="modal" data-bs-target="#myModal"
-						onClick="deleteMode()">Eliminar</button>
+						onClick="deleteMode()">Eliminar</button></td>
+				<td><form action="Presupuesto" method="get">
+		    				<input id="idObra" name="idObra" style="display:None;" value=<%= o.getIdObra() %>>
+		    				<button type="submit" class="btn btn-primary">Detalles</button>
+		    		</form>
+				</td>
 			</tr>
 			<% } %>
 			<% } %>

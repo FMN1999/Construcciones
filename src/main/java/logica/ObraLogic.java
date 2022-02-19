@@ -23,6 +23,7 @@ public class ObraLogic {
 		
 		return o;
 	}
+	
 	public static Cliente setObras(Cliente c) throws Exception{
 		c.setObras(source.getObras(c.getIdCliente()));
 		return c;

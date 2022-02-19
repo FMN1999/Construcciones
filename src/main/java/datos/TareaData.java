@@ -15,7 +15,7 @@ public class TareaData extends Coneccion
 		//*************************************************
 		//** Devuelve todos los materiales en existencia **
 		//*************************************************
-		public ArrayList<Tarea> getTareas(int idObra) throws SQLException, Exception{
+		/*public ArrayList<Tarea> getTareas(int idObra) throws SQLException, Exception{
 			ArrayList<Tarea> tareas=new ArrayList<Tarea>();
 			try {
 				this.open();
@@ -123,6 +123,6 @@ public class TareaData extends Coneccion
 			finally {
 				this.close();
 			}
-		}
+		}*/
 		
 }
