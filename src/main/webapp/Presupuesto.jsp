@@ -49,7 +49,7 @@
 				<td><%= tt.getPrecio() %></td>
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal"
-						onClick="editMode()">Agregar</button></td>		
+						onClick="agregaTipoTarea()">Agregar</button></td>		
 			</tr>
 			<% } %>
 			<% } %>
@@ -73,13 +73,13 @@
 				<td></td>
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal1"
-						onClick="editMode()">Agregar Material</button></td>		
+						onClick="agregaMaterial()">Agregar Material</button></td>		
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal2"
-						onClick="editMode()">Agregar Maquinaria</button></td>
+						onClick="agregaMaquinaria()">Agregar Maquinaria</button></td>
 				<td><button type="button" class="btn btn-danger"
 						data-bs-toggle="modal" data-bs-target="#myModal"
-						onClick="editMode()">Eliminar</button></td>
+						onClick="eliminaTarea()">Eliminar</button></td>
 			</tr>
 		</table>
 		<br>
@@ -101,10 +101,10 @@
 				<td></td>
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal1"
-						onClick="editMode()">Editar</button></td>
+						onClick="editaMaterial()">Editar</button></td>
 				<td><button type="button" class="btn btn-danger"
 						data-bs-toggle="modal" data-bs-target="#myModal1"
-						onClick="editMode()">Eliminar</button></td>
+						onClick="eliminaMaterial()">Eliminar</button></td>
 			</tr>
 		</table>
 		
@@ -124,10 +124,10 @@
 				<td></td>
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal2"
-						onClick="editMode()">Editar</button></td>
+						onClick="editaMaquinaria()">Editar</button></td>
 				<td><button type="button" class="btn btn-danger"
 						data-bs-toggle="modal" data-bs-target="#myModal2"
-						onClick="editMode()">Eliminar</button></td>
+						onClick="eliminaMaquinaria()">Eliminar</button></td>
 			</tr>
 		</table>
 		
@@ -145,12 +145,12 @@
 					<form method="post" action="VerPresupuesto">
 						<!-- Modal body -->
 						<div class="form-floating mb-3 mt-3">
-							<input type="text" class="form-control" id="idtipo_tarea"
-								placeholder="ID" name="idtipo_tarea" readonly> <label
+							<input type="text" class="form-control" id="idtipo_tareat"
+								placeholder="ID" name="idtipo_tareat" readonly> <label
 								for="idObra">ID Tipo de Tarea</label>
 						</div>
 						<div class="form-floating mb-3 mt-3">
-							<input type="text" class="form-control" id="descripcion"
+							<input type="text" class="form-control" id="descripciont"
 								placeholder="Descripcion" name="descripcion" required> <label
 								for="descripcion">Descripción</label>
 						</div>
@@ -188,8 +188,8 @@
 					<form method="post" action="VerPresupuesto">
 						<!-- Modal body -->
 						<div class="form-floating mb-3 mt-3">
-							<input type="text" class="form-control" id="idtipo_tarea"
-								placeholder="ID" name="idtipo_tarea" readonly> <label
+							<input type="text" class="form-control" id="idtipo_tareamt"
+								placeholder="ID" name="idtipo_tareamt" readonly> <label
 								for="idObra">ID Tipo de Tarea</label>
 						</div>
 						<div class="form-floating mb-3 mt-3">
@@ -201,8 +201,8 @@
 							</select>
 						</div>
 						<div class="form-floating mb-3 mt-3">
-							<input type="number" class="form-control" id="cantm2"
-								placeholder="CantidadM2" name="cantm2" required> <label
+							<input type="number" class="form-control" id="cantm2mt"
+								placeholder="CantidadM2" name="cantm2mt" required> <label
 								for="descripcion">Cantidad</label>
 						</div>
 						
@@ -233,8 +233,8 @@
 					<form method="post" action="VerPresupuesto">
 						<!-- Modal body -->
 						<div class="form-floating mb-3 mt-3">
-							<input type="text" class="form-control" id="idtipo_tarea"
-								placeholder="ID" name="idtipo_tarea" readonly> <label
+							<input type="text" class="form-control" id="idtipo_tareamq"
+								placeholder="ID" name="idtipo_tareamq" readonly> <label
 								for="idObra">ID Tipo de Tarea</label>
 						</div>
 						<div class="form-floating mb-3 mt-3">
@@ -265,9 +265,115 @@
 				</div>
 			</div>
 		</div>
-		
+		<select name="accion" id="accion" style="display: none;">
+						<option>AgregaTipoTarea</option>
+						<option>AgregaMaterial</option>
+						<option>AgregaMaquinaria</option>
+						<option>EliminaTarea</option>
+						<option>EditaMaterial</option>
+						<option>EliminaMaterial</option>
+						<option>EditaMaquinaria</option>
+						<option>EliminaMaqunaria</option>
+		</select>
+		<br>
+		<h2>Cálculo de presupuesto</h2>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<label>Gastos: </label>		
+				</div>
+				<div class="col">
+					<label>Detalle: </label>
+				</div>
+				<div class="col">
+					<label>Monto:</label>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col">
+					<label>Cantidad de Oficiales: </label>		
+				</div>
+				<div class="col">
+					<input type="number" id="cantofi" name="cantofi"></input>
+				</div>
+				<div class="col">
+					<label id="montooficiales"></label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label>Cantidad de Albañiles: </label>		
+				</div>
+				<div class="col">
+					<input type="number" id="cantalb" name="cantalb"></input>
+				</div>
+				<div class="col">
+					<label id="montoalb"></label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label>Materiales: </label>		
+				</div>
+				<div class="col">
+					<label></label>
+				</div>
+				<div class="col">
+					<label id="montomateriales"></label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label>Maquinaria: </label>		
+				</div>
+				<div class="col">
+					<label></label>
+				</div>
+				<div class="col">
+					<label id="montomaquinarias"></label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label>Tareas: </label>		
+				</div>
+				<div class="col">
+					<label></label>
+				</div>
+				<div class="col">
+					<label id="montotareas"></label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label>Ganancias: </label>		
+				</div>
+				<div class="col">
+					<input type="number" id="ganancias" name="ganancias"></input>
+				</div>
+				<div class="col">
+					<label id="montotareas"></label>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col">
+					<label></label>		
+				</div>
+				<div class="col">
+					<label>TOTAL</label>
+				</div>
+				<div class="col">
+					<label id="montototal"></label>
+				</div>
+			</div>
+		</div>
+		<button type="button" class="btn btn-success">Calcular</button>
 	</div>
 	
 	
+	
+
 </body>
 </html>
