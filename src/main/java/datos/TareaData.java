@@ -15,15 +15,18 @@ public class TareaData extends Coneccion
 		//*************************************************
 		//** Devuelve todos los materiales en existencia **
 		//*************************************************
-		/*public ArrayList<Tarea> getTareas(int idObra) throws SQLException, Exception{
+		public ArrayList<Tarea> getTareas(int idPresupuesto) throws SQLException, Exception{
 			ArrayList<Tarea> tareas=new ArrayList<Tarea>();
 			try {
 				this.open();
-				PreparedStatement ps= this.getCon().prepareStatement("SELECT idtarea, descripcion, cant_m2 FROM tareas WHERE  "
+				PreparedStatement ps= this.getCon().prepareStatement("SELECT t.idtarea, t.descripcion, t.cant_m2, tt.idtipo_tarea, tt.descripcion FROM tareas"
+						+ " INNER JOIN tipos_tarea tt on t.id_tipo_tarea=tt.idtipo_tarea WHERE  "
 						+ "ORDER BY idtarea");
 				ResultSet rs=ps.executeQuery();
 				while(rs.next()) {
-					Tarea tarea=new Tarea(rs.getInt("idtarea"), rs.getString("descripcion"), rs.getFloat("cant_m2"), rs.getInt("id_presupuesto"), rs.getInt("id_tipo_tarea"));
+					Tarea tarea=new Tarea(rs.getInt("t.idtarea"), rs.getString("t.descripcion"), rs.getFloat("t.cant_m2"), 
+							new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"),0)//por ahora no recupera precio del tipo tarea
+							);
 					tareas.add(tarea);
 				}
 				rs.close();
@@ -37,7 +40,7 @@ public class TareaData extends Coneccion
 			}
 			return tareas;
 		}
-		
+		/*
 		public ArrayList<Tarea> getTarea(int idTipo) throws SQLException{
 			ArrayList<Tarea> tareas=new ArrayList<Tarea>();
 			try {

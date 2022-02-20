@@ -6,9 +6,23 @@ public class Presupuesto {
 
 	private int id_presupuesto;
 	private Date fecha_aceptacion;
+	private Date fecha_caencelacion;
 	private Date fecha_emision;
+	private float monto;
 	private ArrayList<Tarea> tareas;
 	
+	public Date getFecha_caencelacion() {
+		return fecha_caencelacion;
+	}
+	public void setFecha_caencelacion(Date fecha_caencelacion) {
+		this.fecha_caencelacion = fecha_caencelacion;
+	}
+	public float getMonto() {
+		return monto;
+	}
+	public void setMonto(float monto) {
+		this.monto = monto;
+	}
 	public int getId_presupuesto() {
 		return id_presupuesto;
 	}
@@ -34,11 +48,11 @@ public class Presupuesto {
 	public void setTareas(ArrayList<Tarea> tareas) {
 		this.tareas = tareas;
 	}
-	public Presupuesto(int id_presupuesto, Date fecha_aceptacion, Date fecha_emision) {
+	public Presupuesto(int id_presupuesto, Date fecha_emision, float monto) {
 		super();
 		this.id_presupuesto = id_presupuesto;
-		this.fecha_aceptacion = fecha_aceptacion;
 		this.fecha_emision = fecha_emision;
+		this.monto=monto;
 	}
 	
 }
