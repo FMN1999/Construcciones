@@ -26,7 +26,7 @@
     				<button type="submit" class="btn btn-primary">Registrar Presupuesto</button>
     		</form>
 		</div>
-		
+		<br>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_materiales">
 			<th>Fecha Emisión</th>
 			<th>Monto</th>
