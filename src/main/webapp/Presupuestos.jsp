@@ -10,8 +10,9 @@
 </head>
 <body>
 	<jsp:include page="Shared.jsp"></jsp:include>
-	
-	
+	<%@page import ="java.util.ArrayList"%>
+	<%@page import="entidades.Presupuesto" %>
+	<%@page import="logica.PresupuestoLogic" %>
 	<% Obra o = (Obra)request.getAttribute("obra"); %>
 
 	<h1><%= o.getDireccion() %></h1>
@@ -27,6 +28,7 @@
     		</form>
 		</div>
 		<br>
+		<% ArrayList<Presupuesto> psp= PresupuestoLogic.getPresuspuestos(o); %>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_materiales">
 			<th>Fecha Emisión</th>
 			<th>Monto</th>
@@ -34,11 +36,12 @@
 			<th></th>
 			<th></th>
 			<th></th>
-			
+			<% for(Presupuesto p: psp){ %>
 			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td style="display: none;"><%= p.getId_presupuesto() %></td>
+				<td><%= p.getFecha_emision() %></td>
+				<td><%= p.getMonto() %></td>
+				<td><%= p.getEstado() %></td>
 				<td><form action="VerPresupuesto" method="get">
 		    				<button type="submit" class="btn btn-primary">Ver Presupuesto</button>
 		    		</form></td>
@@ -47,6 +50,7 @@
 						data-bs-toggle="modal" data-bs-target="#myModal"
 						onClick="deleteMode()">Eliminar</button>
 			</tr>
+			<% } %>
 		</table>
 	</div>
 		

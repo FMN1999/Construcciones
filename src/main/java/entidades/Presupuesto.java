@@ -55,4 +55,14 @@ public class Presupuesto {
 		this.monto=monto;
 	}
 	
+	public String getEstado() {
+		if(this.fecha_aceptacion!=null) {
+			return "Confrmado";
+		} 
+		
+		if(this.fecha_caencelacion!=null) {
+			return "Rechazado";
+		}
+		return "En trámite";
+	}
 }

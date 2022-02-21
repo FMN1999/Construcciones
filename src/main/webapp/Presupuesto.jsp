@@ -37,7 +37,7 @@
 		<br>
 		<% ArrayList<Tipo_Tarea> tps= Tipo_TareaLogic.getAll(); %>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_tipos_tarea">
-			<th>Descripcion tipo tarea</th>
+			<th>Descripción tipo tarea</th>
 			<th>Precio</th>
 			<th></th>
 			<th></th>
@@ -47,7 +47,7 @@
 				<td style="display: none;"><%= tt.getId_tipo_tarea() %></td>
 				<td><%= tt.getDescripcion() %></td>
 				<td><%= tt.getPrecio() %></td>
-				<td><button type="button" class="btn btn-success"
+				<td><button type="submit" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal"
 						onClick="agregaTipoTarea()">Agregar</button></td>		
 			</tr>
@@ -265,6 +265,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<select name="accion" id="accion" style="display: none;">
 						<option>AgregaTipoTarea</option>
 						<option>AgregaMaterial</option>
@@ -275,6 +276,7 @@
 						<option>EditaMaquinaria</option>
 						<option>EliminaMaqunaria</option>
 		</select>
+		
 		<br>
 		<h2>Cálculo de presupuesto</h2>
 		<div class="container">
@@ -372,7 +374,29 @@
 		<button type="button" class="btn btn-success">Calcular</button>
 	</div>
 	
+	<script type="text/javascript">
+	var table = document.getElementById('tab_tipos_tarea'), rIndex;
+	for (i = 0; i < table.rows.length; i++) {
+	    table.rows[i].onclick = function () {
+	        rIndex = this.rowsIndex;
+	        document.getElementById('idtipo_tareat').value = this.cells[0].innerHTML;
+	    };
+	}
+
+	function agregaTipoTarea(){
+		document.getElementById('modalHead').innerHTML="Registrar Tipo de Tarea";
+		document.getElementById('accion').selectedIndex=0;
+		
+	    document.getElementById('descripciont').removeAttribute("readonly"  , false);
+	    document.getElementById('cantm2').removeAttribute("readonly"  , false);
+	    
+		document.getElementById('idtipo_tareat').value = null;
+	    document.getElementById('descripciont').value = null;
+	    document.getElementById('cantm2').value = null;
+	}
 	
+	
+	</script>
 	
 
 </body>
