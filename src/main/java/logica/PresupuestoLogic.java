@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import datos.PresupuestoData;
 import entidades.Obra;
 import entidades.Presupuesto;
+import entidades.Material;
+import entidades.Maquinaria;
 
 public class PresupuestoLogic {
 	public static PresupuestoData source=new PresupuestoData();
@@ -18,5 +20,13 @@ public class PresupuestoLogic {
 		}
 		
 		return presups;
+	}
+	
+	public static ArrayList<Material> getMateriales(Presupuesto p) throws Exception{
+		return source.getMateriales(p);
+	}
+	
+	public static ArrayList<Maquinaria> getMaquinarias(Presupuesto p) throws Exception{
+		return source.getMaquinarias(p);
 	}
 }

@@ -17,8 +17,13 @@
 	<%@page import="entidades.Material" %>
 	<%@page import="logica.MaquinariaLogic" %>
 	<%@page import="entidades.Maquinaria" %>
+	<%@page import="logica.PresupuestoLogic" %>
+	<%@page import="entidades.Material_a_usar" %>
+	<%@page import="entidades.Tarea"%>
+	<%@page import="entidades.Presupuesto" %>
 	
 	<% Obra o = (Obra)request.getAttribute("obra"); %>
+	<% Presupuesto p = (Presupuesto)request.getAttribute("presupuesto"); %>
 
 	<h1><%= o.getDireccion() %></h1>
 	<hr>
@@ -47,7 +52,8 @@
 				<td style="display: none;"><%= tt.getId_tipo_tarea() %></td>
 				<td><%= tt.getDescripcion() %></td>
 				<td><%= tt.getPrecio() %></td>
-				<td><button type="submit" class="btn btn-success"
+				<td>
+					<button type="submit" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal"
 						onClick="agregaTipoTarea()">Agregar</button></td>		
 			</tr>
@@ -83,7 +89,7 @@
 			</tr>
 		</table>
 		<br>
-		
+		<% ArrayList<Material> alt= PresupuestoLogic.getMateriales(p); %>
 		<h3 align="center">Materiales</h3>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_materiales">
 			<th>Tarea</th>
@@ -108,6 +114,7 @@
 			</tr>
 		</table>
 		
+		<% ArrayList<Maquinaria> mqs = PresupuestoLogic.getMaquinarias(p); %>
 		<h3 align="center">Maquinarias</h3>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_maquinarias">
 			<th>Tarea</th>

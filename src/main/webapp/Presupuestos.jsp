@@ -43,6 +43,7 @@
 				<td><%= p.getMonto() %></td>
 				<td><%= p.getEstado() %></td>
 				<td><form action="VerPresupuesto" method="get">
+							<input id="idPresupuesto" name="idPresupuesto" style="display:None;" value=<%= p.getId_presupuesto() %>>
 		    				<button type="submit" class="btn btn-primary">Ver Presupuesto</button>
 		    		</form></td>
 				<td><button type="submit" class="btn btn-success">Confirmar</button>
