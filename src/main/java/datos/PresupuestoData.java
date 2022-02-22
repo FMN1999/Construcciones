@@ -91,7 +91,7 @@ public class PresupuestoData extends Coneccion {
 		try {
 			this.open();
 			PreparedStatement ps= this.getCon().prepareStatement("SELECT p.idpresupuesto, p.fecha_emision,"
-					+ "p.fecha_aceptacion, p.id_obra, p.monto, p.fecha_cancelacion from presupuestos, p.id_obra p where idpresupuesto=?");
+					+ "p.fecha_aceptacion, p.id_obra, p.monto, p.fecha_cancelacion,p.id_obra from presupuestos p where idpresupuesto=?");
 			ps.setInt(1, id);
 			ResultSet rs=ps.executeQuery();
 			rs.next();
