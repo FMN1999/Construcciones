@@ -17,11 +17,11 @@ public class PresupuestoData extends Coneccion {
 		ArrayList<Presupuesto> presups=new ArrayList<Presupuesto>();
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT p.idpresupuesto, p.fecha_emision, p.monto FROM presupuestos p WHERE p.id_obra=? ");
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT p.idpresupuesto, p.fecha_emision, p.monto, p.id_obra FROM presupuestos p WHERE p.id_obra=? ");
 			ps.setInt(1, o.getIdObra());
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
-				presups.add(new Presupuesto(rs.getInt("p.idpresupuesto"), rs.getDate("p.fecha_emision"), rs.getFloat("p.monto")));
+				presups.add(new Presupuesto(rs.getInt("p.idpresupuesto"), rs.getDate("p.fecha_emision"), rs.getFloat("p.monto"), rs.getInt("p.id_obra")));
 			}
 			rs.close();
 			ps.close();
@@ -85,6 +85,27 @@ public class PresupuestoData extends Coneccion {
 			this.close();
 		}
 		return ms;
+	}
+	
+	public Presupuesto getOne(int id) throws Exception{
+		try {
+			this.open();
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT p.idpresupuesto, p.fecha_emision,"
+					+ "p.fecha_aceptacion, p.id_obra, p.monto, p.fecha_cancelacion from presupuestos, p.id_obra p where idpresupuesto=?");
+			ps.setInt(1, id);
+			ResultSet rs=ps.executeQuery();
+			rs.next();
+			Presupuesto p=new Presupuesto(rs.getInt("p.idpresupuesto"), rs.getDate("p.fecha_emision"), rs.getFloat("p.monto"), rs.getInt("p.id_obra"));
+			rs.close();
+			ps.close();
+			return p;
+		}
+		catch(Exception e) {
+			throw e;
+		}
+		finally {
+			this.close();
+		}
 	}
 }
 	

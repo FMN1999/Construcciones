@@ -32,12 +32,9 @@ public class VerPresupuesto extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int id = Integer.parseInt(request.getParameter("idObra"));
-		int idPres = Integer.parseInt(request.getParameter("idPresupuesto"));
+		int id = Integer.parseInt(request.getParameter("idPresupuesto"));
 		try {
-			Obra o = ObraLogic.getOne(id);
 			Presupuesto p = PresupuestoLogic.getOne(id);
-			request.setAttribute("obra", o);
 			request.setAttribute("presupuesto", p);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
