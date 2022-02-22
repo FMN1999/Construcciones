@@ -9,6 +9,7 @@ public class Presupuesto {
 	private Date fecha_caencelacion;
 	private Date fecha_emision;
 	private float monto;
+	private int id_obra;
 	private ArrayList<Tarea> tareas;
 	
 	public Date getFecha_caencelacion() {
@@ -48,21 +49,18 @@ public class Presupuesto {
 	public void setTareas(ArrayList<Tarea> tareas) {
 		this.tareas = tareas;
 	}
-	public Presupuesto(int id_presupuesto, Date fecha_emision, float monto) {
+	public Presupuesto(int id_presupuesto, Date fecha_emision, float monto ,int idobra) {
 		super();
 		this.id_presupuesto = id_presupuesto;
 		this.fecha_emision = fecha_emision;
 		this.monto=monto;
+		this.id_obra = idobra;
+	}
+	public int getId_obra() {
+		return id_obra;
+	}
+	public void setId_obra(int id_obra) {
+		this.id_obra = id_obra;
 	}
 	
-	public String getEstado() {
-		if(this.fecha_aceptacion!=null) {
-			return "Confrmado";
-		} 
-		
-		if(this.fecha_caencelacion!=null) {
-			return "Rechazado";
-		}
-		return "En trámite";
-	}
 }

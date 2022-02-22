@@ -14,12 +14,7 @@ public class PresupuestoLogic {
 	
 	
 	public static ArrayList<Presupuesto> getPresuspuestos(Obra o) throws Exception{
-		ArrayList<Presupuesto> presups=source.getPresupuestos(o);
-		for(Presupuesto p: presups) {
-			p.setTareas(TareaLogic.getTareas(p.getId_presupuesto()));
-		}
-		
-		return presups;
+		return source.getPresupuestos(o);
 	}
 	
 	public static ArrayList<Material> getMateriales(Presupuesto p) throws Exception{
@@ -28,5 +23,20 @@ public class PresupuestoLogic {
 	
 	public static ArrayList<Maquinaria> getMaquinarias(Presupuesto p) throws Exception{
 		return source.getMaquinarias(p);
+	}
+	
+	public static String getEstado(Presupuesto p) throws Exception{
+		if(p.getFecha_aceptacion()!=null) {
+			return "Confrmado";
+		} 
+		
+		if(p.getFecha_caencelacion()!=null) {
+			return "Rechazado";
+		}
+		return "En trámite";
+	}
+	
+	public static Presupuesto getOne(int id) throws Exception{
+		return source.getOne(id);
 	}
 }

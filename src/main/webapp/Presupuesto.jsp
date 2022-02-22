@@ -21,11 +21,11 @@
 	<%@page import="entidades.Material_a_usar" %>
 	<%@page import="entidades.Tarea"%>
 	<%@page import="entidades.Presupuesto" %>
+	<%@page import="logica.ObraLogic" %>
 	
-	<% Obra o = (Obra)request.getAttribute("obra"); %>
 	<% Presupuesto p = (Presupuesto)request.getAttribute("presupuesto"); %>
+	<% Obra o = ObraLogic.getOne(p.getId_obra()); %>
 
-	<h1><%= o.getDireccion() %></h1>
 	<hr>
 	
 	<div class="container mt-3">
@@ -89,7 +89,6 @@
 			</tr>
 		</table>
 		<br>
-		<% ArrayList<Material> alt= PresupuestoLogic.getMateriales(p); %>
 		<h3 align="center">Materiales</h3>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_materiales">
 			<th>Tarea</th>
@@ -114,7 +113,6 @@
 			</tr>
 		</table>
 		
-		<% ArrayList<Maquinaria> mqs = PresupuestoLogic.getMaquinarias(p); %>
 		<h3 align="center">Maquinarias</h3>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_maquinarias">
 			<th>Tarea</th>

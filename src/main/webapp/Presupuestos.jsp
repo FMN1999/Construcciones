@@ -23,7 +23,7 @@
 		<br>
 		<div>
 			<form action="VerPresupuesto" method="get">
-					<input id="idObra" name="idObra" style="display:None;" value=<%= o.getIdObra() %>>
+					<input id="idPresupuesto" name="idPresupuesto" style="display:None;" value=<%= 0 %>>
     				<button type="submit" class="btn btn-primary">Registrar Presupuesto</button>
     		</form>
 		</div>
@@ -41,7 +41,7 @@
 				<td style="display: none;"><%= p.getId_presupuesto() %></td>
 				<td><%= p.getFecha_emision() %></td>
 				<td><%= p.getMonto() %></td>
-				<td><%= p.getEstado() %></td>
+				<td><%= PresupuestoLogic.getEstado(p) %></td>
 				<td><form action="VerPresupuesto" method="get">
 							<input id="idPresupuesto" name="idPresupuesto" style="display:None;" value=<%= p.getId_presupuesto() %>>
 		    				<button type="submit" class="btn btn-primary">Ver Presupuesto</button>
