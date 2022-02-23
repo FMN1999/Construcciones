@@ -1,4 +1,5 @@
 package entidades;
+import logica.Tipo_TareaLogic;
 
 public class Tarea {
 	
@@ -38,7 +39,19 @@ public class Tarea {
 	public void setTipo_tarea(Tipo_Tarea tipo_tarea) {
 		this.tipo_tarea = tipo_tarea;
 	}
-	
+	/*
+	public Tarea(int idTarea, int idTipoTarea, String descTipoTarea, float precioTipoTarea String descripcion, Float cant_m2, Float precio_parcial) {
+		this.idTarea = idTarea;
+		this.tipo_tarea.setId_tipo_tarea(idTipoTarea);
+		this.tipo_tarea.setDescripcion(descTipoTarea);
+		this.descripcion = descripcion;
+		this.cant_m2 = cant_m2;
+		
+	}
+	*/
+	public Float getMontoParcial() {
+		return this.cant_m2 * this.tipo_tarea.getPrecio();
+	}
 	
 
 }

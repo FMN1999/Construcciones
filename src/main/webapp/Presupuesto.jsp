@@ -63,6 +63,7 @@
 		<br>
 		
 		<h3 align="center">Tareas a realizar</h3>
+		<%ArrayList<Tarea> ts = PresupuestoLogic.getTareas(p); %>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_tareas">
 			<th>Tipo de Tarea</th>
 			<th>Descripción</th>
@@ -72,11 +73,13 @@
 			<th></th>
 			<th></th>
 			
+			<% for(Tarea t: ts){ %>
 			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td style="display: none;"><%= t.getIdTarea() %></td>
+				<td><%= t.getTipo_tarea().getDescripcion() %></td>
+				<td><%= t.getDescripcion() %></td>
+				<td><%= t.getCant_m2() %></td>
+				<td><%= t.getMontoParcial() %></td>
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal1"
 						onClick="agregaMaterial()">Agregar Material</button></td>		
@@ -87,23 +90,25 @@
 						data-bs-toggle="modal" data-bs-target="#myModal"
 						onClick="eliminaTarea()">Eliminar</button></td>
 			</tr>
+			<% } %>
 		</table>
 		<br>
 		<h3 align="center">Materiales</h3>
+		<%ArrayList<Material_a_usar> ms = PresupuestoLogic.getMateriales(p); %>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_materiales">
-			<th>Tarea</th>
+			<th>Tipo de Tarea</th>
 			<th>Material</th>
 			<th>Cantidad</th>
 			<th>Precio total</th>
 			<th></th>
 			<th></th>
 			
+			<% for(Material_a_usar m: ms){ %>
 			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td><%= m.getTt().getDescripcion() %></td>
+				<td><%= m.getM().getDescripcion() %></td>
+				<td><%= m.getCant_a_usar() %></td>
+				<td><%= m.getMonto() %></td>
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal1"
 						onClick="editaMaterial()">Editar</button></td>
@@ -111,6 +116,7 @@
 						data-bs-toggle="modal" data-bs-target="#myModal1"
 						onClick="eliminaMaterial()">Eliminar</button></td>
 			</tr>
+			<% } %>
 		</table>
 		
 		<h3 align="center">Maquinarias</h3>
