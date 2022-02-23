@@ -41,22 +41,15 @@ public class PresupuestoData extends Coneccion {
 		ArrayList<Material_a_usar> ms=new ArrayList<Material_a_usar>();
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("create temporary table precio_actual_material\r\n"
-					+ "select pm.id_material 'id_pam', max(pm.fecha_desde) 'fecha_pam' from precios_material pm\r\n"
-					+ "where pm.fecha_desde <= current_date()\r\n"
-					+ "group by pm.id_material;\r\n"
-					+ "\r\n"
-					
-					+ "SELECT p.idpresupuesto, t.idtarea, t.descripcion, t.cant_m2, tt.idtipo_tarea, tt.descripcion, ptt.precio_m2, m.idmaterial, m.descripcion, mt.cant_a_usar, pm.precio \r\n"
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT p.idpresupuesto, t.idtarea, t.descripcion, t.cant_m2, tt.idtipo_tarea, tt.descripcion, ptt.precio_m2, m.idmaterial, m.descripcion, mt.cant_a_usar, pm.precio\r\n"
 					+ "from presupuestos p\r\n"
 					+ "inner join tareas t on t.id_presupuesto=p.idpresupuesto\r\n"
 					+ "inner join tipos_tarea tt on t.id_tipo_tarea = tt.idtipo_tarea\r\n"
 					+ "inner join precios_tipo_tarea ptt on tt.idtipo_tarea = ptt.id_tipo_tarea_\r\n"
 					+ "inner join materiales_tareas mt on mt.id_tarea_=t.idtarea\r\n"
 					+ "inner join materiales m on m.idmaterial=mt.id_material_\r\n"
-					+ "inner join precio_actual_material pam on m.idmaterial = pam.id_pam\r\n"
-					+ "inner join precios_material pm on pam.id_pam=pm.id_material and pam.fecha_pam=pm.fecha_desde\r\n"
-					+ "where p.idpresupuesto=? ");
+					+ "inner join precios_material pm on pm.id_material = m.idmaterial\r\n"
+					+ "where p.idpresupuesto=?");
 			ps.setInt(1, p.getId_presupuesto());
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
