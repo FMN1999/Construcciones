@@ -18,8 +18,8 @@
 	<%@page import="logica.MaquinariaLogic" %>
 	<%@page import="entidades.Maquinaria" %>
 	<%@page import="logica.PresupuestoLogic" %>
-	<%@page import="entidades.Material_a_usar" %>
 	<%@page import="entidades.Tarea"%>
+	<%@page import="logica.TareaLogic" %>
 	<%@page import="entidades.Presupuesto" %>
 	<%@page import="logica.ObraLogic" %>
 	
@@ -63,7 +63,7 @@
 		<br>
 		
 		<h3 align="center">Tareas a realizar</h3>
-		<%ArrayList<Tarea> ts = PresupuestoLogic.getTareas(p); %>
+		<%ArrayList<Tarea> ts= PresupuestoLogic.getTareas(p);  %>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_tareas">
 			<th>Tipo de Tarea</th>
 			<th>Descripción</th>
@@ -94,7 +94,6 @@
 		</table>
 		<br>
 		<h3 align="center">Materiales</h3>
-		<%ArrayList<Material_a_usar> ms = PresupuestoLogic.getMateriales(p); %>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_materiales">
 			<th>Tipo de Tarea</th>
 			<th>Material</th>
@@ -103,12 +102,11 @@
 			<th></th>
 			<th></th>
 			
-			<% for(Material_a_usar m: ms){ %>
 			<tr>
-				<td><%= m.getTt().getDescripcion() %></td>
-				<td><%= m.getM().getDescripcion() %></td>
-				<td><%= m.getCant_a_usar() %></td>
-				<td><%= m.getMonto() %></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal1"
 						onClick="editaMaterial()">Editar</button></td>
@@ -116,7 +114,7 @@
 						data-bs-toggle="modal" data-bs-target="#myModal1"
 						onClick="eliminaMaterial()">Eliminar</button></td>
 			</tr>
-			<% } %>
+			
 		</table>
 		
 		<h3 align="center">Maquinarias</h3>

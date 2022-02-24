@@ -120,13 +120,16 @@ public class PresupuestoData extends Coneccion {
 		ArrayList<Tarea> ts=new ArrayList<Tarea>();
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT tt.idtipo_tarea, tt.descripcion, t.idtarea, t.descripcion, t.cant_m2, ptt.precio_m2\r\n"
-					+ "FROM presupuestos p \r\n"
-					+ "inner join tareas t on p.idpresupuesto = t.id_presupuesto\r\n"
-					+ "inner join tipos_tarea tt on t.id_tipo_tarea = tt.idtipo_tarea\r\n"
-					+ "inner join precios_tipo_tarea ptt on tt.idtipo_tarea = ptt.id_tipo_tarea_\r\n"
-					+ "where p.idpresupuesto=? ");
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT t.idtarea, t.descripcion, t.cant_m2, tt.idtipo_tarea, tt.descripcion, ifnull(precio_m2,0.0) as precio\r\n"
+					+ "FROM presupuestos p\r\n"
+					+ "inner join tareas t on p.idpresupuesto=t.id_presupuesto\r\n"
+					+ "INNER JOIN tipos_tarea tt on t.id_tipo_tarea=tt.idtipo_tarea \r\n"
+					+ "left join precios_tipo_tarea on tt.idtipo_tarea=precios_tipo_tarea.id_tipo_tarea_\r\n"
+					+ "where p.idpresupuesto =? (fecha_desde= (select max(fecha_desde) from precios_tipo_tarea where tt.idtipo_tarea=precios_tipo_tarea.id_tipo_tarea_ and fecha_desde <= ?))\r\n"
+					+ "group by t.idtarea, tt.idtipo_tarea\r\n"
+					+ "ORDER BY t.idtarea");
 			ps.setInt(1, p.getId_presupuesto());
+			ps.setDate(2, new java.sql.Date(p.getFecha_emision().getTime()));
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				Tipo_Tarea tt= new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"), rs.getFloat("ptt.precio_m2"));
