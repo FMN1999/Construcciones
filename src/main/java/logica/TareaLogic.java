@@ -12,8 +12,8 @@ public class TareaLogic {
 	
 	//no se captura ningun error, todos van a capa de presentacion
 	
-	public static ArrayList<Tarea> getTareas(int idPresup) throws Exception{
-		ArrayList<Tarea> tareas=source.getTareas(idPresup);
+	public static ArrayList<Tarea> getTareas(Presupuesto p) throws Exception{
+		ArrayList<Tarea> tareas=source.getTareas(p);
 		return tareas; 
 	}
 	/*

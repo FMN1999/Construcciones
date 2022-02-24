@@ -33,6 +33,10 @@ public class MaterialLogic {
 		return provs;
 	}
 	
+	public static ArrayList<Material> getAll() throws Exception{
+		return source.getAll();
+	}
+	
 	public static void Registrar(Material m, int id_prov) throws Exception {
 		source.Registrar(m, id_prov);
 	}
