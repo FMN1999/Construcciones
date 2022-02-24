@@ -16,7 +16,12 @@ public class PresupuestoLogic {
 	
 	
 	public static ArrayList<Presupuesto> getPresuspuestos(Obra o) throws Exception{
-		return source.getPresupuestos(o);
+		ArrayList<Presupuesto> presups=source.getPresupuestos(o);
+		for(Presupuesto p: presups) {
+			p.setTareas(TareaLogic.getTareas(p));
+		}
+		return presups;
+
 	}
 	
 	public static ArrayList<Material_a_usar> getMateriales(Presupuesto p) throws Exception{
