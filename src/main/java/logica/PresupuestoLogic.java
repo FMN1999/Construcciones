@@ -16,9 +16,18 @@ public class PresupuestoLogic {
 	
 	
 	public static ArrayList<Presupuesto> getPresuspuestos(Obra o) throws Exception{
-		ArrayList<Presupuesto> presups=source.getPresupuestos(o);
+		ArrayList<Presupuesto> presups=new ArrayList<Presupuesto>();
+		try{
+			presups=source.getPresupuestos(o);
+		}
+		catch(Exception e) {
+			throw new Exception("No fue posible cargar los presupuestos:"+e.getMessage());
+		}
 		for(Presupuesto p: presups) {
 			p.setTareas(TareaLogic.getTareas(p));
+			/*if(p.getFecha_aceptacion()!=null) {
+				//recuperar los obreros
+			}*/
 		}
 		return presups;
 
@@ -44,10 +53,21 @@ public class PresupuestoLogic {
 		if(p.getFecha_caencelacion()!=null) {
 			return "Rechazado";
 		}
-		return "En trámite";
+		return "En tramite";
 	}
 	
 	public static Presupuesto getOne(int id) throws Exception{
-		return source.getOne(id);
+		Presupuesto p=new Presupuesto();
+		try {
+			p=source.getOne(id);
+		}
+		catch(Exception e) {
+			throw new Exception("No fue posible cargar el presupuesto:"+e.getMessage());
+		}
+		p.setTareas(TareaLogic.getTareas(p));
+		/*if(p.getFecha_aceptacion()!=null) {
+			//recuperar los obreros
+		}*/
+		return p;
 	}
 }

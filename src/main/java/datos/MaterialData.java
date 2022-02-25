@@ -39,6 +39,34 @@ public class MaterialData extends Coneccion {
 		return materiales;
 	}
 	
+	public ArrayList<Material> getMaterialesTarea(int idTarea) throws SQLException, Exception{
+		ArrayList<Material> materiales=new ArrayList<Material>();
+		try {
+			this.open();
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, ifnull(precio,0.0) as precio FROM materiales "
+					+ "left join precios_material on materiales.idmaterial=id_material "
+					+ "inner join materiales_tareas mt on materiales.idmaterial=mt.id_material_ "
+					+ "where (fecha_desde= (select max(fecha_desde) from precios_material where id_material=idmaterial and fecha_desde <= mt.fecha)) "
+					+ "and mt.id_material_=? "
+					+ "group by idmaterial");
+			ps.setInt(1, idTarea);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				Material m=new Material(rs.getInt("materiales.idmaterial"), rs.getString("descripcion"), rs.getFloat("precio"));
+				materiales.add(m);
+			}
+			rs.close();
+			ps.close();
+		}
+		catch(Exception e) {
+			throw e;
+		}
+		finally {
+			this.close();
+		}
+		return materiales;
+	}
+	
 	//*************************************************
 	//** Devuelve todos los materiales en existencia **
 	//*************************************************

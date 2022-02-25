@@ -56,6 +56,10 @@ public class Presupuesto {
 		this.monto=monto;
 		this.id_obra = idobra;
 	}
+	public Presupuesto() {
+		// TODO Auto-generated constructor stub
+		this.id_presupuesto=0;
+	}
 	public int getId_obra() {
 		return id_obra;
 	}
