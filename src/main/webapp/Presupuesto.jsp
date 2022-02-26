@@ -50,7 +50,7 @@
 					<% } %>
 				</select>
 				<button type="button" class="btn btn-primary" onClick="agregar_tarea()">Agregar tarea</button>
-				<br>
+				<br><br>
 				
 				<% ArrayList<Material> ms= (ArrayList<Material>)request.getAttribute("materiales"); %>
 				<label for="materiales">Agregar material:</label>
@@ -60,7 +60,7 @@
 					<% } %>
 				</select>
 				<button type="button" class="btn btn-primary" onClick="agregar_material()">Agregar material</button>
-				<br>
+				<br><br>
 				
 				<% ArrayList<Maquinaria> mqs= (ArrayList<Maquinaria>)request.getAttribute("maquinas"); %>
 				<label for="maquinas">Agregar maquina:</label>
@@ -115,29 +115,44 @@
 		
 	<% } else{ %>
 		<form class="was-validated">
-		<table id="nuevas_tareas" class="table" style="background-image: linear-gradient(to bottom right, orange, white);display:none;">
+		<label for="idObra">Obra numero:</label>
+		<input id="idObra" name="idObra" readonly="true" class="form-control" value=<%= p.getId_obra() %>>
+		
+		<input id="nl_tareas" name="nl_tareas" style="display:none;" class="form-control" value=<%= 0 %>>
+		<input id="nl_materiales" name="nl_materiales" style="display:none;" class="form-control" value=<%= 0 %>>
+		<input id="nl_maquinas" name="nl_maquinas" style="display:none;" class="form-control" value=<%= 0 %>>
+		
+		<br>
+		<br>
+		<table id="nuevas_tareas" class="table table-hover" style="background-image: linear-gradient(to bottom right, orange, white);display:none;">
+			<th>Nro. de tarea</th>
 			<th>Id tipo tarea</th>
 			<th>Tipo de tarea</th>
 			<th>Descripcion</th>
 			<th>Cantidad de m2</th>
 			<th>Precio xm2</th>
 			<th>Subtotal</th>
+			<th></th>
 		</table>
 		
-		<table id="nuevos_materiales" class="table" style="background-image: linear-gradient(to bottom right, orange, white);display:none;">
+		<table id="nuevos_materiales" class="table table-hover" style="background-image: linear-gradient(to bottom right, orange, white);display:none;">
 			<th>Id material</th>
 			<th>Descripcion</th>
 			<th>Cantidad</th>
 			<th>Precio c/u</th>
+			<th>Tarea</th>
 			<th>Subtotal</th>
+			<th></th>
 		</table>
 		
-		<table id="nuevas_maquinas" class="table" style="background-image: linear-gradient(to bottom right, orange, white);display:none;">
+		<table id="nuevas_maquinas" class="table table-hover" style="background-image: linear-gradient(to bottom right, orange, white);display:none;">
 			<th>Id maquina</th>
 			<th>Descripcion</th>
 			<th>Horas uso</th>
 			<th>Precio x hora</th>
+			<th>Tarea</th>
 			<th>Subtotal</th>
+			<th></th>
 		</table>
 		
 		<h2 id="costo_parcial">Costo Parcial: $0</h2>
@@ -176,6 +191,37 @@
 		div.setAttribute('id','tarea_'+n_tareas);
 		div.setAttribute('class','container');
 		
+		//nro de tarea
+		const td0=document.createElement("td");
+		const ntar= document.createElement("p");
+		const txtar=document.createTextNode(n_tareas);
+		ntar.appendChild(txtar);
+		ntar.setAttribute('id','n_tar_'+n_tareas);
+		td0.appendChild(ntar);
+		div.appendChild(td0);
+		if(n_maquina>=1){
+			for(i=1;i<=n_maquina;i++){
+				//sel.setAttribute('id','n_tar_maq_'+n_maquina);
+				var select=document.getElementById('n_tar_maq_'+i);
+				const opt=document.createElement('option');
+				const opttx=document.createTextNode(n_tareas);
+				opt.appendChild(opttx);
+				opt.value=n_tareas;
+				select.appendChild(opt);
+			}
+		}
+		if(n_material>=1){
+			for(i=1;i<=n_material;i++){
+				//sel.setAttribute('id','n_tar_mat_'+n_material);
+				var select=document.getElementById('n_tar_mat_'+i);
+				const opt=document.createElement('option');
+				const opttx=document.createTextNode(n_tareas);
+				opt.appendChild(opttx);
+				opt.value=n_tareas;
+				select.appendChild(opt);
+			}
+		}
+		
 		//id tipo de la tarea
 		const td1=document.createElement("td");
 		const hid= document.createElement("p");
@@ -199,28 +245,23 @@
 		
 		//input de descripcion de la tarea
 		const td3=document.createElement("td");
-		const label=document.createElement("label");
-		label.setAttribute('for','desc_tarea_'+n_tareas);
-		label.innerHTML="Descripcion";
 		const inpdesc=document.createElement("input");
 		inpdesc.setAttribute('id','desc_tarea_'+n_tareas);
 		inpdesc.setAttribute('required','true');
-		td3.appendChild(label);
+		inpdesc.setAttribute('class','form-control');
+		inpdesc.setAttribute('placeholder','Descripcion de la tarea');
 		td3.appendChild(inpdesc);
 		div.appendChild(td3);
 		
 		//cant m2
-		const td4=document.createElement("td");
-		const label2=document.createElement("label");
-		label2.setAttribute('for','desc_tarea_'+n_tareas);
-		label2.innerHTML="m2:";
-		const inpm2=document.createElement("input");
+		const td4=document.createElement("td");const inpm2=document.createElement("input");
 		inpm2.setAttribute('id','m2_'+n_tareas);
 		inpm2.setAttribute('type','number');
-		inpm2.setAttribute('min',0.01);
+		inpm2.setAttribute('min',1);
 		inpm2.setAttribute('required','true');
 		inpm2.setAttribute('onchange','subtotal_linea('+n_tareas+','+precios_tipos[id_tt]+')');
-		td4.appendChild(label2);
+		inpm2.setAttribute('class','form-control');
+		inpm2.setAttribute('placeholder','Cantidad de m2');
 		td4.appendChild(inpm2);
 		div.appendChild(td4);
 		
@@ -241,6 +282,17 @@
 		subtotal.appendChild(txsub);
 		td6.appendChild(subtotal);
 		div.appendChild(td6);
+		
+		//boton para eliminar linea
+		const td7=document.createElement("td");
+		const btn=document.createElement("button");
+		btn.setAttribute("class","btn btn-danger btn-small");
+		btn.setAttribute("id","rmv_tar_"+n_tareas);
+		btn.setAttribute("onclick","remover_tarea("+n_tareas+")");
+		btn.type='button';
+		btn.innerText='X';
+		td7.appendChild(btn);
+		div.appendChild(td7);
 		
 		//agrega el div
         const element = document.getElementById("nuevas_tareas");
@@ -276,72 +328,107 @@
 	var n_maquina = 0;
 
 	function agregar_maquina(){
-			n_maquina+=1;
-			var id_mq=document.getElementById("maquinas").value;
-			//nuevas_maquinas
-			
-			//div de la nueva maquina
-			const div= document.createElement("tr");
-			div.setAttribute('id','maquina_'+n_maquina);
-			div.setAttribute('class','container');
-			
-			//id maquina
-			const td1=document.createElement("td");
-			const hid= document.createElement("p");
-			const pid=document.createTextNode(id_mq);
-			hid.appendChild(pid);
-			hid.setAttribute('id','idmq_'+n_maquina);
-			td1.appendChild(hid);
-			div.appendChild(td1);
-			
-			//descripcion de maquina
-			const td2=document.createElement("td");
-			const idescmaquina= document.createElement("p");
-			const sel=document.getElementById("maquinas");
-			const txt1=sel.options[sel.selectedIndex].text;
-			const tdescmaquina = document.createTextNode(txt1);
-			idescmaquina.appendChild(tdescmaquina);
-			td2.appendChild(idescmaquina);
-			div.appendChild(td2);
-			
-			//cant horas
-			const td4=document.createElement("td");
-			const label2=document.createElement("label");
-			label2.setAttribute('for','cant_hs_'+n_maquina);
-			label2.innerHTML="cantidad horas:";
-			const inphs=document.createElement("input");
-			inphs.setAttribute('id','cant_hs_'+n_maquina);
-			inphs.setAttribute('type','number');
-			inphs.setAttribute('onchange','subtotal_mq_linea('+n_maquina+','+precios_maquina[id_mq]+')');
-			inphs.setAttribute('min',1);
-			inphs.setAttribute('required','true');
-			td4.appendChild(label2);
-			td4.appendChild(inphs);
-			div.appendChild(td4);
-			
-			//precio por hs
-			const td5=document.createElement("td");
-			const prec=document.createElement("p");
-			const txths = document.createTextNode(precios_maquina[id_mq]);
-			prec.appendChild(txths);
-			prec.setAttribute('id','precio_mq_'+n_maquina);
-			td5.appendChild(prec);
-			div.appendChild(td5);
-			
-			//linea de subtotal
-			const td6=document.createElement("td");
-			const subtotal=document.createElement("p");
-			subtotal.setAttribute('id','subtot_mq_'+n_maquina);
-			const txsub=document.createTextNode("0");
-			subtotal.appendChild(txsub);
-			td6.appendChild(subtotal);
-			div.appendChild(td6);
-			
-			//agrega el div
-	        const element = document.getElementById("nuevas_maquinas");
-	        element.appendChild(div);
-	        element.style.display="block";
-	        
+			const select=document.getElementById("maquinas");
+			//if(!select.options[select.selectedIndex].disabled){       //**if para que no se puede elegir mas de una vez la maquina
+				n_maquina+=1;
+				var id_mq=select.value;
+				//select.options[select.selectedIndex].disabled=true;   //**
+				//nuevas_maquinas
+				
+				//div de la nueva maquina
+				const div= document.createElement("tr");
+				div.setAttribute('id','maquina_'+n_maquina);
+				div.setAttribute('class','container');
+				
+				//id maquina
+				const td1=document.createElement("td");
+				const hid= document.createElement("p");
+				const pid=document.createTextNode(id_mq);
+				hid.appendChild(pid);
+				hid.setAttribute('id','idmq_'+n_maquina);
+				td1.appendChild(hid);
+				div.appendChild(td1);
+				
+				//descripcion de maquina
+				const td2=document.createElement("td");
+				const idescmaquina= document.createElement("p");
+				const sel=document.getElementById("maquinas");
+				const txt1=sel.options[sel.selectedIndex].text;
+				const tdescmaquina = document.createTextNode(txt1);
+				idescmaquina.appendChild(tdescmaquina);
+				td2.appendChild(idescmaquina);
+				div.appendChild(td2);
+				
+				//cant horas
+				const td4=document.createElement("td");
+				const inphs=document.createElement("input");
+				inphs.setAttribute('id','cant_hs_'+n_maquina);
+				inphs.setAttribute('type','number');
+				inphs.setAttribute('onchange','subtotal_mq_linea('+n_maquina+','+precios_maquina[id_mq]+')');
+				inphs.setAttribute('min',1);
+				inphs.setAttribute('required','true');
+				inphs.setAttribute('class','form-control');
+				inphs.setAttribute('placeholder','Cantidad de horas a usar');
+				td4.appendChild(inphs);
+				div.appendChild(td4);
+				
+				//precio por hs
+				const td5=document.createElement("td");
+				const prec=document.createElement("p");
+				const txths = document.createTextNode(precios_maquina[id_mq]);
+				prec.appendChild(txths);
+				prec.setAttribute('id','precio_mq_'+n_maquina);
+				td5.appendChild(prec);
+				div.appendChild(td5);
+				
+				//n de tarea a la que corresponde la maquina
+				const td0=document.createElement("td");
+				const selct=document.createElement("select");
+				selct.setAttribute('id','n_tar_maq_'+n_maquina);
+				selct.setAttribute('min',1);
+				selct.setAttribute('class','form-select');
+				const opt0=document.createElement("option");
+				const opt0tx=document.createTextNode("Seleccione una tarea");
+				opt0.appendChild(opt0tx);
+				opt0.value=0;
+				opt0.disabled=true;
+				selct.required=true;
+				selct.appendChild(opt0);
+				for(i=1;i<=n_tareas;i++){
+					var opt=document.createElement("option");
+					var opttx=document.createTextNode(i);
+					opt.appendChild(opttx);
+					opt.value=i;
+					selct.appendChild(opt);
+				}
+				td0.appendChild(selct);
+				div.appendChild(td0);
+				
+				//linea de subtotal
+				const td6=document.createElement("td");
+				const subtotal=document.createElement("p");
+				subtotal.setAttribute('id','subtot_mq_'+n_maquina);
+				const txsub=document.createTextNode("0");
+				subtotal.appendChild(txsub);
+				td6.appendChild(subtotal);
+				div.appendChild(td6);
+				
+				//boton para eliminar linea
+				const td7=document.createElement("td");
+				const btn=document.createElement("button");
+				btn.setAttribute('id','rmv_maq_'+n_maquina);
+				btn.setAttribute('onclick','remover_maquina('+n_maquina+')');
+				btn.setAttribute("class","btn btn-danger btn-small");
+				btn.type='button';
+				btn.innerText='X';
+				td7.appendChild(btn);
+				div.appendChild(td7);
+				
+				//agrega el div
+		        const element = document.getElementById("nuevas_maquinas");
+		        element.appendChild(div);
+		        element.style.display="block";
+			//}         						//**
 	      
 		}
 
@@ -367,8 +454,11 @@
 	var n_material = 0;
 
 	function agregar_material(){
+		const select=document.getElementById("materiales");
+		//if(!select.options[select.selectedIndex].disabled){				//**if para que no se pueda seleccionar mas de una vez el material
 			n_material+=1;
-			var id_mt=document.getElementById("materiales").value;
+			var id_mt=select.value;
+			//select.options[select.selectedIndex].disabled=true;		//**
 			//nuevos materiales
 			
 			//div del nuevo material
@@ -397,16 +487,14 @@
 			
 			//cant 
 			const td4=document.createElement("td");
-			const label2=document.createElement("label");
-			label2.setAttribute('for','cant_unidad_'+n_material);
-			label2.innerHTML="cantidad:";
 			const inpc=document.createElement("input");
 			inpc.setAttribute('id','cant_unidad_'+n_material);
 			inpc.setAttribute('type','number');
 			inpc.setAttribute('onchange','subtotal_mt_linea('+n_material+','+precios_material[id_mt]+')');
 			inpc.setAttribute('min',1);
 			inpc.setAttribute('required','true');
-			td4.appendChild(label2);
+			inpc.setAttribute('class','form-control');
+			inpc.setAttribute('placeholder','Cantidad');
 			td4.appendChild(inpc);
 			div.appendChild(td4);
 			
@@ -419,6 +507,28 @@
 			td5.appendChild(prec);
 			div.appendChild(td5);
 			
+			//n de tarea a la que corresponde el material
+			const td0=document.createElement("td");
+			const selct=document.createElement("select");
+			selct.setAttribute('id','n_tar_mat_'+n_material);
+			selct.setAttribute('class','form-select');
+			const opt0=document.createElement("option");
+			const opt0tx=document.createTextNode("Seleccione una tarea");
+			opt0.appendChild(opt0tx);
+			opt0.value=0;
+			opt0.disabled=true;
+			selct.required=true;
+			selct.appendChild(opt0);
+			for(i=1;i<=n_tareas;i++){
+				var opt=document.createElement("option");
+				var opttx=document.createTextNode(i);
+				opt.appendChild(opttx);
+				opt.value=i;
+				selct.appendChild(opt);
+			}
+			td0.appendChild(selct);
+			div.appendChild(td0);
+			
 			//linea de subtotal
 			const td6=document.createElement("td");
 			const subtotal=document.createElement("p");
@@ -428,11 +538,22 @@
 			td6.appendChild(subtotal);
 			div.appendChild(td6);
 			
+			//boton para eliminar linea
+			const td7=document.createElement("td");
+			const btn=document.createElement("button");
+			btn.setAttribute('id','rmv_mat_'+n_material);
+			btn.setAttribute("class","btn btn-danger btn-small");
+			btn.type='button';
+			btn.innerText='X';
+			btn.setAttribute('onclick','remover_material('+n_material+')');
+			td7.appendChild(btn);
+			div.appendChild(td7);
+			
 			//agrega el div
 	        const element = document.getElementById("nuevos_materiales");
 	        element.appendChild(div);
 	        element.style.display="block";
-	        
+		//}																	//**
 	      
 	}
 		
@@ -483,11 +604,168 @@
 			if (linea != NaN) {
 				total_parcial += linea;
 			}
-			//console.log(total_parcial,linea);
+			//como la funcion se dispara siempre se usa para igualar las cant de lineas con el
+			//input que indica cuantas lineas deberan leerse
+			document.getElementById("nl_maquinas").value=n_maquina;
+			document.getElementById("nl_materiales").value=n_material;
+			document.getElementById("nl_tareas").value=n_tareas;
 		}
 	
 		const h2 = document.getElementById("costo_parcial");
 		h2.innerHTML = "Costo Parcial: $" + total_parcial;
+	}
+	
+	function remover_maquina(num_linea){
+		let tabla=document.getElementById('nuevas_maquinas');
+		let linea=document.getElementById('maquina_'+num_linea);
+		tabla.removeChild(linea);
+		for(i=num_linea+1;i<=n_maquina;i++){
+			let linea=document.getElementById('maquina_'+i);
+			linea.setAttribute('id','maquina_'+(i-1));
+			
+			let idl=document.getElementById('idmq_'+i);
+			idl.setAttribute('id','idmq_'+(i-1));
+			
+			let cunl=document.getElementById('cant_hs_'+i);
+			cunl.setAttribute('id','cant_hs_'+(i-1));
+			
+			let pl=document.getElementById('precio_mq_'+i);
+			pl.setAttribute('id','precio_mq_'+(i-1));
+			
+			cunl.setAttribute('onchange','subtotal_mq_linea('+(i-1)+','+parseFloat(pl.innerText)+')');
+			
+			let ntm=document.getElementById('n_tar_maq_'+i);
+			ntm.setAttribute('id','n_tar_maq_'+(i-1));
+			
+			let sub=document.getElementById('subtot_mq_'+i);
+			sub.setAttribute('id','subtot_mq_'+(i-1));
+			
+			let btn=document.getElementById('rmv_maq_'+i);
+			btn.setAttribute('id','rmv_maq_'+(i-1));
+			btn.setAttribute('onclick','remover_maquina('+(i-1)+')');
+		}
+		n_maquina-=1;
+		if(n_maquina==0){
+			tabla.style.display="none";
+		}
+		calcular_costo_parcial();
+	}
+	
+	
+	
+	function remover_material(num_linea){
+		let tabla=document.getElementById('nuevos_materiales');
+		let linea=document.getElementById('material_'+num_linea);
+		tabla.removeChild(linea);
+		for(i=num_linea+1;i<=n_material;i++){
+			let linea=document.getElementById('material_'+i);
+			linea.setAttribute('id','material_'+(i-1));
+			
+			let idl=document.getElementById('idmt_'+i);
+			idl.setAttribute('id','idmt_'+(i-1));
+			
+			let cunl=document.getElementById('cant_unidad_'+i);
+			cunl.setAttribute('id','cant_unidad_'+(i-1));
+			
+			let pl=document.getElementById('precio_mt_'+i);
+			pl.setAttribute('id','precio_mt_'+(i-1));
+			
+			cunl.setAttribute('onchange','subtotal_mt_linea('+(i-1)+','+parseFloat(pl.innerText)+')');
+			
+			let ntm=document.getElementById('n_tar_mat_'+i);
+			ntm.setAttribute('id','n_tar_mat_'+(i-1));
+			
+			let sub=document.getElementById('subtot_mt_'+i);
+			sub.setAttribute('id','subtot_mt_'+(i-1));
+			
+			let btn=document.getElementById('rmv_mat_'+i);
+			btn.setAttribute('id','rmv_mat_'+(i-1));
+			btn.setAttribute('onclick','remover_material('+(i-1)+')');
+		}
+		n_material-=1;
+		if(n_material==0){
+			tabla.style.display="none";
+		}
+		calcular_costo_parcial();
+	}
+	
+	function remover_tarea(num_tarea){
+		let tabla=document.getElementById('nuevas_tareas');
+		let linea=document.getElementById('tarea_'+num_tarea);
+		tabla.removeChild(linea);
+		//remover la ultima opcion del select y seleccionar opcion anterior 
+		//en caso la seleccionada es mayor a la eliminada
+		for(i=1;i<=n_material;i++){
+			let slc=document.getElementById('n_tar_mat_'+i);
+			var condicion=(slc.selectedIndex>=num_tarea);
+			var condicion2=(slc.selectedIndex==num_tarea);
+			var idx_ele=slc.selectedIndex;
+			slc.selectedIndex=slc.options.length-1;
+			slc.remove(slc.selectedIndex);
+			if(condicion){
+				slc.selectedIndex=idx_ele-1;
+			} 
+			else {
+				slc.selectedIndex=idx_ele;
+			}
+			if(condicion2){
+				slc.selectedIndex=0;
+			}
+		}
+		for(i=1;i<=n_material;i++){
+			let slc=document.getElementById('n_tar_maq_'+i);
+			var condicion=(slc.selectedIndex>=num_tarea);
+			var condicion2=(slc.selectedIndex==num_tarea);
+			var idx_ele=slc.selectedIndex;
+			slc.selectedIndex=slc.options.length-1;
+			slc.remove(slc.selectedIndex);
+			if(condicion){
+				slc.selectedIndex=idx_ele-1;
+			} 
+			else {
+				slc.selectedIndex=idx_ele;
+			}
+			if(condicion2){
+				slc.selectedIndex=0;
+			}
+		}
+		//
+		for(i=num_tarea+1;i<=n_tareas;i++){
+			let linea=document.getElementById('tarea_'+i);
+			linea.setAttribute('id','tarea_'+(i-1));
+			
+			let ntar=document.getElementById('n_tar_'+i);
+			ntar.setAttribute('id','n_tar_'+(i-1));
+			ntar.innerText=(i-1);
+			
+			
+			let id=document.getElementById('id_'+i);
+			id.setAttribute('id','id_'+(i-1));
+			
+			let desc=document.getElementById('desc_tarea_'+i);
+			desc.setAttribute('id','desc_tarea_'+(i-1));
+			
+			let m2=document.getElementById('m2_'+i);
+			m2.setAttribute('id','m2_'+(i-1));
+			
+			
+			let pre=document.getElementById('precio_'+i);
+			pre.setAttribute('id','precio_'+(i-1));
+			
+			m2.setAttribute('onchange','subtotal_linea('+(i-1)+','+parseFloat(pre.innerText)+')');
+			
+			let sub=document.getElementById('subtot_'+i);
+			sub.setAttribute('id','subtot_'+(i-1));
+			
+			let btn=document.getElementById('rmv_tar_'+i);
+			btn.setAttribute('id','rmv_tar_'+(i-1));
+			btn.setAttribute('onclick','remover_tarea('+(i-1)+')');
+		}
+		n_tareas-=1;
+		if(n_tareas==0){
+			tabla.style.display='none';
+		}
+		calcular_costo_parcial();
 	}
 		
 

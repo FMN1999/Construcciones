@@ -41,7 +41,9 @@ public class VerPresupuesto extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		int id = Integer.parseInt(request.getParameter("idPresupuesto"));
+		int idObra=Integer.parseInt(request.getParameter("idObra"));
 		Presupuesto p= new Presupuesto();
+		p.setId_obra(idObra);
 		try {
 			if(id!=0) {
 				p = PresupuestoLogic.getOne(id);

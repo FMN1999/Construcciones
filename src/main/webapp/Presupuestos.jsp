@@ -24,6 +24,7 @@
 		<div>
 			<form action="VerPresupuesto" method="get">
 					<input id="idPresupuesto" name="idPresupuesto" style="display:None;" value=<%= 0 %>>
+					<input id="idObra" name="idObra" style="display:None;" value=<%= o.getIdObra() %>>
     				<button type="submit" class="btn btn-primary">Registrar Presupuesto</button>
     		</form>
 		</div>
