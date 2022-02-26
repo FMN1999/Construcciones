@@ -62,4 +62,6 @@ public class MaterialLogic {
 	public static void Eliminar(int id) throws Exception{
 		source.Eliminar(id);
 	}
+	
+	public static void RegistrarUsoMateriales(Tarea t) {}
 }

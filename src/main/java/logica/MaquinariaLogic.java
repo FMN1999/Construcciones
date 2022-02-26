@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import datos.MaquinariaData;
 import entidades.Maquinaria;
+import entidades.Tarea;
 
 public class MaquinariaLogic {
 	
@@ -66,6 +67,14 @@ public class MaquinariaLogic {
 			throw new Exception(msg);
 		}
 		return maqs;
+	}
+	
+	public static ArrayList<Tarea> maquinas_tareas(ArrayList<Tarea> tareas){
+		return null;
+	}
+	
+	public static void RegistrarUsoMaquinas(Tarea t) {
+		
 	}
 
 }
