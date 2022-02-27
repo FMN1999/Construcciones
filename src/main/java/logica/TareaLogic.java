@@ -22,7 +22,7 @@ public class TareaLogic {
 			tareas=source.getTareas(p);
 		}
 		catch(Exception e) {
-			throw new Exception("No fue posible recuperar las tareas presupuestadas:"+e.getMessage());
+			throw new Exception("No fue posible recuperar las tareas presupuestadas->"+e.getMessage());
 		}
 		try {
 			tareas=MaterialLogic.materiales_tareas(tareas);
@@ -30,6 +30,7 @@ public class TareaLogic {
 		catch(Exception e) {
 			throw new Exception("No fue posible recuperar los materiles presupuestados:"+e.getMessage());
 		}
+		tareas=MaquinariaLogic.maquinas_tareas(tareas);
 		
 		return tareas; 
 	}

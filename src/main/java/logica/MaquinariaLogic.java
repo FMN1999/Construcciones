@@ -69,10 +69,16 @@ public class MaquinariaLogic {
 		return maqs;
 	}
 	
-	public static ArrayList<Tarea> maquinas_tareas(ArrayList<Tarea> tareas){
-		for(Tarea t:tareas) {
-			t.setMaquinas(source.getMaquinasTarea(t.getIdTarea()));
-		}
+	public static ArrayList<Tarea> maquinas_tareas(ArrayList<Tarea> tareas) throws Exception{
+		
+			for(Tarea t:tareas) {
+				try{
+					t.setMaquinas(source.getMaquinasTarea(t.getIdTarea()));
+				}catch(Exception e) {
+					throw new Exception("Se produjo un error mientras se cargaban las maquinas de la tarea "
+							+t.getIdTarea()+"-"+t.getTipo_tarea().getDescripcion()+":"+e.getMessage());
+				}
+				}
 		return tareas;
 	}
 	

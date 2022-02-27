@@ -3,6 +3,10 @@ package logica;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import datos.PresupuestoData;
 import entidades.Obra;
 import entidades.Presupuesto;
@@ -14,8 +18,12 @@ import entidades.Tarea;
 public class PresupuestoLogic {
 	public static PresupuestoData source=new PresupuestoData();
 	
-	
-	public static ArrayList<Presupuesto> getPresuspuestos(Obra o) throws Exception{
+	/**
+	 * @see _ Devuelve los presupuestos de una obra
+	 * el parametro detalles sirve para saber si es requerido recuperar
+	 * informacion de las tareas incluidas en ese presupuesto
+	 */
+	public static ArrayList<Presupuesto> getPresuspuestos(Obra o, boolean detalles) throws Exception{
 		ArrayList<Presupuesto> presups=new ArrayList<Presupuesto>();
 		try{
 			presups=source.getPresupuestos(o);
@@ -23,11 +31,13 @@ public class PresupuestoLogic {
 		catch(Exception e) {
 			throw new Exception("No fue posible cargar los presupuestos:"+e.getMessage());
 		}
-		for(Presupuesto p: presups) {
-			p.setTareas(TareaLogic.getTareas(p));
-			/*if(p.getFecha_aceptacion()!=null) {
-				//recuperar los obreros
-			}*/
+		if(detalles) {
+			for(Presupuesto p: presups) {
+				p.setTareas(TareaLogic.getTareas(p));
+				/*if(p.getFecha_aceptacion()!=null) {
+					//recuperar los obreros
+				}*/
+			}
 		}
 		return presups;
 

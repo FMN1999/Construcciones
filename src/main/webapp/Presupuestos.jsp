@@ -29,7 +29,7 @@
     		</form>
 		</div>
 		<br>
-		<% ArrayList<Presupuesto> psp= PresupuestoLogic.getPresuspuestos(o); %>
+		<% ArrayList<Presupuesto> psp= (ArrayList<Presupuesto>)request.getAttribute("presupuestos"); %>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_materiales">
 			<th>Fecha Emisión</th>
 			<th>Monto</th>
