@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import entidades.Maquinaria;
+import entidades.Material;
 
 public class MaquinariaData extends Coneccion {
 	
@@ -114,6 +115,34 @@ public class MaquinariaData extends Coneccion {
 		if(n==0) {
 			throw new Exception("No fue posible eliminar la maquinaria, intentelo de nuevo!");
 		}
+	}
+	public ArrayList<Maquinaria> getMaquinasTarea(int idTarea) throws Exception {
+		// TODO Auto-generated method stub
+		ArrayList<Maquinaria> maquinas=new ArrayList<Maquinaria>();
+		try {
+			this.open();
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT maquinarias.idmaquina, descripcion, ifnull(valor_hora,0.0) as precio FROM maquinarias "
+					+ "left join precios_maquina on maquinarias.idmaquina=id_maquina "
+					+ "inner join tareas_maquinas tm on maquinarias.idmaquina=tm.id_maquina_ "
+					+ "where (fecha_desde= (select max(fecha_desde) from precios_maquina where id_maquina=idmaquina)) "
+					+ "and tm.id_tarea_=? "
+					+ "group by idmaquina");
+			ps.setInt(1, idTarea);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				Maquinaria m=new Maquinaria(rs.getInt("maquinarias.idmaquina"), rs.getString("descripcion"), rs.getFloat("precio"));
+				maquinas.add(m);
+			}
+			rs.close();
+			ps.close();
+		}
+		catch(Exception e) {
+			throw e;
+		}
+		finally {
+			this.close();
+		}
+		return maquinas;
 	}
 
 }

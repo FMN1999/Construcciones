@@ -47,7 +47,7 @@ public class MaterialData extends Coneccion {
 					+ "left join precios_material on materiales.idmaterial=id_material "
 					+ "inner join materiales_tareas mt on materiales.idmaterial=mt.id_material_ "
 					+ "where (fecha_desde= (select max(fecha_desde) from precios_material where id_material=idmaterial and fecha_desde <= mt.fecha)) "
-					+ "and mt.id_material_=? "
+					+ "and mt.id_tarea_=? "
 					+ "group by idmaterial");
 			ps.setInt(1, idTarea);
 			ResultSet rs=ps.executeQuery();

@@ -70,7 +70,15 @@ public class MaquinariaLogic {
 	}
 	
 	public static ArrayList<Tarea> maquinas_tareas(ArrayList<Tarea> tareas){
-		return null;
+		for(Tarea t:tareas) {
+			t.setMaquinas(source.getMaquinasTarea(t.getIdTarea()));
+		}
+		return tareas;
+	}
+	
+	public static Tarea getMaquinasTarea(Tarea t) throws Exception{
+		t.setMaquinas(source.getMaquinasTarea(t.getIdTarea()));
+		return t;
 	}
 	
 	public static void RegistrarUsoMaquinas(Tarea t) {
