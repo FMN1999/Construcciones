@@ -69,4 +69,15 @@ public class Presupuesto {
 		this.id_obra = id_obra;
 	}
 	
+	public String getEstado() {
+		if(this.getFecha_aceptacion()!=null) {
+			return "Confrmado";
+		} 
+		
+		if(this.getFecha_caencelacion()!=null) {
+			return "Rechazado";
+		}
+		return "Pendiente";
+	}
+	
 }

@@ -45,7 +45,7 @@ public class MaterialData extends Coneccion {
 		ArrayList<Material> materiales=new ArrayList<Material>();
 		try {
 			this.open();
-			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, ifnull(precio,0.0) as precio FROM materiales "
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, ifnull(precio,0.0) as precio, mt.cant_a_usar FROM materiales "
 					+ "left join precios_material on materiales.idmaterial=id_material "
 					+ "inner join materiales_tareas mt on materiales.idmaterial=mt.id_material_ "
 					+ "where (fecha_desde= (select max(fecha_desde) from precios_material where id_material=idmaterial and fecha_desde <= mt.fecha)) "
@@ -55,6 +55,7 @@ public class MaterialData extends Coneccion {
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				Material m=new Material(rs.getInt("materiales.idmaterial"), rs.getString("descripcion"), rs.getFloat("precio"));
+				m.setCantidad(rs.getInt("mt.cant_a_usar"));
 				materiales.add(m);
 			}
 			rs.close();

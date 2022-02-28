@@ -122,7 +122,7 @@ public class MaquinariaData extends Coneccion {
 		ArrayList<Maquinaria> maquinas=new ArrayList<Maquinaria>();
 		try {
 			this.open();
-			PreparedStatement ps= this.getCon().prepareStatement("SELECT m.idmaquina, descripcion, ifnull(valor_hora,0.0) as precio FROM maquinarias m "
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT m.idmaquina, descripcion, ifnull(valor_hora,0.0) as precio, tm.hs_uso FROM maquinarias m "
 					+ "left join precios_maquina on m.idmaquina=id_maquina "
 					+ "inner join tareas_maquinas tm on m.idmaquina=tm.id_maquina__ "
 					+ "where (fecha_desde= (select max(fecha_desde) from precios_maquina where id_maquina=idmaquina)) "
@@ -132,6 +132,7 @@ public class MaquinariaData extends Coneccion {
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				Maquinaria m=new Maquinaria(rs.getInt("m.idmaquina"), rs.getString("descripcion"), rs.getFloat("precio"));
+				m.setCantHoras(rs.getInt("tm.hs_uso"));
 				maquinas.add(m);
 			}
 			rs.close();

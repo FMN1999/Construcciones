@@ -116,31 +116,25 @@ public class PresupuestoData extends Coneccion {
 		}
 	}
 	
-	public ArrayList<Tarea> getTareas(Presupuesto p) throws SQLException{
-		ArrayList<Tarea> ts=new ArrayList<Tarea>();
+	public void Registrar(int idobra,Presupuesto p) throws Exception{
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT tt.idtipo_tarea, tt.descripcion, t.idtarea, t.descripcion, t.cant_m2, ptt.precio_m2\r\n"
-					+ "FROM presupuestos p \r\n"
-					+ "inner join tareas t on p.idpresupuesto = t.id_presupuesto\r\n"
-					+ "inner join tipos_tarea tt on t.id_tipo_tarea = tt.idtipo_tarea\r\n"
-					+ "inner join precios_tipo_tarea ptt on tt.idtipo_tarea = ptt.id_tipo_tarea_\r\n"
-					+ "where p.idpresupuesto=? ");
-			ps.setInt(1, p.getId_presupuesto());
-			ResultSet rs=ps.executeQuery();
-			while(rs.next()) {
-				Tipo_Tarea tt= new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"), rs.getFloat("ptt.precio_m2"));
-				ts.add(new Tarea(rs.getInt("t.idtarea"), rs.getString("t.descripcion"), rs.getFloat("t.cant_m2"), tt));
-			}
-			rs.close();
+			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO presupuestos(fecha_emision, monto, id_obra) VALUES(?, ?, ?)");
+			ps.setDate(1, new java.sql.Date(p.getFecha_emision().getTime()));
+			ps.setFloat(2, p.getMonto());
+			ps.setInt(3, idobra);
+			int n=ps.executeUpdate();
 			ps.close();
-		} catch (SQLException e) {
+			if(n==0) {
+				throw new Exception("No fue posible registrar el presupuesto");
+			}
+			
+		}catch (SQLException e) {
 			throw e;
 		}
 		finally {
 			this.close();
 		}
-		return ts;
 	}
 }
 	

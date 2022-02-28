@@ -51,33 +51,20 @@ public class PresupuestoLogic {
 		return source.getMaquinarias(p);
 	}
 	
-	public static ArrayList<Tarea> getTareas(Presupuesto p) throws Exception{
-		return source.getTareas(p);
-	}
-	
-	public static String getEstado(Presupuesto p) throws Exception{
-		if(p.getFecha_aceptacion()!=null) {
-			return "Confrmado";
-		} 
-		
-		if(p.getFecha_caencelacion()!=null) {
-			return "Rechazado";
-		}
-		return "En tramite";
-	}
-	
-	public static Presupuesto getOne(int id) throws Exception{
+	public static Presupuesto getOne(int id, boolean detalles) throws Exception{
 		Presupuesto p=new Presupuesto();
 		try {
 			p=source.getOne(id);
+			if(detalles) {
+				p.setTareas(TareaLogic.getTareas(p));
+				/*if(p.getFecha_aceptacion()!=null) {
+				//recuperar los obreros
+				}*/
+			}
 		}
 		catch(Exception e) {
 			throw new Exception("No fue posible cargar el presupuesto:"+e.getMessage());
 		}
-		p.setTareas(TareaLogic.getTareas(p));
-		/*if(p.getFecha_aceptacion()!=null) {
-			//recuperar los obreros
-		}*/
 		return p;
 	}
 }

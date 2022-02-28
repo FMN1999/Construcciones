@@ -46,7 +46,7 @@ public class VerPresupuesto extends HttpServlet {
 		p.setId_obra(idObra);
 		try {
 			if(id!=0) {
-				p = PresupuestoLogic.getOne(id);
+				p = PresupuestoLogic.getOne(id,true);
 			}
 			ArrayList<Tipo_Tarea> tt=Tipo_TareaLogic.getAll();
 			request.setAttribute("tipos", tt);

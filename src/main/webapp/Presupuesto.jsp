@@ -28,10 +28,104 @@
 	<hr>
 	
 	<div class="container mt-3">
+		
+		<br>
+		
+		<% if(p.getId_presupuesto()!=0){ %>
+		
+		<h3 align="center">Tareas a realizar</h3>
+		<%ArrayList<Tarea> ts = p.getTareas(); %>
+		<div id="demo" class="carousel slide" data-bs-ride="carousel">
+			<!-- The slideshow/carousel -->
+  			<div class="carousel-inner">
+			<% int i=0; %>
+			<% for(Tarea t: ts){ %>
+				<% if(i==0){ %>
+				<div class="carousel-item active">
+				<% } else{ %>
+				<div class="carousel-item">
+				<% } %>
+					<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);">
+						<tr>
+							<th style="display:none;">Id tarea</th>
+							<th>Tipo de Tarea</th>
+							<th>Descripción</th>
+							<th>Cantidad de m2</th>
+							<th>Precio</th>
+						</tr>
+						<tr>
+							<td style="display: none;"><%= t.getIdTarea() %></td>
+							<td><%= t.getTipo_tarea().getDescripcion() %></td>
+							<td><%= t.getDescripcion() %></td>
+							<td><%= t.getCant_m2() %></td>
+							<td><%= t.getMontoParcial() %></td>
+						</tr>
+					</table>
+					<br>
+					<br>
+					<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);">
+						<tr>
+							<th>Material</th>
+							<th>Precio</th>
+							<th>Cantidad solicitada</th>
+						</tr>
+					<% for(Material m:t.getMateriales()){ %>
+						<tr>
+							<td><%= m.getDescripcion() %></td>
+							<td><%= m.getPrecio() %></td>
+							<td><%= m.getCantidad() %></td>
+						</tr>
+					<% } %>
+					</table>
+					<br>
+					<br>
+					<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);">
+						<tr>
+							<th>Maquina</th>
+							<th>Precio x hora</th>
+							<th>Horas a usar</th>
+						</tr>
+						<% for(Maquinaria mq:t.getMaquinas()){ %>
+						<tr>
+							<td><%= mq.getDescripcion() %></td>
+							<td><%= mq.getPrecioHora() %></td>
+							<td><%= mq.getCantHoras() %></td>
+						</tr>
+						<% } %>
+					</table>
+				</div>
+				<!-- fin item carrusel -->
+			<% i+=1; %>
+			<% } %>
+		
+			</div>
+			
+			<div class="carousel-indicators">
+			<% for(int j=0; j<=i;j++){ %>
+				<% if(j==0){ %>
+					<button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+				<% }else{ %>
+					<button type="button" data-bs-target="#demo" data-bs-slide-to=<%=j %>></button>
+				<% } %>
+			<% } %>
+			</div>
+			<!-- Left and right controls/icons -->
+		  <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+		    <span class="carousel-control-prev-icon"></span>
+		  </button>
+		  <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+		    <span class="carousel-control-next-icon"></span>
+		  </button>
+		</div>
+
+		
+		<br>
+		
+	<% } else{ %>
 		<%
 		   Date dNow = new Date();
 		   SimpleDateFormat ft = 
-		   new SimpleDateFormat ("MM/dd/yyyy");
+		   new SimpleDateFormat ("dd/MM/yyyy");
 		   String currentDate = ft.format(dNow);
 		%>
 		<label> Fecha de Creación: </label> <label><%=currentDate%></label>
@@ -74,46 +168,7 @@
 			</div>
 			<div class="col-3"></div>
 		</div>
-		<br>
 		
-		<% if(p.getId_presupuesto()!=0){ %>
-		<% Obra o = ObraLogic.getOne(p.getId_obra()); %>
-		
-		<h3 align="center">Tareas a realizar</h3>
-		<%ArrayList<Tarea> ts = PresupuestoLogic.getTareas(p); %>
-		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_tareas">
-			<th>Tipo de Tarea</th>
-			<th>Descripción</th>
-			<th>Cantidad de m2</th>
-			<th>Precio</th>
-			<th></th>
-			<th></th>
-			<th></th>
-			
-			<% for(Tarea t: ts){ %>
-			<tr>
-				<td style="display: none;"><%= t.getIdTarea() %></td>
-				<td><%= t.getTipo_tarea().getDescripcion() %></td>
-				<td><%= t.getDescripcion() %></td>
-				<td><%= t.getCant_m2() %></td>
-				<td><%= t.getMontoParcial() %></td>
-				<td><button type="button" class="btn btn-success"
-						data-bs-toggle="modal" data-bs-target="#myModal1"
-						onClick="agregaMaterial()">Agregar Material</button></td>		
-				<td><button type="button" class="btn btn-success"
-						data-bs-toggle="modal" data-bs-target="#myModal2"
-						onClick="agregaMaquinaria()">Agregar Maquinaria</button></td>
-				<td><button type="button" class="btn btn-danger"
-						data-bs-toggle="modal" data-bs-target="#myModal"
-						onClick="eliminaTarea()">Eliminar</button></td>
-			</tr>
-			<% } %>
-		</table>
-
-		
-		<br>
-		
-	<% } else{ %>
 		<form class="was-validated">
 		<label for="idObra">Obra numero:</label>
 		<input id="idObra" name="idObra" readonly="true" class="form-control" value=<%= p.getId_obra() %>>
@@ -161,7 +216,6 @@
 		<h1>Ingrese precio final: $</h1><input type="number" min=1 id="total" class="form-control" required>
 		<button class="btn btn-primary" type="sumbit">Registrar presupuesto</button>
 		</form>
-	<% } %>
 	</div>
 	
 	
@@ -773,6 +827,6 @@
 	
 	</script>
 	
-
+	<% } %>
 </body>
 </html>

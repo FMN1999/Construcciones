@@ -28,8 +28,8 @@ public class TareaData extends Coneccion
 						+ "where (fecha_desde= (select max(fecha_desde) from precios_tipo_tarea where tt.idtipo_tarea=precios_tipo_tarea.id_tipo_tarea_ and fecha_desde <= ?)) and t.id_presupuesto =?\r\n"
 						+ "group by t.idtarea, tt.idtipo_tarea\r\n"
 						+ "ORDER BY t.idtarea");
-				ps.setInt(1, p.getId_presupuesto());
-				ps.setDate(2, new java.sql.Date(p.getFecha_emision().getTime()));
+				ps.setDate(1, new java.sql.Date(p.getFecha_emision().getTime()));
+				ps.setInt(2, p.getId_presupuesto());
 				ResultSet rs=ps.executeQuery();
 				while(rs.next()) {
 					Tarea tarea=new Tarea(rs.getInt("t.idtarea"), rs.getString("t.descripcion"), rs.getFloat("t.cant_m2"), 
@@ -69,21 +69,32 @@ public class TareaData extends Coneccion
 				this.close();
 			}
 			return tareas;	
-		}
+		}*/
 		
-		public void Registrar(Tarea t) throws Exception {
+		public void Registrar(int idpresupuesto, ArrayList<Tarea> ts) throws Exception {
 			try {
 				this.open();
-				PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO tareas (descripcion, cant_m2, id_presupuesto, id_tipo_tarea ) VALUES (?,?,null,?)");
-				ps.setString(1, t.getDescripcion());
-				ps.setFloat(2, t.getCant_m2());
-				ps.setInt(3, t.getId_tipo_tarea());
-				
-				int n=ps.executeUpdate();
-				ps.close();
-				if(n==0) {
-					throw new Exception("No se ha registrado la tarea, intentelo de nuevo");
+				this.getCon().setAutoCommit(false);
+				PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO tareas (descripcion, cant_m2, id_presupuesto, id_tipo_tarea ) VALUES (?,?,?,?)");
+				for(Tarea t:ts){
+					ps.setString(1, t.getDescripcion());
+					ps.setFloat(2, t.getCant_m2());
+					ps.setInt(3, idpresupuesto);
+					ps.setInt(4, t.getTipo_tarea().getId_tipo_tarea());
+					ps.addBatch();
 				}
+				
+				int[] n=ps.executeBatch();
+				for (int i : n) {
+	                if (i == 0) {
+	                    this.getCon().rollback();
+	                    ps.close();
+	                    throw new Exception("No se han registrado las tareas, intentelo de nuevo");
+	                }
+	            }
+				this.getCon().commit();
+				ps.close();
+				
 			}
 			catch(Exception e) {
 				throw e;
@@ -92,7 +103,7 @@ public class TareaData extends Coneccion
 				this.close();
 			}
 		}
-		
+		/*
 		public void Actualizar(Tarea t) throws Exception {
 			try {
 				this.open();
