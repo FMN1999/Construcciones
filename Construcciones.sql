@@ -4,7 +4,7 @@ USE `construccion`;
 --
 -- Host: localhost    Database: construccion
 -- ------------------------------------------------------
--- Server version	8.0.27-0ubuntu0.20.04.1
+-- Server version	8.0.28-0ubuntu0.20.04.3
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -31,8 +31,8 @@ CREATE TABLE `clientes` (
   `razon_social` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idCliente`),
   KEY `usuario_idx` (`cuil`),
-  CONSTRAINT `usuario_c` FOREIGN KEY (`cuil`) REFERENCES `usuario` (`cuil`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `usuario_c` FOREIGN KEY (`cuil`) REFERENCES `usuario` (`cuil`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (1,20000000003,'3413123456','Los Paraisos'),(2,20000000008,'3413987456','Puente Alto');
+INSERT INTO `clientes` VALUES (1,20000000003,'3413123456','Los Paraisos'),(2,20000000008,'3413987456','Puente Alto'),(3,20250001236,'555666','Persona no grata 2');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +84,7 @@ CREATE TABLE `materiales` (
   PRIMARY KEY (`idmaterial`),
   KEY `id_provedor_idx` (`id_provedor`),
   CONSTRAINT `id_provedor` FOREIGN KEY (`id_provedor`) REFERENCES `provedores` (`idprovedor`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,7 +107,7 @@ DROP TABLE IF EXISTS `materiales_tareas`;
 CREATE TABLE `materiales_tareas` (
   `id_material_` int NOT NULL,
   `id_tarea_` int NOT NULL,
-  `cant_a_usar` varchar(45) DEFAULT NULL,
+  `cant_a_usar` int DEFAULT NULL,
   `fecha` datetime NOT NULL,
   PRIMARY KEY (`id_material_`,`id_tarea_`,`fecha`),
   KEY `id_tarea__idx` (`id_tarea_`),
@@ -122,6 +122,7 @@ CREATE TABLE `materiales_tareas` (
 
 LOCK TABLES `materiales_tareas` WRITE;
 /*!40000 ALTER TABLE `materiales_tareas` DISABLE KEYS */;
+INSERT INTO `materiales_tareas` VALUES (1,1,1,'2000-01-02 00:00:00');
 /*!40000 ALTER TABLE `materiales_tareas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,10 +137,11 @@ CREATE TABLE `obras` (
   `idobra` int NOT NULL AUTO_INCREMENT,
   `direccion` varchar(45) DEFAULT NULL,
   `id_cliente` int DEFAULT NULL,
+  `descripcion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idobra`),
   KEY `id_cliente_idx` (`id_cliente`),
   CONSTRAINT `id_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`idCliente`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,6 +150,7 @@ CREATE TABLE `obras` (
 
 LOCK TABLES `obras` WRITE;
 /*!40000 ALTER TABLE `obras` DISABLE KEYS */;
+INSERT INTO `obras` VALUES (1,'Las Palmas 123',1,'Edificio 3 plantas'),(2,'San Juan 2151',1,'Terreno valdio');
 /*!40000 ALTER TABLE `obras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,6 +176,7 @@ CREATE TABLE `precios_maquina` (
 
 LOCK TABLES `precios_maquina` WRITE;
 /*!40000 ALTER TABLE `precios_maquina` DISABLE KEYS */;
+INSERT INTO `precios_maquina` VALUES (1,'2000-01-01 00:00:00',10.0000);
 /*!40000 ALTER TABLE `precios_maquina` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,7 +202,7 @@ CREATE TABLE `precios_material` (
 
 LOCK TABLES `precios_material` WRITE;
 /*!40000 ALTER TABLE `precios_material` DISABLE KEYS */;
-INSERT INTO `precios_material` VALUES (1,'2021-10-12 00:00:00',300.0000),(1,'2021-10-15 00:00:00',310.0000),(3,'2021-11-19 04:34:28',50.0000),(4,'2021-11-20 17:19:47',500.0000);
+INSERT INTO `precios_material` VALUES (1,'2000-01-02 00:00:00',10.0000),(1,'2021-10-12 00:00:00',300.0000),(1,'2021-10-15 00:00:00',310.0000),(3,'2000-01-01 00:00:00',10.0000),(3,'2021-11-19 04:34:28',50.0000),(4,'2021-11-20 17:19:47',500.0000);
 /*!40000 ALTER TABLE `precios_material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,6 +229,7 @@ CREATE TABLE `precios_tipo_tarea` (
 
 LOCK TABLES `precios_tipo_tarea` WRITE;
 /*!40000 ALTER TABLE `precios_tipo_tarea` DISABLE KEYS */;
+INSERT INTO `precios_tipo_tarea` VALUES (10.0000,1,'2000-01-01 00:00:00'),(15.0000,2,'2000-01-01 00:00:00'),(9000.0000,1,'2022-01-04 17:41:32'),(2000.0000,2,'2022-01-04 17:41:49'),(10.0000,4,'2022-02-28 18:24:49');
 /*!40000 ALTER TABLE `precios_tipo_tarea` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,10 +245,12 @@ CREATE TABLE `presupuestos` (
   `fecha_emision` datetime NOT NULL,
   `fecha_aceptacion` datetime DEFAULT NULL,
   `id_obra` int DEFAULT NULL,
+  `monto` decimal(10,4) DEFAULT NULL,
+  `fecha_cancelacion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idpresupuesto`),
   KEY `id_obra_idx` (`id_obra`),
   CONSTRAINT `id_obra` FOREIGN KEY (`id_obra`) REFERENCES `obras` (`idobra`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,6 +259,7 @@ CREATE TABLE `presupuestos` (
 
 LOCK TABLES `presupuestos` WRITE;
 /*!40000 ALTER TABLE `presupuestos` DISABLE KEYS */;
+INSERT INTO `presupuestos` VALUES (1,'2000-01-02 00:00:00','2000-01-02 00:00:00',1,20.0000,NULL);
 /*!40000 ALTER TABLE `presupuestos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -299,7 +307,7 @@ CREATE TABLE `tareas` (
   KEY `id_presupuesto_idx` (`id_presupuesto`),
   CONSTRAINT `id_presupuesto` FOREIGN KEY (`id_presupuesto`) REFERENCES `presupuestos` (`idpresupuesto`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `id_tipo_tarea` FOREIGN KEY (`id_tipo_tarea`) REFERENCES `tipos_tarea` (`idtipo_tarea`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,6 +316,7 @@ CREATE TABLE `tareas` (
 
 LOCK TABLES `tareas` WRITE;
 /*!40000 ALTER TABLE `tareas` DISABLE KEYS */;
+INSERT INTO `tareas` VALUES (1,'el material sale 10 y la tarea 10',1.00,1,1),(2,'tarea gratis',10.00,1,2),(3,'regalo',15.00,1,1);
 /*!40000 ALTER TABLE `tareas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -322,6 +331,7 @@ CREATE TABLE `tareas_maquinas` (
   `id_maquina__` int NOT NULL,
   `id_tarea__` int NOT NULL,
   `hs_uso` int DEFAULT NULL,
+  `fecha` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id_maquina__`,`id_tarea__`),
   KEY `id_tarea___idx` (`id_tarea__`),
   CONSTRAINT `id_maquina__` FOREIGN KEY (`id_maquina__`) REFERENCES `maquinarias` (`idmaquina`) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -335,6 +345,7 @@ CREATE TABLE `tareas_maquinas` (
 
 LOCK TABLES `tareas_maquinas` WRITE;
 /*!40000 ALTER TABLE `tareas_maquinas` DISABLE KEYS */;
+INSERT INTO `tareas_maquinas` VALUES (1,1,1,'2000-01-02 00:00:00'),(2,2,1,'2000-01-02 00:00:00');
 /*!40000 ALTER TABLE `tareas_maquinas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -398,7 +409,7 @@ CREATE TABLE `tipos_tarea` (
   `idtipo_tarea` int NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idtipo_tarea`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -407,6 +418,7 @@ CREATE TABLE `tipos_tarea` (
 
 LOCK TABLES `tipos_tarea` WRITE;
 /*!40000 ALTER TABLE `tipos_tarea` DISABLE KEYS */;
+INSERT INTO `tipos_tarea` VALUES (1,'Revocar'),(2,'Cimentar'),(4,'Pintar');
 /*!40000 ALTER TABLE `tipos_tarea` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -453,7 +465,7 @@ CREATE TABLE `trabajadores` (
   PRIMARY KEY (`cuil`),
   KEY `tipo_trabajador` (`tipo_trabajador`),
   CONSTRAINT `tipo_trabajador` FOREIGN KEY (`tipo_trabajador`) REFERENCES `tipo_trabajador` (`idtipo_trabajador`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `usuario` FOREIGN KEY (`cuil`) REFERENCES `usuario` (`cuil`)
+  CONSTRAINT `usuario` FOREIGN KEY (`cuil`) REFERENCES `usuario` (`cuil`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -463,7 +475,7 @@ CREATE TABLE `trabajadores` (
 
 LOCK TABLES `trabajadores` WRITE;
 /*!40000 ALTER TABLE `trabajadores` DISABLE KEYS */;
-INSERT INTO `trabajadores` VALUES (20000000099,'DNI',9,'1988-10-10 00:00:00',1,1),(20000000126,'DNI',12,'1994-11-11 00:00:00',1,2);
+INSERT INTO `trabajadores` VALUES (2725676987,'DNI',25676987,'1988-10-11 00:00:00',1,1),(20000000126,'DNI',12,'1994-11-11 00:00:00',1,2),(20293301025,'DNI',29330102,'1979-04-28 00:00:00',1,1),(20413301034,'DNI',41330103,'1999-10-15 00:00:00',1,2),(29006615358,'LE',661535,'1996-06-12 00:00:00',1,2);
 /*!40000 ALTER TABLE `trabajadores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -488,7 +500,7 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `tipo_usuario_idx` (`id_tipo`),
   CONSTRAINT `tipo_usuario` FOREIGN KEY (`id_tipo`) REFERENCES `tipo_usuario` (`idtipo_usuario`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -497,7 +509,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Ivan','Biscaldi',20423301024,1,'12345','ivanbisc12@gmail.com'),(2,'Matias','Santolari',20000000000,1,'12345','mati@mail.com'),(3,'Joan','Romero',20000000001,1,'12345','joan@mail.com'),(4,'Franco','Navarro',20000000002,1,'12345','franco@mail.com'),(5,'Adrian','Meca',20000000003,2,'12345','adrian@mail.com'),(6,'Juan','Carlos',20000000008,2,'12345','juancarlos@mail.com'),(7,'Juan','Lopez',20000000099,3,'12345','jlopez@mail.com'),(8,'Miguel','Jager',20000000126,3,'12345','mjager@mail.com');
+INSERT INTO `usuario` VALUES (1,'Ivan','Biscaldi',20423301024,1,'12345','ivanbisc12@gmail.com'),(2,'Matias','Santolari',20000000000,1,'12345','mati@mail.com'),(3,'Joan','Romero',20000000001,1,'12345','joan@mail.com'),(4,'Franco','Navarro',20000000002,1,'12345','franco@mail.com'),(5,'Adrian','Meca',20000000003,2,'12345','adrian@mail.com'),(6,'Juan','Carlos',20000000008,2,'12345','juancarlos@mail.com'),(8,'Miguel','Jager',20000000126,3,'12345','mjager@mail.com'),(9,'Emiliano','Suarez',20413301034,3,'984532','suarezem@mail.com'),(10,'Norberto ','Enrique',20293301025,3,'12345','nbenrq@mail.com'),(11,'Emanuel','Roble',29006615358,3,'556699','emr123@mail.com'),(12,'Elena','Mora',2725676987,3,'12345','mora99@mail.com'),(13,'Jorge','Carlos',20250001236,2,'12345','jcc@mail.com');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -510,4 +522,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-02 15:48:33
+-- Dump completed on 2022-02-28 20:28:29

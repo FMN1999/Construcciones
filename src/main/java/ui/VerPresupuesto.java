@@ -174,7 +174,13 @@ public class VerPresupuesto extends HttpServlet {
 			}
 		}
 		
-		//falta hacer uso de logica y datos para registar
+		try {
+			PresupuestoLogic.RegistrarPresupuesto(idObra, p);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

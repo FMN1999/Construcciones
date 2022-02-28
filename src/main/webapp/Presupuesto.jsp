@@ -175,7 +175,7 @@
 			<div class="col-3"></div>
 		</div>
 		
-		<form class="was-validated">
+		<form class="was-validated" method="post" action="VerPresupuesto">
 		<label for="idObra">Obra numero:</label>
 		<input id="idObra" name="idObra" readonly="true" class="form-control" value=<%= p.getId_obra() %>>
 		<input id="accion" name="accion" style="display:none;" class="form-control" value=<%= "registrar_presupusto" %>>

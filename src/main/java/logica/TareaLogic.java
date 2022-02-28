@@ -34,11 +34,11 @@ public class TareaLogic {
 		
 		return tareas; 
 	}
-	/*
-	public static void Registrar(Tarea t) throws Exception {
-		source.Registrar(t);
-	}
 	
+	public static void Registrar(int idPresupuesto,ArrayList<Tarea> tareas) throws Exception {
+		source.Registrar(idPresupuesto, tareas);
+	}
+	/*
 	public static void Actualizar(Tarea t) throws Exception {
 		source.Actualizar(t);
 	}
