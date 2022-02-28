@@ -4,8 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import entidades.Material;
+import entidades.Tarea;
 
 public class MaterialData extends Coneccion {
 
@@ -207,6 +209,29 @@ public class MaterialData extends Coneccion {
 		}
 		finally {
 			this.close();
+		}
+	}
+
+	public void RegistrarUsoMateriales(Tarea t, Material m, int cantidad, Date fecha) throws Exception {
+		int n=0;
+		try {
+			this.open();
+			PreparedStatement ps = this.getCon().prepareStatement("INSERT into materiales_tareas(id_material_, id_tarea_, cant_a_usar, fecha) values(?,?, ? , ?)");
+			ps.setInt(1, m.getId_material());
+			ps.setInt(2, t.getIdTarea());
+			ps.setInt(3, cantidad);
+			ps.setDate(4, (java.sql.Date) fecha);
+			
+			n = ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
+		}
+		finally {
+			this.close();
+		}
+		if (n==0) {
+			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
 		}
 	}
 	

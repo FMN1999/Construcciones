@@ -2,6 +2,7 @@ package logica;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import datos.MaterialData;
 import entidades.Material;
@@ -63,5 +64,7 @@ public class MaterialLogic {
 		source.Eliminar(id);
 	}
 	
-	public static void RegistrarUsoMateriales(Tarea t) {}
+	public static void RegistrarUsoMateriales(Tarea t, Material m, int cantidad, Date fecha) throws Exception {
+		source.RegistrarUsoMateriales(t, m, cantidad, fecha);
+	}
 }
