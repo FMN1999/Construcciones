@@ -25,14 +25,15 @@ public class TareaData extends Coneccion
 						+ "inner join tareas t on p.idpresupuesto=t.id_presupuesto\r\n"
 						+ "INNER JOIN tipos_tarea tt on t.id_tipo_tarea=tt.idtipo_tarea \r\n"
 						+ "left join precios_tipo_tarea on tt.idtipo_tarea=precios_tipo_tarea.id_tipo_tarea_\r\n"
-						+ "where (fecha_desde= (select max(fecha_desde) from precios_tipo_tarea where tt.idtipo_tarea=precios_tipo_tarea.id_tipo_tarea_ and fecha_desde <= ?))\r\n"
+						+ "where (fecha_desde= (select max(fecha_desde) from precios_tipo_tarea where tt.idtipo_tarea=precios_tipo_tarea.id_tipo_tarea_ and fecha_desde <= ?)) and t.id_presupuesto =?\r\n"
 						+ "group by t.idtarea, tt.idtipo_tarea\r\n"
 						+ "ORDER BY t.idtarea");
-				ps.setDate(1, new java.sql.Date(p.getFecha_emision().getTime()));
+				ps.setInt(1, p.getId_presupuesto());
+				ps.setDate(2, new java.sql.Date(p.getFecha_emision().getTime()));
 				ResultSet rs=ps.executeQuery();
 				while(rs.next()) {
 					Tarea tarea=new Tarea(rs.getInt("t.idtarea"), rs.getString("t.descripcion"), rs.getFloat("t.cant_m2"), 
-							new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"),0)//por ahora no recupera precio del tipo tarea
+							new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"),rs.getFloat("precio"))//por ahora no recupera precio del tipo tarea
 							);
 					tareas.add(tarea);
 				}

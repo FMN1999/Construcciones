@@ -20,11 +20,11 @@ public class PresupuestoData extends Coneccion {
 		ArrayList<Presupuesto> presups=new ArrayList<Presupuesto>();
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT p.idpresupuesto, p.fecha_emision, p.monto, p.id_obra FROM presupuestos p WHERE p.id_obra=? ");
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT p.idpresupuesto, p.fecha_emision, p.monto, p.id_obra, p.fecha_aceptacion, p.fecha_cancelacion FROM presupuestos p WHERE p.id_obra=? ");
 			ps.setInt(1, o.getIdObra());
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
-				presups.add(new Presupuesto(rs.getInt("p.idpresupuesto"), rs.getDate("p.fecha_emision"), rs.getFloat("p.monto"), rs.getInt("p.id_obra")));
+				presups.add(new Presupuesto(rs.getInt("p.idpresupuesto"), rs.getDate("p.fecha_emision"), rs.getFloat("p.monto"), rs.getInt("p.id_obra"), rs.getDate("p.fecha_aceptacion"), rs.getDate("p.fecha_cancelacion")));
 			}
 			rs.close();
 			ps.close();
@@ -103,7 +103,7 @@ public class PresupuestoData extends Coneccion {
 			ps.setInt(1, id);
 			ResultSet rs=ps.executeQuery();
 			rs.next();
-			Presupuesto p=new Presupuesto(rs.getInt("p.idpresupuesto"), rs.getDate("p.fecha_emision"), rs.getFloat("p.monto"), rs.getInt("p.id_obra"));
+			Presupuesto p=new Presupuesto(rs.getInt("p.idpresupuesto"), rs.getDate("p.fecha_emision"), rs.getFloat("p.monto"), rs.getInt("p.id_obra"), rs.getDate("p.fecha_aceptacion"), rs.getDate("p.fecha_cancelacion"));
 			rs.close();
 			ps.close();
 			return p;

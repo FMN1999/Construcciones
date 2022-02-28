@@ -49,12 +49,14 @@ public class Presupuesto {
 	public void setTareas(ArrayList<Tarea> tareas) {
 		this.tareas = tareas;
 	}
-	public Presupuesto(int id_presupuesto, Date fecha_emision, float monto ,int idobra) {
+	public Presupuesto(int id_presupuesto, Date fecha_emision, float monto ,int idobra, Date aceptacion, Date cancelacion) {
 		super();
 		this.id_presupuesto = id_presupuesto;
 		this.fecha_emision = fecha_emision;
 		this.monto=monto;
 		this.id_obra = idobra;
+		this.fecha_aceptacion =aceptacion;
+		this.fecha_caencelacion = cancelacion;
 	}
 	public Presupuesto() {
 		// TODO Auto-generated constructor stub

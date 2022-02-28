@@ -87,7 +87,7 @@ public class MaquinariaLogic {
 		return t;
 	}
 	
-	public static void RegistrarUsoMaquinas(Tarea t, Maquinaria m, int horas) {
+	public static void RegistrarUsoMaquinas(Tarea t, Maquinaria m, int horas) throws Exception {
 		source.RegistrarUsoMaquinas(t, m, horas);
 	}
 
