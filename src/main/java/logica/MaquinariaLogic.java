@@ -87,8 +87,8 @@ public class MaquinariaLogic {
 		return t;
 	}
 	
-	public static void RegistrarUsoMaquinas(Tarea t) {
-		
+	public static void RegistrarUsoMaquinas(Tarea t, Maquinaria m, int horas) {
+		source.RegistrarUsoMaquinas(t, m, horas);
 	}
 
 }

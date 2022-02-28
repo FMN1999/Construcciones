@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import entidades.Maquinaria;
 import entidades.Material;
+import entidades.Tarea;
 
 public class MaquinariaData extends Coneccion {
 	
@@ -143,6 +144,27 @@ public class MaquinariaData extends Coneccion {
 			this.close();
 		}
 		return maquinas;
+	}
+	public void RegistrarUsoMaquinas(Tarea t, Maquinaria m, int horas) throws Exception {
+		int n=0;
+		try {
+			this.open();
+			PreparedStatement ps = this.getCon().prepareStatement("INSERT into tareas_maquinas(id_material__, id_tarea__, hs_uso) values(?,?,?)");
+			ps.setInt(1, m.getIdMaquina());
+			ps.setInt(2, t.getIdTarea());
+			ps.setInt(3, horas);
+			
+			n = ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
+		}
+		finally {
+			this.close();
+		}
+		if (n==0) {
+			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
+		}
 	}
 
 }
