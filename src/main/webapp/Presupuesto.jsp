@@ -45,6 +45,8 @@
 				<% } else{ %>
 				<div class="carousel-item">
 				<% } %>
+					<h2>Tarea</h2>
+					<br>
 					<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);">
 						<tr>
 							<th style="display:none;">Id tarea</th>
@@ -63,6 +65,8 @@
 					</table>
 					<br>
 					<br>
+					<h2>Materiales asignados</h2>
+					<br>
 					<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);">
 						<tr>
 							<th>Material</th>
@@ -78,6 +82,8 @@
 					<% } %>
 					</table>
 					<br>
+					<br>
+					<h2>Maquinas asignadas</h2>
 					<br>
 					<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);">
 						<tr>
@@ -172,7 +178,7 @@
 		<form class="was-validated">
 		<label for="idObra">Obra numero:</label>
 		<input id="idObra" name="idObra" readonly="true" class="form-control" value=<%= p.getId_obra() %>>
-		
+		<input id="accion" name="accion" style="display:none;" class="form-control" value=<%= "registrar_presupusto" %>>
 		<input id="nl_tareas" name="nl_tareas" style="display:none;" class="form-control" value=<%= 0 %>>
 		<input id="nl_materiales" name="nl_materiales" style="display:none;" class="form-control" value=<%= 0 %>>
 		<input id="nl_maquinas" name="nl_maquinas" style="display:none;" class="form-control" value=<%= 0 %>>
@@ -213,7 +219,7 @@
 		<h2 id="costo_parcial">Costo Parcial: $0</h2>
 		<br><br>
 		
-		<h1>Ingrese precio final: $</h1><input type="number" min=1 id="total" class="form-control" required>
+		<h1>Ingrese precio final: $</h1><input type="number" min=1 id="total" name="total" class="form-control" required>
 		<button class="btn btn-primary" type="sumbit">Registrar presupuesto</button>
 		</form>
 	</div>
@@ -251,6 +257,7 @@
 		const txtar=document.createTextNode(n_tareas);
 		ntar.appendChild(txtar);
 		ntar.setAttribute('id','n_tar_'+n_tareas);
+		ntar.setAttribute('name','n_tar_'+n_tareas);
 		td0.appendChild(ntar);
 		div.appendChild(td0);
 		if(n_maquina>=1){
@@ -282,6 +289,7 @@
 		const pid=document.createTextNode(id_tt);
 		hid.appendChild(pid);
 		hid.setAttribute('id','id_'+n_tareas);
+		hid.setAttribute('name','id_'+n_tareas);
 		//hid.setAttribute('type','number');
 		//hid.setAttribute("readonly" , "readonly" , false);
 		td1.appendChild(hid);
@@ -301,6 +309,7 @@
 		const td3=document.createElement("td");
 		const inpdesc=document.createElement("input");
 		inpdesc.setAttribute('id','desc_tarea_'+n_tareas);
+		inpdesc.setAttribute('name','desc_tarea_'+n_tareas);
 		inpdesc.setAttribute('required','true');
 		inpdesc.setAttribute('class','form-control');
 		inpdesc.setAttribute('placeholder','Descripcion de la tarea');
@@ -310,6 +319,7 @@
 		//cant m2
 		const td4=document.createElement("td");const inpm2=document.createElement("input");
 		inpm2.setAttribute('id','m2_'+n_tareas);
+		inpm2.setAttribute('name','m2_'+n_tareas);
 		inpm2.setAttribute('type','number');
 		inpm2.setAttribute('min',1);
 		inpm2.setAttribute('required','true');
@@ -325,6 +335,7 @@
 		const txtm2 = document.createTextNode(precios_tipos[id_tt]);
 		prec.appendChild(txtm2);
 		prec.setAttribute('id','precio_'+n_tareas);
+		prec.setAttribute('name','precio_'+n_tareas);
 		td5.appendChild(prec);
 		div.appendChild(td5);
 		
@@ -332,6 +343,7 @@
 		const td6=document.createElement("td");
 		const subtotal=document.createElement("p");
 		subtotal.setAttribute('id','subtot_'+n_tareas);
+		subtotal.setAttribute('name','subtot_'+n_tareas);
 		const txsub=document.createTextNode("0");
 		subtotal.appendChild(txsub);
 		td6.appendChild(subtotal);
@@ -400,6 +412,7 @@
 				const pid=document.createTextNode(id_mq);
 				hid.appendChild(pid);
 				hid.setAttribute('id','idmq_'+n_maquina);
+				hid.setAttribute('name','idmq_'+n_maquina);
 				td1.appendChild(hid);
 				div.appendChild(td1);
 				
@@ -417,6 +430,7 @@
 				const td4=document.createElement("td");
 				const inphs=document.createElement("input");
 				inphs.setAttribute('id','cant_hs_'+n_maquina);
+				inphs.setAttribute('name','cant_hs_'+n_maquina);
 				inphs.setAttribute('type','number');
 				inphs.setAttribute('onchange','subtotal_mq_linea('+n_maquina+','+precios_maquina[id_mq]+')');
 				inphs.setAttribute('min',1);
@@ -432,6 +446,7 @@
 				const txths = document.createTextNode(precios_maquina[id_mq]);
 				prec.appendChild(txths);
 				prec.setAttribute('id','precio_mq_'+n_maquina);
+				prec.setAttribute('name','precio_mq_'+n_maquina);
 				td5.appendChild(prec);
 				div.appendChild(td5);
 				
@@ -439,6 +454,7 @@
 				const td0=document.createElement("td");
 				const selct=document.createElement("select");
 				selct.setAttribute('id','n_tar_maq_'+n_maquina);
+				selct.setAttribute('name','n_tar_maq_'+n_maquina);
 				selct.setAttribute('min',1);
 				selct.setAttribute('class','form-select');
 				const opt0=document.createElement("option");
@@ -462,6 +478,7 @@
 				const td6=document.createElement("td");
 				const subtotal=document.createElement("p");
 				subtotal.setAttribute('id','subtot_mq_'+n_maquina);
+				subtotal.setAttribute('name','subtot_mq_'+n_maquina);
 				const txsub=document.createTextNode("0");
 				subtotal.appendChild(txsub);
 				td6.appendChild(subtotal);
@@ -526,6 +543,7 @@
 			const pid=document.createTextNode(id_mt);
 			hid.appendChild(pid);
 			hid.setAttribute('id','idmt_'+n_material);
+			hid.setAttribute('name','idmt_'+n_material);
 			td1.appendChild(hid);
 			div.appendChild(td1);
 			
@@ -543,6 +561,7 @@
 			const td4=document.createElement("td");
 			const inpc=document.createElement("input");
 			inpc.setAttribute('id','cant_unidad_'+n_material);
+			inpc.setAttribute('name','cant_unidad_'+n_material);
 			inpc.setAttribute('type','number');
 			inpc.setAttribute('onchange','subtotal_mt_linea('+n_material+','+precios_material[id_mt]+')');
 			inpc.setAttribute('min',1);
@@ -558,6 +577,7 @@
 			const txtpre = document.createTextNode(precios_material[id_mt]);
 			prec.appendChild(txtpre);
 			prec.setAttribute('id','precio_mt_'+n_material);
+			prec.setAttribute('name','precio_mt_'+n_material);
 			td5.appendChild(prec);
 			div.appendChild(td5);
 			
@@ -565,6 +585,7 @@
 			const td0=document.createElement("td");
 			const selct=document.createElement("select");
 			selct.setAttribute('id','n_tar_mat_'+n_material);
+			selct.setAttribute('name','n_tar_mat_'+n_material);
 			selct.setAttribute('class','form-select');
 			const opt0=document.createElement("option");
 			const opt0tx=document.createTextNode("Seleccione una tarea");
@@ -587,6 +608,7 @@
 			const td6=document.createElement("td");
 			const subtotal=document.createElement("p");
 			subtotal.setAttribute('id','subtot_mt_'+n_material);
+			subtotal.setAttribute('name','subtot_mt_'+n_material);
 			const txsub=document.createTextNode("0");
 			subtotal.appendChild(txsub);
 			td6.appendChild(subtotal);
@@ -679,20 +701,25 @@
 			
 			let idl=document.getElementById('idmq_'+i);
 			idl.setAttribute('id','idmq_'+(i-1));
+			idl.setAttribute('name','idmq_'+(i-1));
 			
 			let cunl=document.getElementById('cant_hs_'+i);
 			cunl.setAttribute('id','cant_hs_'+(i-1));
+			cunl.setAttribute('name','cant_hs_'+(i-1));
 			
 			let pl=document.getElementById('precio_mq_'+i);
 			pl.setAttribute('id','precio_mq_'+(i-1));
+			pl.setAttribute('name','precio_mq_'+(i-1));
 			
 			cunl.setAttribute('onchange','subtotal_mq_linea('+(i-1)+','+parseFloat(pl.innerText)+')');
 			
 			let ntm=document.getElementById('n_tar_maq_'+i);
 			ntm.setAttribute('id','n_tar_maq_'+(i-1));
+			ntm.setAttribute('name','n_tar_maq_'+(i-1));
 			
 			let sub=document.getElementById('subtot_mq_'+i);
 			sub.setAttribute('id','subtot_mq_'+(i-1));
+			sub.setAttribute('name','subtot_mq_'+(i-1));
 			
 			let btn=document.getElementById('rmv_maq_'+i);
 			btn.setAttribute('id','rmv_maq_'+(i-1));
@@ -717,20 +744,25 @@
 			
 			let idl=document.getElementById('idmt_'+i);
 			idl.setAttribute('id','idmt_'+(i-1));
+			idl.setAttribute('name','idmt_'+(i-1));
 			
 			let cunl=document.getElementById('cant_unidad_'+i);
 			cunl.setAttribute('id','cant_unidad_'+(i-1));
+			cunl.setAttribute('name','cant_unidad_'+(i-1));
 			
 			let pl=document.getElementById('precio_mt_'+i);
 			pl.setAttribute('id','precio_mt_'+(i-1));
+			pl.setAttribute('name','precio_mt_'+(i-1));
 			
 			cunl.setAttribute('onchange','subtotal_mt_linea('+(i-1)+','+parseFloat(pl.innerText)+')');
 			
 			let ntm=document.getElementById('n_tar_mat_'+i);
 			ntm.setAttribute('id','n_tar_mat_'+(i-1));
+			ntm.setAttribute('name','n_tar_mat_'+(i-1));
 			
 			let sub=document.getElementById('subtot_mt_'+i);
 			sub.setAttribute('id','subtot_mt_'+(i-1));
+			sub.setAttribute('name','subtot_mt_'+(i-1));
 			
 			let btn=document.getElementById('rmv_mat_'+i);
 			btn.setAttribute('id','rmv_mat_'+(i-1));
@@ -766,7 +798,7 @@
 				slc.selectedIndex=0;
 			}
 		}
-		for(i=1;i<=n_material;i++){
+		for(i=1;i<=n_maquina;i++){
 			let slc=document.getElementById('n_tar_maq_'+i);
 			var condicion=(slc.selectedIndex>=num_tarea);
 			var condicion2=(slc.selectedIndex==num_tarea);
@@ -790,26 +822,32 @@
 			
 			let ntar=document.getElementById('n_tar_'+i);
 			ntar.setAttribute('id','n_tar_'+(i-1));
+			ntar.setAttribute('name','n_tar_'+(i-1));
 			ntar.innerText=(i-1);
 			
 			
 			let id=document.getElementById('id_'+i);
 			id.setAttribute('id','id_'+(i-1));
+			id.setAttribute('name','id_'+(i-1));
 			
 			let desc=document.getElementById('desc_tarea_'+i);
 			desc.setAttribute('id','desc_tarea_'+(i-1));
+			desc.setAttribute('name','desc_tarea_'+(i-1));
 			
 			let m2=document.getElementById('m2_'+i);
 			m2.setAttribute('id','m2_'+(i-1));
+			m2.setAttribute('name','m2_'+(i-1));
 			
 			
 			let pre=document.getElementById('precio_'+i);
 			pre.setAttribute('id','precio_'+(i-1));
+			pre.setAttribute('name','precio_'+(i-1));
 			
 			m2.setAttribute('onchange','subtotal_linea('+(i-1)+','+parseFloat(pre.innerText)+')');
 			
 			let sub=document.getElementById('subtot_'+i);
 			sub.setAttribute('id','subtot_'+(i-1));
+			sub.setAttribute('name','subtot_'+(i-1));
 			
 			let btn=document.getElementById('rmv_tar_'+i);
 			btn.setAttribute('id','rmv_tar_'+(i-1));

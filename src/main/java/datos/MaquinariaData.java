@@ -125,7 +125,7 @@ public class MaquinariaData extends Coneccion {
 			PreparedStatement ps= this.getCon().prepareStatement("SELECT m.idmaquina, descripcion, ifnull(valor_hora,0.0) as precio, tm.hs_uso FROM maquinarias m "
 					+ "left join precios_maquina on m.idmaquina=id_maquina "
 					+ "inner join tareas_maquinas tm on m.idmaquina=tm.id_maquina__ "
-					+ "where (fecha_desde= (select max(fecha_desde) from precios_maquina where id_maquina=idmaquina)) "
+					+ "where (fecha_desde= (select max(fecha_desde) from precios_maquina where id_maquina=idmaquina and fecha_desde <=tm.fecha)) "
 					+ "and tm.id_tarea__=? "
 					+ "group by idmaquina");
 			ps.setInt(1, idTarea);
