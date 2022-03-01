@@ -213,26 +213,35 @@ public class MaterialData extends Coneccion {
 		}
 	}
 
-	public void RegistrarUsoMateriales(Tarea t, Material m, int cantidad, Date fecha) throws Exception {
-		int n=0;
+	public void RegistrarUsoMateriales(int idTarea, ArrayList<Material> mats) throws Exception {
 		try {
 			this.open();
-			PreparedStatement ps = this.getCon().prepareStatement("INSERT into materiales_tareas(id_material_, id_tarea_, cant_a_usar, fecha) values(?,?, ? , ?)");
-			ps.setInt(1, m.getId_material());
-			ps.setInt(2, t.getIdTarea());
-			ps.setInt(3, cantidad);
-			ps.setDate(4, (java.sql.Date) fecha);
+			this.getCon().setAutoCommit(false);
+			PreparedStatement ps = this.getCon().prepareStatement("INSERT into materiales_tareas(id_material_, id_tarea_,"
+					+ " cant_a_usar, fecha) values(?, ?, ?, sysdate())");
+			for(Material m:mats) {
+				ps.setInt(1, m.getId_material());
+				ps.setInt(2, idTarea);
+				ps.setInt(3, m.getCantidad());
+				ps.addBatch();
+			}
 			
-			n = ps.executeUpdate();
+			
+			int[] n=ps.executeBatch();
+			for(int i:n) {
+				if(i==0) {
+					this.getCon().rollback();
+                    ps.close();
+                    throw new Exception("No se ha registrado el material a usar, intentelo de nuevo");
+				}
+			}
+			this.getCon().commit();
 			ps.close();
 		} catch (SQLException e) {
 			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
 		}
 		finally {
 			this.close();
-		}
-		if (n==0) {
-			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
 		}
 	}
 	

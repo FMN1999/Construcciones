@@ -68,15 +68,10 @@ public class PresupuestoLogic {
 		return p;
 	}
 	
-	public static void RegistrarPresupuesto(int idObra,Presupuesto p) throws Exception{
-		source.Registrar(idObra, p);
-		ArrayList<Presupuesto> pres=getPresuspuestos(new Obra(idObra,"",""), false);
-		for(Presupuesto pre:pres) {
-			if(p.getFecha_emision()==pre.getFecha_emision() && p.getMonto()==pre.getMonto()) {
-				p.setId_presupuesto(pre.getId_presupuesto());
-			}
-		}
+	public static int RegistrarPresupuesto(int idObra,Presupuesto p) throws Exception{
+		p.setId_presupuesto(source.Registrar(idObra, p));
 		TareaLogic.Registrar(p.getId_presupuesto(), p.getTareas());
+		return p.getId_presupuesto();
 		
 	}
 }

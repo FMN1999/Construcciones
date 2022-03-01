@@ -36,7 +36,11 @@ public class TareaLogic {
 	}
 	
 	public static void Registrar(int idPresupuesto,ArrayList<Tarea> tareas) throws Exception {
-		source.Registrar(idPresupuesto, tareas);
+		for(Tarea t:tareas) {
+			t.setIdTarea(source.Registrar(idPresupuesto, t));
+			MaquinariaLogic.RegistrarUsoMaquinas(t.getIdTarea(), t.getMaquinas());
+			MaterialLogic.RegistrarUsoMateriales(t.getIdTarea(), t.getMateriales());
+		}
 	}
 	/*
 	public static void Actualizar(Tarea t) throws Exception {

@@ -3,6 +3,7 @@ package datos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import entidades.Material;
@@ -71,29 +72,31 @@ public class TareaData extends Coneccion
 			return tareas;	
 		}*/
 		
-		public void Registrar(int idpresupuesto, ArrayList<Tarea> ts) throws Exception {
+		public int Registrar(int idpresupuesto, Tarea t) throws Exception {
 			try {
 				this.open();
-				this.getCon().setAutoCommit(false);
-				PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO tareas (descripcion, cant_m2, id_presupuesto, id_tipo_tarea ) VALUES (?,?,?,?)");
-				for(Tarea t:ts){
-					ps.setString(1, t.getDescripcion());
-					ps.setFloat(2, t.getCant_m2());
-					ps.setInt(3, idpresupuesto);
-					ps.setInt(4, t.getTipo_tarea().getId_tipo_tarea());
-					ps.addBatch();
-				}
+				PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO tareas (descripcion, cant_m2, "
+						+ "id_presupuesto, id_tipo_tarea ) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, t.getDescripcion());
+				ps.setFloat(2, t.getCant_m2());
+				ps.setInt(3, idpresupuesto);
+				ps.setInt(4, t.getTipo_tarea().getId_tipo_tarea());
 				
-				int[] n=ps.executeBatch();
-				for (int i : n) {
-	                if (i == 0) {
-	                    this.getCon().rollback();
+				int n=ps.executeUpdate();
+				if (n == 0) {
 	                    ps.close();
 	                    throw new Exception("No se han registrado las tareas, intentelo de nuevo");
 	                }
-	            }
-				this.getCon().commit();
+				else {
+					ResultSet generatedKeys = ps.getGeneratedKeys();
+					if (generatedKeys.next()) {
+					         int idGenerado = generatedKeys.getInt(1);
+					         ps.close();
+					         return idGenerado;
+					}
+				}
 				ps.close();
+				throw new Exception("No se han registrado las tareas, intentelo de nuevo");
 				
 			}
 			catch(Exception e) {

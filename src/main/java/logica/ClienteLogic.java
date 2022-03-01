@@ -39,4 +39,9 @@ public class ClienteLogic {
 		source.Eliminar(cuil);
 		UsuarioLogic.Eliminar(id);
 	}
+	
+	public static Cliente ObtenerDuenioObra(int idObra) throws Exception {
+		Cliente c=source.ObtenerDuenioObra(idObra);
+		return c;
+	}
 }

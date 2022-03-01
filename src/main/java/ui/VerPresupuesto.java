@@ -5,15 +5,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.print.attribute.standard.DateTimeAtCreation;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entidades.Cliente;
 import entidades.Maquinaria;
 import entidades.Material;
 import entidades.Obra;
+import logica.ClienteLogic;
 import logica.MaquinariaLogic;
 import logica.MaterialLogic;
 import logica.ObraLogic;
@@ -22,6 +26,7 @@ import entidades.Tarea;
 import entidades.Tipo_Tarea;
 import logica.PresupuestoLogic;
 import logica.Tipo_TareaLogic;
+import mail_magement.mail_util;
 
 /**
  * Servlet implementation class VerPresupuesto
@@ -176,10 +181,18 @@ public class VerPresupuesto extends HttpServlet {
 		
 		try {
 			PresupuestoLogic.RegistrarPresupuesto(idObra, p);
+			Cliente c=ClienteLogic.ObtenerDuenioObra(idObra);
+			Obra o=ObraLogic.getOne(idObra);
+			mail_util.InformarPresupuesto(o.getDireccion(), c.getEmail(), c.getApellido()+" "+c.getNombre());
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			request.setAttribute("error", e.getMessage());
 		}
+		response.sendRedirect("Obras"); //no es posible cambiar a doget y enviar los parametros recien
+										//registrados como si fuera solicitud de get(se puede hacer una o la otra)
+										//por lo cual resulta conveniente enviar a obras o home
 		
 	}
 

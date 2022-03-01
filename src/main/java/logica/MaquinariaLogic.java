@@ -87,8 +87,8 @@ public class MaquinariaLogic {
 		return t;
 	}
 	
-	public static void RegistrarUsoMaquinas(Tarea t, Maquinaria m, int horas) throws Exception {
-		source.RegistrarUsoMaquinas(t, m, horas);
+	public static void RegistrarUsoMaquinas(int idTarea, ArrayList<Maquinaria> mqs) throws Exception {
+		source.RegistrarUsoMaquinas(idTarea, mqs);
 	}
 
 }

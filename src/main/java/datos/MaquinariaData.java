@@ -146,25 +146,36 @@ public class MaquinariaData extends Coneccion {
 		}
 		return maquinas;
 	}
-	public void RegistrarUsoMaquinas(Tarea t, Maquinaria m, int horas) throws Exception {
-		int n=0;
+	public void RegistrarUsoMaquinas(int idTarea, ArrayList<Maquinaria> maqs) throws Exception {
 		try {
 			this.open();
-			PreparedStatement ps = this.getCon().prepareStatement("INSERT into tareas_maquinas(id_material__, id_tarea__, hs_uso) values(?,?,?)");
-			ps.setInt(1, m.getIdMaquina());
-			ps.setInt(2, t.getIdTarea());
-			ps.setInt(3, horas);
+			this.getCon().setAutoCommit(false);
+			PreparedStatement ps = this.getCon().prepareStatement("INSERT into tareas_maquinas(id_maquina__, id_tarea__, hs_uso, fecha) "
+					+ "values(?,?,?, sysdate())");
+			for(Maquinaria m:maqs) {
+				ps.setInt(1, m.getIdMaquina());
+				ps.setInt(2, idTarea);
+				ps.setInt(3, m.getCantHoras());
+				ps.addBatch();
+			}
 			
-			n = ps.executeUpdate();
+			int[] n = ps.executeBatch();
+			
+			for (int i : n) {
+                if (i == 0) {
+                    this.getCon().rollback();
+                    ps.close();
+                    throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
+                }
+            }
+			this.getCon().commit();
+			
 			ps.close();
 		} catch (SQLException e) {
 			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
 		}
 		finally {
 			this.close();
-		}
-		if (n==0) {
-			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
 		}
 	}
 

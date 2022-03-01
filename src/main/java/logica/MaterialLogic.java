@@ -64,7 +64,7 @@ public class MaterialLogic {
 		source.Eliminar(id);
 	}
 	
-	public static void RegistrarUsoMateriales(Tarea t, Material m, int cantidad, Date fecha) throws Exception {
-		source.RegistrarUsoMateriales(t, m, cantidad, fecha);
+	public static void RegistrarUsoMateriales(int idTarea, ArrayList<Material> mats) throws Exception {
+		source.RegistrarUsoMateriales(idTarea, mats);
 	}
 }

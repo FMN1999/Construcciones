@@ -32,7 +32,10 @@
 		<br>
 		
 		<% if(p.getId_presupuesto()!=0){ %>
-		
+		<h1>Presupuesto nº<%= p.getId_presupuesto() %></h1>
+		<br>
+		<h1>Total presupuestado: $<%=p.getMonto() %></h1>
+		<br>
 		<h3 align="center">Tareas a realizar</h3>
 		<%ArrayList<Tarea> ts = p.getTareas(); %>
 		<div id="demo" class="carousel slide" data-bs-ride="carousel">
@@ -253,9 +256,10 @@
 		
 		//nro de tarea
 		const td0=document.createElement("td");
-		const ntar= document.createElement("p");
-		const txtar=document.createTextNode(n_tareas);
-		ntar.appendChild(txtar);
+		const ntar= document.createElement("input");
+		ntar.value=n_tareas;
+		ntar.setAttribute('class','form-control');
+		ntar.setAttribute('readonly','true');
 		ntar.setAttribute('id','n_tar_'+n_tareas);
 		ntar.setAttribute('name','n_tar_'+n_tareas);
 		td0.appendChild(ntar);
@@ -285,9 +289,10 @@
 		
 		//id tipo de la tarea
 		const td1=document.createElement("td");
-		const hid= document.createElement("p");
-		const pid=document.createTextNode(id_tt);
-		hid.appendChild(pid);
+		const hid= document.createElement("input");
+		hid.value=id_tt;
+		hid.setAttribute('readonly','true');
+		hid.setAttribute('class','form-control');
 		hid.setAttribute('id','id_'+n_tareas);
 		hid.setAttribute('name','id_'+n_tareas);
 		//hid.setAttribute('type','number');
@@ -408,9 +413,10 @@
 				
 				//id maquina
 				const td1=document.createElement("td");
-				const hid= document.createElement("p");
-				const pid=document.createTextNode(id_mq);
-				hid.appendChild(pid);
+				const hid= document.createElement("input");
+				hid.value=id_mq;
+				hid.setAttribute('readonly','true');
+				hid.setAttribute('class','form-control');
 				hid.setAttribute('id','idmq_'+n_maquina);
 				hid.setAttribute('name','idmq_'+n_maquina);
 				td1.appendChild(hid);
@@ -539,9 +545,10 @@
 			
 			//id material
 			const td1=document.createElement("td");
-			const hid= document.createElement("p");
-			const pid=document.createTextNode(id_mt);
-			hid.appendChild(pid);
+			const hid= document.createElement("input");
+			hid.value=id_mt;
+			hid.setAttribute('readonly','true');
+			hid.setAttribute('class','form-control');
 			hid.setAttribute('id','idmt_'+n_material);
 			hid.setAttribute('name','idmt_'+n_material);
 			td1.appendChild(hid);
@@ -824,6 +831,7 @@
 			ntar.setAttribute('id','n_tar_'+(i-1));
 			ntar.setAttribute('name','n_tar_'+(i-1));
 			ntar.innerText=(i-1);
+			ntar.value=(i-1);
 			
 			
 			let id=document.getElementById('id_'+i);

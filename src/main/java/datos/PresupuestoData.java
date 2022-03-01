@@ -4,6 +4,7 @@ package datos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import entidades.Maquinaria;
@@ -116,20 +117,27 @@ public class PresupuestoData extends Coneccion {
 		}
 	}
 	
-	public void Registrar(int idobra,Presupuesto p) throws Exception{
+	public int Registrar(int idobra,Presupuesto p) throws Exception{
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO presupuestos(fecha_emision, monto, id_obra) VALUES(?, ?, ?)");
+			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO presupuestos(fecha_emision, monto, id_obra) "
+					+ "VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			ps.setDate(1, new java.sql.Date(p.getFecha_emision().getTime()));
 			ps.setFloat(2, p.getMonto());
 			ps.setInt(3, idobra);
 			int n=ps.executeUpdate();
-			ps.close();
 			if(n==0) {
 				throw new Exception("No fue posible registrar el presupuesto");
 			}
+			ResultSet r=ps.getGeneratedKeys();
+			if (r.next()) {
+		         int idGenerado = r.getInt(1);
+		         ps.close();
+				return idGenerado;
+			}
+			throw new Exception("No fue posible recuperar la clave de presupuesto autogenerada");
 			
-		}catch (SQLException e) {
+		}catch (Exception e) {
 			throw e;
 		}
 		finally {
