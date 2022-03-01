@@ -1,5 +1,6 @@
 package entidades;
 import java.util.Date;
+import java.util.Map;
 
 public class Trabajador extends Usuario {
 	private long cuil;
@@ -9,6 +10,19 @@ public class Trabajador extends Usuario {
 	private boolean disponible;
 	private String tipoEmpleado;
 	private float precioHS;
+	private Map<Tarea, Float> trabajador_tarea;
+	
+	public void setTrabajadorTarea(Tarea t, Float monto_a_cobrar) {
+		this.trabajador_tarea.put(t, monto_a_cobrar);
+	}
+	
+	public Map<Tarea, Float> getTrabajadorTarea(){
+		return trabajador_tarea;
+	}
+	
+	public float setMontoTotal() {
+		 return (float) this.trabajador_tarea.values().stream().mapToDouble(i -> i).sum();
+	}
 	
 	public long getCuil() {
 		return cuil;

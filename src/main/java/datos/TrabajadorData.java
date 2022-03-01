@@ -7,10 +7,48 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Map;
+import entidades.Tarea;
+import entidades.Tipo_Tarea;
+
+import java.util.HashMap;
 
 import entidades.Trabajador;
 
 public class TrabajadorData extends Coneccion {
+	
+	public Map<Tarea, Float> setTareaEmpleados(Trabajador t){
+		Map<Tarea, Float> tem = new HashMap<Tarea,Float>();
+		this.open();
+		try {
+			PreparedStatement ps=this.getCon().prepareStatement("select t.cuil, ta.idtarea, ta.cant_m2, ta.descripcion, tt.cant_horas_trabajadas,\r\n"
+					+ "tipo.idtipo_tarea, tipo.descripcion, ptt.precio_m2,\r\n"
+					+ "(ttra.precioHora * tt.cant_horas_trabajadas) as monto_a_pagar\r\n"
+					+ "from trabajadores t\r\n"
+					+ "inner join trabajador_tarea tt on tt.cuil_trabajador = t.cuil\r\n"
+					+ "inner join tareas ta on ta.idtarea = tt.id_tarea_asignada\r\n"
+					+ "inner join tipos_tarea tipo on tipo.idtipo_tarea = ta.id_tipo_tarea\r\n"
+					+ "inner join precios_tipo_tarea ptt on ptt.id_tipo_tarea_ = tipo.idtipo_tarea\r\n"
+					+ "inner join tipo_trabajador ttra on ttra.idtipo_trabajador = t.tipo_trabajador\r\n"
+					+ "where (ptt.fecha_desde= (select max(pt.fecha_desde) from precios_tipo_tarea pt where tipo.idtipo_tarea=pt.id_tipo_tarea_)) \r\n"
+					+ "and t.cuil=?;");
+			ps.setLong(1, t.getCuil());
+			ResultSet rs=ps.executeQuery();
+			
+			while(rs.next()) {
+				Tipo_Tarea tipo = new Tipo_Tarea(rs.getInt("tipo.idtipo_tarea"), rs.getString("tipo.descripcion"),rs.getFloat("ptt.precio_m2"));
+				Tarea tarea = new Tarea(rs.getInt("ta.idtarea"), rs.getString("ta.descripcion"), rs.getFloat("ta.cant_m2"), tipo);
+				tem.put(tarea, rs.getFloat("monto_a_pagar"));
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.close();
+		return tem;		
+	}
 	
 	public ArrayList<Trabajador> getOficiales() throws Exception{
 		ArrayList<Trabajador> trs=new ArrayList<Trabajador>();
