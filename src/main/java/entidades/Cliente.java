@@ -34,6 +34,14 @@ public class Cliente extends Usuario{
 		this.telefono = telefono;
 	}
 	
+	public Obra getObra(int idObra) {
+		for (Obra o : getObras()) {
+			if (o.getIdObra() == idObra) {
+				return o;
+			}
+		}
+		return null;
+	}
 	
 	public ArrayList<Obra> getObras() {
 		return obras;

@@ -6,23 +6,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import entidades.Cliente;
-import entidades.Usuario;
-import logica.ClienteLogic;
 
 /**
- * Servlet implementation class Home
+ * Servlet implementation class Tareas
  */
-@WebServlet(urlPatterns ={"/Home","/"})
-public class Home extends HttpServlet {
+@WebServlet("/Tareas")
+public class Tareas extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Home() {
+    public Tareas() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,26 +27,7 @@ public class Home extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession se = request.getSession();
-		Usuario u = (Usuario)se.getAttribute("usuario");
-		switch(u.getTipo()) {
-		case "Cliente":{
-			//el try esta recuperando el cliente y las obras del cliente.
-			try {
-				Cliente c = ClienteLogic.getOne(u.getCuil());
-				se.setAttribute("cliente", c);
-			}
-			catch(Exception e) {
-				request.setAttribute("error", e.getMessage());
-				return;
-			}
-			break;
-		}
-		case "Trabajador":{
-			break;
-		}
-		}
-		request.getRequestDispatcher("./Home.jsp").forward(request, response);
+		request.getRequestDispatcher("./Tareas.jsp").forward(request, response);
 	}
 
 	/**

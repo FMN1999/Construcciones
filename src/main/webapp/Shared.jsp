@@ -99,9 +99,17 @@
 									class="bi d-block mx-auto mb-1" width="24" height="24">
 									<use xlink:href="#speedometer2"></use></svg> Dashboard
 						</a></li>
+						<li><a href="Obras" class="nav-link text-white"> <svg
+									class="bi d-block mx-auto mb-1" width="24" height="24">
+									<use xlink:href="#speedometer2"></use></svg> Obras
+						</a></li>
 						<li><a href="Tipo_Tareas" class="nav-link text-white"> <svg
 									class="bi d-block mx-auto mb-1" width="24" height="24">
 									<use xlink:href="#screwdriver"></use></svg> Tipos Tareas
+						</a></li>
+						<li><a href="Tareas" class="nav-link text-white"> <svg
+									class="bi d-block mx-auto mb-1" width="24" height="24">
+									<use xlink:href="#screwdriver"></use></svg> Tareas
 						</a></li>
 						<li><a href="Materiales" class="nav-link text-white"> <svg
 									class="bi d-block mx-auto mb-1" width="24" height="24">
@@ -127,6 +135,10 @@
 									height="24">
 									<use xlink:href="#person-badge"></use></svg> Empleados
 						</a></li>
+						<li><a href="Obras" class="nav-link text-white"> <svg
+									class="bi d-block mx-auto mb-1" width="24" height="24">
+									<use xlink:href="#obra"></use></svg> Obras
+						</a></li>
 						<% } %>
 						<% if(us.getTipo().equalsIgnoreCase("Trabajador")) { %>
 						<li><a href="#" class="nav-link text-white"> <svg
@@ -135,11 +147,15 @@
 						</a></li>
 						<li><a href="#" class="nav-link text-white"> <svg
 									class="bi d-block mx-auto mb-1" width="24" height="24">
-									<use xlink:href="#obra"></use></svg> Obras
+									<use xlink:href="#obra"></use></svg> Mis Obras
 						</a></li>
 						<% } %>
 						
 						<% if(us.getTipo().equalsIgnoreCase("Cliente")) { %>
+						<li><a href="ObrasCliente" class="nav-link text-white"> <svg
+									class="bi d-block mx-auto mb-1" width="24" height="24">
+									<use xlink:href="#obra"></use></svg> Mis Obras
+						</a></li>
 						<% } %>
 
 					</ul>

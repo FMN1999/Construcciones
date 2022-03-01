@@ -4,8 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import entidades.Material;
+import entidades.Tarea;
 
 public class MaterialData extends Coneccion {
 
@@ -25,6 +27,35 @@ public class MaterialData extends Coneccion {
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				Material m=new Material(rs.getInt("materiales.idmaterial"), rs.getString("descripcion"), rs.getFloat("precio"));
+				materiales.add(m);
+			}
+			rs.close();
+			ps.close();
+		}
+		catch(Exception e) {
+			throw e;
+		}
+		finally {
+			this.close();
+		}
+		return materiales;
+	}
+	
+	public ArrayList<Material> getMaterialesTarea(int idTarea) throws SQLException, Exception{
+		ArrayList<Material> materiales=new ArrayList<Material>();
+		try {
+			this.open();
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT materiales.idmaterial, descripcion, ifnull(precio,0.0) as precio, mt.cant_a_usar FROM materiales "
+					+ "left join precios_material on materiales.idmaterial=id_material "
+					+ "inner join materiales_tareas mt on materiales.idmaterial=mt.id_material_ "
+					+ "where (fecha_desde= (select max(pm.fecha_desde) from precios_material pm where id_material=idmaterial and pm.fecha_desde <= mt.fecha)) "
+					+ "and mt.id_tarea_=? "
+					+ "group by idmaterial");
+			ps.setInt(1, idTarea);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				Material m=new Material(rs.getInt("materiales.idmaterial"), rs.getString("descripcion"), rs.getFloat("precio"));
+				m.setCantidad(rs.getInt("mt.cant_a_usar"));
 				materiales.add(m);
 			}
 			rs.close();
@@ -176,6 +207,38 @@ public class MaterialData extends Coneccion {
 		
 		catch(Exception e) {
 			throw e;
+		}
+		finally {
+			this.close();
+		}
+	}
+
+	public void RegistrarUsoMateriales(int idTarea, ArrayList<Material> mats) throws Exception {
+		try {
+			this.open();
+			this.getCon().setAutoCommit(false);
+			PreparedStatement ps = this.getCon().prepareStatement("INSERT into materiales_tareas(id_material_, id_tarea_,"
+					+ " cant_a_usar, fecha) values(?, ?, ?, sysdate())");
+			for(Material m:mats) {
+				ps.setInt(1, m.getId_material());
+				ps.setInt(2, idTarea);
+				ps.setInt(3, m.getCantidad());
+				ps.addBatch();
+			}
+			
+			
+			int[] n=ps.executeBatch();
+			for(int i:n) {
+				if(i==0) {
+					this.getCon().rollback();
+                    ps.close();
+                    throw new Exception("No se ha registrado el material a usar, intentelo de nuevo");
+				}
+			}
+			this.getCon().commit();
+			ps.close();
+		} catch (SQLException e) {
+			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
 		}
 		finally {
 			this.close();

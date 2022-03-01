@@ -17,7 +17,7 @@ import entidades.Usuario;
 /**
  * Servlet Filter implementation class ClienteFilter
  */
-@WebFilter("/ClienteFilter")
+@WebFilter(urlPatterns = { "/ObrasCliente", "/ClienteFilter"}, servletNames = {"ObrasCliente"})
 public class ClienteFilter implements Filter {
 
     /**

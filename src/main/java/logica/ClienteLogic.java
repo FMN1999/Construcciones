@@ -15,6 +15,15 @@ public class ClienteLogic {
 		ArrayList<Cliente> trs=source.getAll();
 		return trs;
 	}
+	public static Cliente getOne(long cuil) throws Exception {
+		ArrayList<Cliente> clis=source.getAll();
+		for(Cliente c: clis) {
+			if(c.getCuil()==cuil) {
+				return ObraLogic.setObras(c);
+			}
+		}
+		throw new Exception("No se encontro el cliente");
+	}
 	
 	public static void Registrar(Cliente c) throws Exception {
 		UsuarioLogic.Registrar(c);
@@ -29,5 +38,10 @@ public class ClienteLogic {
 	public static void Eliminar(int id, long cuil) throws Exception{
 		source.Eliminar(cuil);
 		UsuarioLogic.Eliminar(id);
+	}
+	
+	public static Cliente ObtenerDuenioObra(int idObra) throws Exception {
+		Cliente c=source.ObtenerDuenioObra(idObra);
+		return c;
 	}
 }

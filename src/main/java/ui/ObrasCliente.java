@@ -8,27 +8,25 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import entidades.Cliente;
-import entidades.Material;
 import entidades.Obra;
-import entidades.Proveedor;
+import entidades.Usuario;
 import logica.ClienteLogic;
-import logica.MaterialLogic;
 import logica.ObraLogic;
-import logica.ProvedorLogic;
 
 /**
- * Servlet implementation class Obra
+ * Servlet implementation class ObrasCliente
  */
-@WebServlet(urlPatterns ={"/Obras"})
-public class Obras extends HttpServlet {
+@WebServlet("/ObrasCliente")
+public class ObrasCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Obras() {
+    public ObrasCliente() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,11 +34,14 @@ public class Obras extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ArrayList<Cliente> clientes=null;
+		ArrayList<Cliente> clientes= new ArrayList<Cliente>();
+		HttpSession sesion = request.getSession();
+		Usuario user = (Usuario)sesion.getAttribute("usuario");
 		try {
-			clientes=ClienteLogic.getAll();
+			Cliente c = ClienteLogic.getOne(user.getCuil());
+			clientes.add(c);
 			clientes=ObraLogic.getAll(clientes);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -48,7 +49,7 @@ public class Obras extends HttpServlet {
 			request.setAttribute("error", e.getMessage());
 		}
 		request.setAttribute("clientes", clientes);
-		request.getRequestDispatcher("./Obras.jsp").forward(request, response);
+		request.getRequestDispatcher("./ObrasCliente.jsp").forward(request, response);
 	}
 	
 
@@ -84,7 +85,10 @@ public class Obras extends HttpServlet {
 	protected void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		try {
 			String direccion=(String)request.getParameter("direccion");
-			int id_cli=Integer.parseInt(request.getParameter("idcliente"));
+			HttpSession sesion = request.getSession();
+			Usuario cli = (Usuario)sesion.getAttribute("usuario");			
+			Cliente c = ClienteLogic.getOne(cli.getCuil());
+			int id_cli = c.getIdCliente();
 			String desc = (String)request.getParameter("descripcion");
 			Obra o=new Obra(0,direccion, desc);
 			ObraLogic.Registrar(o, id_cli);
@@ -98,7 +102,6 @@ public class Obras extends HttpServlet {
 		try {
 			int id_obra=Integer.parseInt(request.getParameter("idobra"));
 			String direccion=(String)request.getParameter("direccion");
-			int id_cli=Integer.parseInt(request.getParameter("idcliente"));
 			String desc = (String)request.getParameter("descripcion");
 			Obra o=new Obra(id_obra, direccion, desc);
 			ObraLogic.Actualizar(o);
@@ -117,6 +120,5 @@ public class Obras extends HttpServlet {
 			request.setAttribute("error", "No fue posible eliminar la obra>> "+e.getMessage());
 		}
 	}
-	
 
 }

@@ -1,28 +1,29 @@
 package ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import entidades.Cliente;
-import entidades.Usuario;
-import logica.ClienteLogic;
+import entidades.Obra;
+import logica.ObraLogic;
+import logica.PresupuestoLogic;
 
 /**
- * Servlet implementation class Home
+ * Servlet implementation class Presupuesto
  */
-@WebServlet(urlPatterns ={"/Home","/"})
-public class Home extends HttpServlet {
+@WebServlet("/Presupuesto")
+public class Presupuesto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Home() {
+    public Presupuesto() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,26 +33,19 @@ public class Home extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession se = request.getSession();
-		Usuario u = (Usuario)se.getAttribute("usuario");
-		switch(u.getTipo()) {
-		case "Cliente":{
-			//el try esta recuperando el cliente y las obras del cliente.
-			try {
-				Cliente c = ClienteLogic.getOne(u.getCuil());
-				se.setAttribute("cliente", c);
-			}
-			catch(Exception e) {
-				request.setAttribute("error", e.getMessage());
-				return;
-			}
-			break;
+		int id = Integer.parseInt(request.getParameter("idObra"));
+		try {
+			Obra o = ObraLogic.getOne(id);
+			request.setAttribute("obra", o);
+			
+			ArrayList<entidades.Presupuesto> psp= PresupuestoLogic.getPresuspuestos(o, false);
+			request.setAttribute("presupuestos", psp);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			request.setAttribute("error", "Error al cargar los datos de la obra: "+e.getMessage());
 		}
-		case "Trabajador":{
-			break;
-		}
-		}
-		request.getRequestDispatcher("./Home.jsp").forward(request, response);
+		request.getRequestDispatcher("./Presupuestos.jsp").forward(request, response);
 	}
 
 	/**

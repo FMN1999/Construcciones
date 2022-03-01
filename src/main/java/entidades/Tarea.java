@@ -1,12 +1,16 @@
 package entidades;
+import java.util.ArrayList;
+
+import logica.Tipo_TareaLogic;
 
 public class Tarea {
 	
 	private int idTarea;
 	private String descripcion;
 	private Float cant_m2;
-	private int id_presupuesto;
-	private int id_tipo_tarea;
+	private Tipo_Tarea tipo_tarea;
+	private ArrayList<Material> materiales;
+	private ArrayList<Maquinaria> maquinas;
 	
 	public int getIdTarea() {
 		return idTarea;
@@ -26,19 +30,36 @@ public class Tarea {
 	public void setCant_m2(Float cant_m2) {
 		this.cant_m2 = cant_m2;
 	}
-	public int getId_presupuesto() {
-		return id_presupuesto;
-	}
-	public void setId_presupuesto(int id_presupuesto) {
-		this.id_presupuesto = id_presupuesto;
-	}
-	public int getId_tipo_tarea() {
-		return id_tipo_tarea;
-	}
-	public void setId_tipo_tarea(int id_tipo_tarea) {
-		this.id_tipo_tarea = id_tipo_tarea;
-	}
 	
+	public Tarea(int idTarea, String descripcion, Float cant_m2, Tipo_Tarea tipo_tarea ) {
+		this.idTarea = idTarea;
+		this.descripcion = descripcion;
+		this.cant_m2 = cant_m2;
+		this.tipo_tarea= tipo_tarea;
+		this.maquinas=new ArrayList<Maquinaria>();
+		this.materiales=new ArrayList<Material>();
+	}
+	public Tipo_Tarea getTipo_tarea() {
+		return tipo_tarea;
+	}
+	public void setTipo_tarea(Tipo_Tarea tipo_tarea) {
+		this.tipo_tarea = tipo_tarea;
+	}
+	public ArrayList<Material> getMateriales() {
+		return materiales;
+	}
+	public void setMateriales(ArrayList<Material> materiales) {
+		this.materiales = materiales;
+	}
+	public Float getMontoParcial() {
+		return this.cant_m2 * this.tipo_tarea.getPrecio();
+	}
+	public ArrayList<Maquinaria> getMaquinas() {
+		return maquinas;
+	}
+	public void setMaquinas(ArrayList<Maquinaria> maquinas) {
+		this.maquinas = maquinas;
+	}
 	
 
 }

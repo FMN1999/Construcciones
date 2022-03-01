@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import datos.MaquinariaData;
 import entidades.Maquinaria;
+import entidades.Tarea;
 
 public class MaquinariaLogic {
 	
@@ -66,6 +67,28 @@ public class MaquinariaLogic {
 			throw new Exception(msg);
 		}
 		return maqs;
+	}
+	
+	public static ArrayList<Tarea> maquinas_tareas(ArrayList<Tarea> tareas) throws Exception{
+		
+			for(Tarea t:tareas) {
+				try{
+					t.setMaquinas(source.getMaquinasTarea(t.getIdTarea()));
+				}catch(Exception e) {
+					throw new Exception("Se produjo un error mientras se cargaban las maquinas de la tarea "
+							+t.getIdTarea()+"-"+t.getTipo_tarea().getDescripcion()+":"+e.getMessage());
+				}
+				}
+		return tareas;
+	}
+	
+	public static Tarea getMaquinasTarea(Tarea t) throws Exception{
+		t.setMaquinas(source.getMaquinasTarea(t.getIdTarea()));
+		return t;
+	}
+	
+	public static void RegistrarUsoMaquinas(int idTarea, ArrayList<Maquinaria> mqs) throws Exception {
+		source.RegistrarUsoMaquinas(idTarea, mqs);
 	}
 
 }

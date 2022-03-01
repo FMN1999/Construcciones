@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import entidades.Maquinaria;
+import entidades.Material;
+import entidades.Tarea;
 
 public class MaquinariaData extends Coneccion {
 	
@@ -113,6 +115,67 @@ public class MaquinariaData extends Coneccion {
 		
 		if(n==0) {
 			throw new Exception("No fue posible eliminar la maquinaria, intentelo de nuevo!");
+		}
+	}
+	public ArrayList<Maquinaria> getMaquinasTarea(int idTarea) throws Exception {
+		// TODO Auto-generated method stub
+		ArrayList<Maquinaria> maquinas=new ArrayList<Maquinaria>();
+		try {
+			this.open();
+			PreparedStatement ps= this.getCon().prepareStatement("SELECT m.idmaquina, descripcion, ifnull(valor_hora,0.0) as precio, tm.hs_uso FROM maquinarias m "
+					+ "left join precios_maquina on m.idmaquina=id_maquina "
+					+ "inner join tareas_maquinas tm on m.idmaquina=tm.id_maquina__ "
+					+ "where (fecha_desde= (select max(fecha_desde) from precios_maquina where id_maquina=idmaquina and fecha_desde <=tm.fecha)) "
+					+ "and tm.id_tarea__=? "
+					+ "group by idmaquina");
+			ps.setInt(1, idTarea);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				Maquinaria m=new Maquinaria(rs.getInt("m.idmaquina"), rs.getString("descripcion"), rs.getFloat("precio"));
+				m.setCantHoras(rs.getInt("tm.hs_uso"));
+				maquinas.add(m);
+			}
+			rs.close();
+			ps.close();
+		}
+		catch(Exception e) {
+			throw e;
+		}
+		finally {
+			this.close();
+		}
+		return maquinas;
+	}
+	public void RegistrarUsoMaquinas(int idTarea, ArrayList<Maquinaria> maqs) throws Exception {
+		try {
+			this.open();
+			this.getCon().setAutoCommit(false);
+			PreparedStatement ps = this.getCon().prepareStatement("INSERT into tareas_maquinas(id_maquina__, id_tarea__, hs_uso, fecha) "
+					+ "values(?,?,?, sysdate())");
+			for(Maquinaria m:maqs) {
+				ps.setInt(1, m.getIdMaquina());
+				ps.setInt(2, idTarea);
+				ps.setInt(3, m.getCantHoras());
+				ps.addBatch();
+			}
+			
+			int[] n = ps.executeBatch();
+			
+			for (int i : n) {
+                if (i == 0) {
+                    this.getCon().rollback();
+                    ps.close();
+                    throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
+                }
+            }
+			this.getCon().commit();
+			
+			ps.close();
+		} catch (SQLException e) {
+			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
+		}
+		finally {
+			this.close();
 		}
 	}
 

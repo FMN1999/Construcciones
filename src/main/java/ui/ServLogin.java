@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entidades.Cliente;
 import entidades.Usuario;
+import logica.ClienteLogic;
 import logica.UsuarioLogic;
 
 /**
@@ -47,25 +49,52 @@ public class ServLogin extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String correo=request.getParameter("correo");
-		String clave=request.getParameter("contra");
-		HttpSession se= request.getSession();
-		try {
-			if(UsuarioLogic.IniciaSesion(correo, clave)) {
-				Usuario u=UsuarioLogic.get(correo);
-				se.setAttribute("usuario", u);
-				response.sendRedirect("Home");
-				return;
+		String accion=(String)request.getParameter("accion");
+		switch(accion) {
+		case "Ingresar":{
+			String correo=request.getParameter("correo");
+			String clave=request.getParameter("contra");
+			HttpSession se= request.getSession();
+			try {
+				if(UsuarioLogic.IniciaSesion(correo, clave)) {
+					Usuario u=UsuarioLogic.get(correo);
+					switch(u.getTipo()) {
+					case "Cliente":{
+						//el try esta recuperando el cliente y las obras del cliente.
+						try {
+							Cliente c = ClienteLogic.getOne(u.getCuil());
+							se.setAttribute("cliente", c);
+						}
+						catch(Exception e) {
+							request.setAttribute("error", e.getMessage());
+							return;
+						}
+						break;
+					}
+					case "Trabajador":{
+						break;
+					}
+					}
+					se.setAttribute("usuario", u);
+					response.sendRedirect("Home");
+					return;
+				}
+				else {
+					request.setAttribute("error", "Usuario y/o contrasena Incorrectos");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else {
-				request.setAttribute("error", "Usuario y/o contrasena Incorrectos");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			request.getRequestDispatcher("./inicio.jsp").forward(request, response);
 		}
 		
-		request.getRequestDispatcher("./inicio.jsp").forward(request, response);
+		case "Registrar":{
+			request.getRequestDispatcher("./Registrarse.jsp").forward(request, response);
+		}
+		}
+		
 	}
 
 }

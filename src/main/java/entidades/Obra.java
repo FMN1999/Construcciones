@@ -1,10 +1,21 @@
 package entidades;
 
+import java.util.ArrayList;
+
 public class Obra {
 	private int idObra;
 	private String direccion;
-	private int idCliente;
+	private ArrayList<Presupuesto> presupuestos;
+	private String descripcion;
 	
+	public ArrayList<Presupuesto> getPresupuestos() {
+		return presupuestos;
+	}
+
+	public void setPresupuestos(ArrayList<Presupuesto> presupuestos) {
+		this.presupuestos = presupuestos;
+	}
+
 	public int getIdObra() {
 		return idObra;
 	}
@@ -21,20 +32,22 @@ public class Obra {
 		this.direccion = direccion;
 	}
 
-	public int getIdCliente() {
-		return idCliente;
-	}
-
-	public void setIdCliente(int idCliente) {
-		this.idCliente = idCliente;
-	}
 	
-	public Obra(int idObra, String direccion, int idCliente) {
+	public Obra(int idObra, String direccion, String descripcion) {
 		super();
 		this.idObra = idObra;
 		this.direccion = direccion;
-		this.idCliente = idCliente;
+		this.descripcion = descripcion;
 	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	
 	
 	
 
