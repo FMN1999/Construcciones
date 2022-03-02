@@ -48,7 +48,15 @@ public class Obra {
 		this.descripcion = descripcion;
 	}
 	
-	
+	public int presupuestosPendientes() {
+		int pendientes=0;
+		for(Presupuesto p:this.getPresupuestos()) {
+			if(p.getFecha_aceptacion()==null && p.getFecha_caencelacion()==null) {
+				pendientes+=1;
+			}
+		}
+		return pendientes;
+	}
 	
 
 }
