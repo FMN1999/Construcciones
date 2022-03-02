@@ -46,38 +46,17 @@ public class TrabajadorData extends Coneccion {
 		return tareas;		
 	}
 	
-	/*public void registrarTareas() {
+	public void registrarTareas(Trabajador tr, Tarea ta, int horas) throws Exception {
 		int n=0;
 		
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO trabajador_tarea(cuil, tipo_doc, n_doc, fecha_nac,"
-					+ " disponoble, tipo_trabajador) "
-					+ "VALUES (?,?,?,?,?,?) ");
-			ps.setLong(1, t.getCuil());
-			ps.setString(2, t.getTipo_doc());
-			ps.setLong(3, t.getN_doc());
+			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO trabajador_tarea(cuil_trabajador, id_tarea_asignada, cant_horas_trabajadas)"
+					+ "VALUES (?,?,?) ");
+			ps.setLong(1, tr.getCuil());
+			ps.setInt(2, ta.getIdTarea());
+			ps.setInt(3, horas);
 			
-			//ps.setDate(4, (Date) t.getFechaNac());
-			java.sql.Date sqlDate = new java.sql.Date(t.getFechaNac().getTime());
-			ps.setDate(4, sqlDate);
-			
-			if(t.isDisponible()) {
-				ps.setInt(5, 1); //--> True
-			}
-			else {
-				ps.setInt(5, 0);
-			}
-			switch(t.getTipoEmpleado()){
-			case "Obrero":{
-				ps.setInt(6, 2);
-				break;
-			}
-			case "Oficial":{
-				ps.setInt(6, 1);
-				break;
-			}
-			}
 			
 			n=ps.executeUpdate();
 			ps.close();
@@ -91,7 +70,7 @@ public class TrabajadorData extends Coneccion {
 				//deberia eliminarse el usuario en caso de error al registrar en trabajadores
 			}
 		}
-	}*/
+	}
 	
 	public ArrayList<Trabajador> getOficiales() throws Exception{
 		ArrayList<Trabajador> trs=new ArrayList<Trabajador>();

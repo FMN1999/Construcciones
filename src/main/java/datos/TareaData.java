@@ -15,8 +15,28 @@ import entidades.Tipo_Tarea;
 public class TareaData extends Coneccion
 {		
 		//*************************************************
-		//** Devuelve todos los materiales en existencia **
+		//** Falta cargar el tipo_tarea **
 		//*************************************************
+		public Tarea getTarea(int idTarea) throws SQLException{
+			Tarea tarea= null;
+			try {
+				this.open();
+				PreparedStatement ps=this.getCon().prepareStatement("SELECT idtarea, descripcion, cant_m2, id_presupuesto, id_tipo_tarea FROM tareas WHERE idtarea = ?");
+				ps.setInt(1, idTarea);
+				ResultSet rs=ps.executeQuery();
+				Tipo_Tarea tt= null;
+				tarea=new Tarea(rs.getInt("idtarea"), rs.getString("descripcion"), rs.getFloat("cant_m2"), tt );
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				throw e;
+			}
+			finally {
+				/*this.close();*/ no descomentar hasta que se recupere el tipo_tarea
+			}
+			return tarea;	
+		}
+	
 		public ArrayList<Tarea> getTareas(Presupuesto p) throws SQLException, Exception{
 			ArrayList<Tarea> tareas=new ArrayList<Tarea>();
 			try {

@@ -35,6 +35,10 @@ public class TareaLogic {
 		return tareas; 
 	}
 	
+	public static Tarea getTarea(int id) throws SQLException {
+		return source.getTarea(id);
+	}
+	
 	public static void Registrar(int idPresupuesto,ArrayList<Tarea> tareas) throws Exception {
 		for(Tarea t:tareas) {
 			t.setIdTarea(source.Registrar(idPresupuesto, t));
