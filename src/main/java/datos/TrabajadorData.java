@@ -9,8 +9,89 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import entidades.Trabajador;
+import entidades.Tarea;
+import entidades.Tipo_Tarea;
 
 public class TrabajadorData extends Coneccion {
+	
+	public ArrayList<Tarea> getTareaEmpleados(Trabajador t){
+		ArrayList<Tarea> tareas = new ArrayList<Tarea>();
+		this.open();
+		try {
+			PreparedStatement ps=this.getCon().prepareStatement("select t.cuil, ta.idtarea, ta.cant_m2, ta.descripcion, tt.cant_horas_trabajadas,\r\n"
+					+ "tipo.idtipo_tarea, tipo.descripcion, ptt.precio_m2\r\n"
+					+ "from trabajadores t\r\n"
+					+ "inner join trabajador_tarea tt on tt.cuil_trabajador = t.cuil\r\n"
+					+ "inner join tareas ta on ta.idtarea = tt.id_tarea_asignada\r\n"
+					+ "inner join tipos_tarea tipo on tipo.idtipo_tarea = ta.id_tipo_tarea\r\n"
+					+ "inner join precios_tipo_tarea ptt on ptt.id_tipo_tarea_ = tipo.idtipo_tarea\r\n"
+					+ "inner join tipo_trabajador ttra on ttra.idtipo_trabajador = t.tipo_trabajador\r\n"
+					+ "where (ptt.fecha_desde= (select max(pt.fecha_desde) from precios_tipo_tarea pt where tipo.idtipo_tarea=pt.id_tipo_tarea_))\r\n"
+					+ "and t.cuil=?;");
+			ps.setLong(1, t.getCuil());
+			ResultSet rs=ps.executeQuery();
+			
+			while(rs.next()) {
+				Tipo_Tarea tipo = new Tipo_Tarea(rs.getInt("tipo.idtipo_tarea"), rs.getString("tipo.descripcion"),rs.getFloat("ptt.precio_m2"));
+				Tarea tarea = new Tarea(rs.getInt("ta.idtarea"), rs.getString("ta.descripcion"), rs.getFloat("ta.cant_m2"), tipo);
+				tareas.add(tarea);
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.close();
+		return tareas;		
+	}
+	
+	/*public void registrarTareas() {
+		int n=0;
+		
+		try {
+			this.open();
+			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO trabajador_tarea(cuil, tipo_doc, n_doc, fecha_nac,"
+					+ " disponoble, tipo_trabajador) "
+					+ "VALUES (?,?,?,?,?,?) ");
+			ps.setLong(1, t.getCuil());
+			ps.setString(2, t.getTipo_doc());
+			ps.setLong(3, t.getN_doc());
+			
+			//ps.setDate(4, (Date) t.getFechaNac());
+			java.sql.Date sqlDate = new java.sql.Date(t.getFechaNac().getTime());
+			ps.setDate(4, sqlDate);
+			
+			if(t.isDisponible()) {
+				ps.setInt(5, 1); //--> True
+			}
+			else {
+				ps.setInt(5, 0);
+			}
+			switch(t.getTipoEmpleado()){
+			case "Obrero":{
+				ps.setInt(6, 2);
+				break;
+			}
+			case "Oficial":{
+				ps.setInt(6, 1);
+				break;
+			}
+			}
+			
+			n=ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado: "+e.getMessage());
+		}
+		finally {
+			this.close();
+			if(n==0) {
+				throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado");
+				//deberia eliminarse el usuario en caso de error al registrar en trabajadores
+			}
+		}
+	}*/
 	
 	public ArrayList<Trabajador> getOficiales() throws Exception{
 		ArrayList<Trabajador> trs=new ArrayList<Trabajador>();

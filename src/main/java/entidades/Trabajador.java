@@ -1,5 +1,6 @@
 package entidades;
 import java.util.Date;
+import java.util.ArrayList;
 
 public class Trabajador extends Usuario {
 	private long cuil;
@@ -9,6 +10,9 @@ public class Trabajador extends Usuario {
 	private boolean disponible;
 	private String tipoEmpleado;
 	private float precioHS;
+	private ArrayList<Tarea> tareas_asignadas;
+	
+	
 	
 	public long getCuil() {
 		return cuil;
@@ -64,6 +68,13 @@ public class Trabajador extends Usuario {
 		this.disponible = disponible;
 		this.tipoEmpleado = tipoEmpleado;
 		this.precioHS = precioHS;
+	}
+	
+	public ArrayList<Tarea> getTareas_asignadas() {
+		return tareas_asignadas;
+	}
+	public void setTareas_asignadas(ArrayList<Tarea> tareas_asignadas) {
+		this.tareas_asignadas = tareas_asignadas;
 	}
 	
 
