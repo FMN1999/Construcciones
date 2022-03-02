@@ -38,6 +38,10 @@ public class TareaLogic {
 	public static void Registrar(int idPresupuesto,ArrayList<Tarea> tareas) throws Exception {
 		source.Registrar(idPresupuesto, tareas);
 	}
+	
+	public static Tarea getTarea(int id) throws SQLException {
+		return source.getTarea(id);
+	}
 	/*
 	public static void Actualizar(Tarea t) throws Exception {
 		source.Actualizar(t);

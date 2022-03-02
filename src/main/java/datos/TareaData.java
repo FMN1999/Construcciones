@@ -10,6 +10,7 @@ import entidades.Obra;
 import entidades.Presupuesto;
 import entidades.Tarea;
 import entidades.Tipo_Tarea;
+import logica.Tipo_TareaLogic;
 
 public class TareaData extends Coneccion
 {		
@@ -48,18 +49,16 @@ public class TareaData extends Coneccion
 			}
 			return tareas;
 		}
-		/*
-		public ArrayList<Tarea> getTarea(int idTipo) throws SQLException{
-			ArrayList<Tarea> tareas=new ArrayList<Tarea>();
+		
+		public Tarea getTarea(int idTarea) throws SQLException{
+			Tarea tarea= null;
 			try {
 				this.open();
-				PreparedStatement ps=this.getCon().prepareStatement("SELECT idtarea, descripcion, cant_m2, id_presupuesto, id_tipo_tarea FROM tareas WHERE id_tipo_tarea = ?");
-				ps.setInt(1, idTipo);
+				PreparedStatement ps=this.getCon().prepareStatement("SELECT idtarea, descripcion, cant_m2, id_presupuesto, id_tipo_tarea FROM tareas WHERE idtarea = ?");
+				ps.setInt(1, idTarea);
 				ResultSet rs=ps.executeQuery();
-				while(rs.next()) {
-					Tarea tarea=new Tarea(rs.getInt("idtarea"), rs.getString("descripcion"), rs.getFloat("cant_m2"), rs.getInt("id_presupuesto"), rs.getInt("id_tipo_tarea"));
-					tareas.add(tarea);
-				}
+				Tipo_Tarea tt= null;
+				tarea=new Tarea(rs.getInt("idtarea"), rs.getString("descripcion"), rs.getFloat("cant_m2"), tt );
 				rs.close();
 				ps.close();
 			} catch (SQLException e) {
@@ -68,8 +67,8 @@ public class TareaData extends Coneccion
 			finally {
 				this.close();
 			}
-			return tareas;	
-		}*/
+			return tarea;	
+		}
 		
 		public void Registrar(int idpresupuesto, ArrayList<Tarea> ts) throws Exception {
 			try {

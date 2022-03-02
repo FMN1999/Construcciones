@@ -42,7 +42,7 @@
 				<td style="display: none;"><%= p.getId_presupuesto() %></td>
 				<td><%= p.getFecha_emision() %></td>
 				<td><%= p.getMonto() %></td>
-				<td><%= p.getEstado() %></td>
+				<td></td>
 				<td><form action="VerPresupuesto" method="get">
 							<input id="idPresupuesto" name="idPresupuesto" style="display:None;" value=<%= p.getId_presupuesto() %>>
 							<input id="idObra" name="idObra" style="display:None;" value=<%= o.getIdObra() %>>

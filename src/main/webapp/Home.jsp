@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@page import="entidades.Usuario"%>
+<%@page import="entidades.Tarea" %>
+<%@page import="logica.TareaLogic" %>
+<%@page import="entidades.Trabajador" %>
+<%@page import = "logica.TrabajadorLogic" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,10 +15,17 @@
 <body>
 	<jsp:include page="Shared.jsp"></jsp:include>
 	<% Usuario u= (Usuario)session.getAttribute("usuario"); %>
+	<% Tarea t = TareaLogic.getTarea(1); %>
+	<% Trabajador tra = TrabajadorLogic.getOne(2725676987L); %>
+	<% float monto = 0; %>
+	<% tra.setTrabajadorTarea(t, monto); %>
+	
 	<h1 style="text-align:center">
 		Hola
 		<%=u.getNombre() %></h1>
 	<br>
+	
+	<h2><%tra.getTrabajadorTarea().get(t); %></h2>
 	<% if(u.getTipo().equalsIgnoreCase("Cliente")) { %>
 		<%@page import="entidades.Obra"%>
 		<%@page import="entidades.Cliente"%>

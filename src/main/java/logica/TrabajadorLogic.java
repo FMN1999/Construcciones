@@ -17,6 +17,10 @@ public class TrabajadorLogic {
 		return trs;
 	}
 	
+	public static Trabajador getOne(long cuil) throws SQLException {
+		return source.getOne(cuil);
+	}
+	
 	public static ArrayList<Trabajador> getObreros() throws Exception {
 		ArrayList<Trabajador> trs=source.getObreros();
 		return trs;

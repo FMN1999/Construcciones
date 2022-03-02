@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
+
+import entidades.Maquinaria;
 import entidades.Tarea;
 import entidades.Tipo_Tarea;
 
@@ -16,6 +18,34 @@ import java.util.HashMap;
 import entidades.Trabajador;
 
 public class TrabajadorData extends Coneccion {
+	
+	public Trabajador getOne(long cuil) throws SQLException {
+		Trabajador t=null;
+		try {
+			this.open();
+			PreparedStatement ps=this.getCon().prepareStatement("select t.cuil, t.tipo_doc, t.n_doc, t.fecha_nac, t.disponoble, t.tipo_trabajador,\r\n"
+					+ "u.idusuario, u.nombre, u.apellido, u.email, u.password, u.id_tipo\r\n"
+					+ "from trabajadores t \r\n"
+					+ "inner join usuario u on u.cuil = t.cuil\r\n"
+					+ "where t.cuil = ?;");
+			ps.setLong(1, cuil);
+			ResultSet rs=ps.executeQuery();
+			rs.next();
+			
+			t= new Trabajador(rs.getInt("u.idusuario"), rs.getString("u.nombre"), rs.getString("u.apellido"), 
+					rs.getString("u.email"), rs.getString("u.password"),rs.getLong("t.cuil"), "tipo", rs.getString("t.tipo_doc"),
+					rs.getLong("t.n_doc"), rs.getDate("t.fecha_nac"), rs.getBoolean("t.disponoble"),rs.getString("t.tipo_trabajador"),
+					00);
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			throw e;
+		}
+		finally {
+			this.close();
+		}
+		return t;
+	}
 	
 	public Map<Tarea, Float> setTareaEmpleados(Trabajador t){
 		Map<Tarea, Float> tem = new HashMap<Tarea,Float>();
