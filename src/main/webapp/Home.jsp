@@ -25,13 +25,19 @@
 		  <div class="row">
 		    <% for(Obra o: c.getObras()){ %>
 		    	<div class="col-sm-3 border border-4 rounded border-primary" style="margin:3px;">
-		    			<form action="Tareas" method="get">
+		    			<form action="Presupuesto" method="get">
 		    				<input id="idObra" name="idObra" style="display:None;" value=<%= o.getIdObra() %>>
-		    				<button type="submit"><%= o.getDireccion() %></button>
+		    				<button type="submit" class="btn btn-light">
+		    					<h2><%= o.getDireccion() %>
+		    					<% if(o.presupuestosPendientes()>=1){ %>
+		    					<span class="badge bg-secondary">New</span>
+		    				<% } %>
+		    					</h2>
+		    				</button>
+		    				<p class="card-text"><%= o.getDescripcion() %></p>
 		    			</form>
-			    		<p>Obra numero: <%= o.getIdObra() %></p>
-			    		<p>Tareas presupuestadas: </p>
-			    		<p>Tareas no presupuestadas: </p>
+			    		<p class="card-text">Obra numero: <%= o.getIdObra() %></p>
+			    		<p class="card-text">Presupuestos pendientes: <%= o.presupuestosPendientes() %></p>
 		    	</div>
 		    	
 		    <% } %>

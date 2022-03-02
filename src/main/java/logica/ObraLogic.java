@@ -15,6 +15,7 @@ public class ObraLogic {
 		Obra o;
 		try {
 			o=source.getOne(id);
+			o.setPresupuestos(PresupuestoLogic.getPresuspuestos(o, false));
 		}
 		catch(Exception e) {
 			String msg=e.getMessage();
@@ -26,6 +27,9 @@ public class ObraLogic {
 	
 	public static Cliente setObras(Cliente c) throws Exception{
 		c.setObras(source.getObras(c.getIdCliente()));
+		for(Obra o:c.getObras()) {
+			o.setPresupuestos(PresupuestoLogic.getPresuspuestos(o, false));
+		}
 		return c;
 	}
 	

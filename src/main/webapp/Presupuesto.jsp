@@ -22,11 +22,19 @@
 	<%@page import="entidades.Tarea"%>
 	<%@page import="entidades.Presupuesto" %>
 	<%@page import="logica.ObraLogic" %>
+	<%@page import="entidades.Usuario" %>
 	
 	<% Presupuesto p = (Presupuesto)request.getAttribute("presupuesto"); %>
+	<% Obra o = (Obra)request.getAttribute("obra"); %>
+	<% Usuario u= (Usuario)session.getAttribute("usuario"); %>
 
 	<hr>
-	
+	<div class="container mt-3 text-center">
+		<h1><%=o.getDireccion() %></h1>
+		<h2><%=o.getDescripcion() %></h2>
+	</div>
+	<br>
+	<hr>
 	<div class="container mt-3">
 		
 		<br>
@@ -35,6 +43,8 @@
 		<h1>Presupuesto nº<%= p.getId_presupuesto() %></h1>
 		<br>
 		<h1>Total presupuestado: $<%=p.getMonto() %></h1>
+		<br>
+		<h1>Estado del presupuesto: <span class="badge bg-secondary"><%= p.getEstado() %></span></h1>
 		<br>
 		<h3 align="center">Tareas a realizar</h3>
 		<%ArrayList<Tarea> ts = p.getTareas(); %>
@@ -126,9 +136,26 @@
 		    <span class="carousel-control-next-icon"></span>
 		  </button>
 		</div>
-
-		
 		<br>
+		<hr>
+		<% if(u.getTipo().equalsIgnoreCase("Cliente") && !(p.getFecha_aceptacion()!=null) && !(p.getFecha_caencelacion()!=null) ) { %>
+		<div class="row">
+			<div class="col-4"></div>
+			<div class="col-4"></div>
+			<div class="col-4">
+				<form action="PresupuestoCliente" method="post">
+					<input type="text" id="accion" name="accion" value="aprobar" style="display: none;">
+					<input type="number" id="idpresupuesto" name="idpresupuesto" value=<%= p.getId_presupuesto() %> style="display: none;">
+					<button type="submit" class="btn btn-primary"><h3>Aprobar</h3></button>
+				</form>
+				<form action="PresupuestoCliente" method="post">
+					<input type="text" id="accion" name="accion" value="rechazar" style="display: none;">
+					<input type="number" id="idpresupuesto" name="idpresupuesto" value=<%= p.getId_presupuesto() %> style="display: none;">
+					<button type="submit" class="btn btn-danger"><h3>Rechazar</h3></button>
+				</form>
+			</div>
+		</div>
+		<% } %>
 		
 	<% } else{ %>
 		<%

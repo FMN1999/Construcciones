@@ -144,5 +144,32 @@ public class PresupuestoData extends Coneccion {
 			this.close();
 		}
 	}
+	
+	public void RegistrarEstadoPresupuesto(Presupuesto p) throws Exception{
+		try {
+			this.open();
+			PreparedStatement ps;
+			if(p.getFecha_aceptacion()!=null) {
+				ps=this.getCon().prepareStatement("UPDATE presupuestos SET fecha_aceptacion=? WHERE (idpresupuesto=?)");
+				ps.setDate(1, new java.sql.Date(p.getFecha_aceptacion().getTime()));
+			}
+			else {
+				ps=this.getCon().prepareStatement("UPDATE presupuestos SET fecha_cancelacion=? WHERE (idpresupuesto=?)");
+				ps.setDate(1, new java.sql.Date(p.getFecha_caencelacion().getTime()));
+			}
+			ps.setInt(2, p.getId_presupuesto());
+			int n=ps.executeUpdate();
+			if(n==0) {
+				throw new Exception("No fue posible registrar su respuesta!");
+			}
+			ps.close();
+		}
+		catch(Exception e) {
+			throw e;
+		}
+		finally {
+			this.close();
+		}
+	}
 }
 	

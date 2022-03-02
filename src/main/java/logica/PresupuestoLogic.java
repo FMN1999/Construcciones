@@ -74,4 +74,8 @@ public class PresupuestoLogic {
 		return p.getId_presupuesto();
 		
 	}
+	
+	public static void RegistrarEstadoPresupuesto(Presupuesto p) throws Exception {
+		source.RegistrarEstadoPresupuesto(p);
+	}
 }
