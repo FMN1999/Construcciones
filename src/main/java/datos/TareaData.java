@@ -39,7 +39,7 @@ public class TareaData extends Coneccion
 					Date fd=rs.getDate("t.fecha_desde");
 					Date fh=rs.getDate("t.fecha_hasta");
 					Tarea tarea=new Tarea(rs.getInt("t.idtarea"), rs.getString("t.descripcion"), rs.getFloat("t.cant_m2"), 
-							new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"),rs.getFloat("precio"))//por ahora no recupera precio del tipo tarea
+							new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"),rs.getFloat("precio"))
 							,fd,fh);
 					tareas.add(tarea);
 				}
@@ -55,27 +55,94 @@ public class TareaData extends Coneccion
 			return tareas;
 		}
 		
-		public void registrarTrabajador(Trabajador tr, Tarea ta, int horas) throws Exception {
+		
+		/***
+		 * 
+		 * @see Rcupera las tareas activas al momento de la fecha.
+		 *	Cambia la descripcion de la descripcion de la tarea
+		 *  para que sea entendible de que obra es
+		 * */
+		public ArrayList<Tarea> getTareasActivas(Date d) throws SQLException, Exception{
+			ArrayList<Tarea> tareas=new ArrayList<Tarea>();
+			try {
+				this.open();
+				PreparedStatement ps= this.getCon().prepareStatement("SELECT t.idtarea, concat(o.direccion,'-',t.descripcion) as descripcion, "
+						+ "t.cant_m2, tt.idtipo_tarea, tt.descripcion, 0.0 as precio, t.fecha_desde, t.fecha_hasta\r\n"
+						+ "FROM presupuestos p\r\n"
+						+ "INNER JOIN tareas t ON p.idpresupuesto=t.id_presupuesto\r\n"
+						+ "INNER JOIN tipos_tarea tt on t.id_tipo_tarea=tt.idtipo_tarea \r\n"
+						+ "INNER JOIN obras o ON o.idobra=p.id_obra "
+						+ "WHERE t.fecha_hasta>=? \r\n"
+						+ "GROUP BY t.idtarea, tt.idtipo_tarea\r\n"
+						+ "ORDER BY t.idtarea");
+				ps.setDate(1, new java.sql.Date(d.getTime()));
+				ResultSet rs=ps.executeQuery();
+				while(rs.next()) {
+					Date fd=rs.getDate("t.fecha_desde");
+					Date fh=rs.getDate("t.fecha_hasta");
+					Tarea tarea=new Tarea(rs.getInt("t.idtarea"), rs.getString("descripcion"), rs.getFloat("t.cant_m2"), 
+							new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"),rs.getFloat("precio"))//el precio es despreciable
+							,fd,fh);
+					tareas.add(tarea);
+				}
+				rs.close();
+				ps.close();
+			}
+			catch(Exception e) {
+				throw e;
+			}
+			finally {
+				this.close();
+			}
+			return tareas;
+		}
+		
+		public int HorasTrabajadas(Date d, long cuil) throws SQLException, Exception{
+			int cant=0;
+			try {
+				this.open();
+				PreparedStatement ps= this.getCon().prepareStatement("SELECT ifnull(sum(tt.cant_horas_trabajadas),0) as cant FROM trabajador_tarea tt"
+						+ " WHERE tt.cuil_trabajador=? and tt.fecha=?");
+				ps.setLong(1, cuil);
+				ps.setDate(2, new java.sql.Date(d.getTime()));
+				ResultSet rs=ps.executeQuery();
+				if(rs.next()) {
+					cant=rs.getInt("cant");
+				}
+				rs.close();
+				ps.close();
+			}
+			catch(Exception e) {
+				throw e;
+			}
+			finally {
+				this.close();
+			}
+			
+			return cant;
+		}
+		
+		public void AsignarTrabajador(int idTarea,long cuil, int horas, Date dia) throws Exception {
 			int n=0;
 			
 			try {
 				this.open();
-				PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO trabajador_tarea(cuil_trabajador, id_tarea_asignada, cant_horas_trabajadas)"
-						+ "VALUES (?,?,?) ");
-				ps.setLong(1, tr.getCuil());
-				ps.setInt(2, ta.getIdTarea());
+				PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO trabajador_tarea(cuil_trabajador, id_tarea_asignada, cant_horas_trabajadas, fecha)"
+						+ "VALUES (?,?,?,?)");
+				ps.setLong(1, cuil);
+				ps.setInt(2, idTarea);
 				ps.setInt(3, horas);
-				
+				ps.setDate(4, new java.sql.Date(dia.getTime()));
 				
 				n=ps.executeUpdate();
 				ps.close();
 			} catch (SQLException e) {
-				throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado: "+e.getMessage());
+				throw new Exception("Un error ocurrio mientras se intentaba registrar la asignacion del empleado: "+e.getMessage());
 			}
 			finally {
 				this.close();
 				if(n==0) {
-					throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado");
+					throw new Exception("No se pudo registrar la asignacion del empleado a la tarea");
 					//deberia eliminarse el usuario en caso de error al registrar en trabajadores
 				}
 			}

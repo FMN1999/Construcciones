@@ -138,4 +138,11 @@ public class Empleados extends HttpServlet {
 		TrabajadorLogic.Eliminar(id, cuil);
 	}
 
+	
+protected void AsignarEmpleado(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		int id=Integer.parseInt(request.getParameter("idtarea"));
+		long cuil=Long.parseLong(request.getParameter("cuilT"));
+		//recuperar fecha y cant horas
+	}
 }
