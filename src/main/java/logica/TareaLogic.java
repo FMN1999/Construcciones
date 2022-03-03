@@ -8,6 +8,8 @@ import datos.TareaData;
 import entidades.Cliente;
 import entidades.Presupuesto;
 import entidades.Tarea;
+import entidades.Trabajador;
+import entidades.Usuario;
 
 public class TareaLogic {
 	public static TareaData source=new TareaData();
@@ -68,6 +70,13 @@ public class TareaLogic {
 			MaquinariaLogic.RegistrarUsoMaquinas(t.getIdTarea(), t.getMaquinas());
 			MaterialLogic.RegistrarUsoMateriales(t.getIdTarea(), t.getMateriales());
 		}
+	}
+	
+	public static Trabajador getEmpleadoWithTareas(Usuario u)throws Exception{
+		Trabajador t=TrabajadorLogic.toTrabajador(u);
+		t.setTareasAsignadas(new ArrayList<Trabajador.TareaAsignada>());
+		t=source.getTareasMesEmpleado(t);
+		return t;
 	}
 	
 }

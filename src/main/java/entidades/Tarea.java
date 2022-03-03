@@ -33,6 +33,9 @@ public class Tarea {
 	public void setCant_m2(Float cant_m2) {
 		this.cant_m2 = cant_m2;
 	}
+	public Tarea(int idTareas) {
+		this.idTarea = idTarea;
+	}
 	
 	public Tarea(int idTarea, String descripcion, Float cant_m2, Tipo_Tarea tipo_tarea, Date fecha_desde, Date fecha_hasta ) {
 		this.idTarea = idTarea;

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@page import="entidades.Usuario"%>
+<%@page import="entidades.Trabajador"%>
+<%@page import="entidades.Trabajador.TareaAsignada"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,6 +46,23 @@
 		  </div>
 		</div>
 	<% } %>
+	<% if(u.getTipo().equalsIgnoreCase("Trabajador")) {%>
+		    <% Trabajador t=(Trabajador)request.getAttribute("empleado"); %>
+		    <hr>
+		    <div class="container mt-4">
+			    <div class="row">
+			    	<h2>Tareas asignadas</h2>
+			    	<% for(Trabajador.TareaAsignada tt: t.getTareasAsignadas()) {%>
+			    		<div class="col-sm-3 border border-4 rounded border-primary" style="margin:3px;">
+				    		<p class="h2">Tarea: <%= tt.tarea.getDescripcion() %></p><br>
+				    		<p class="h4">Fecha asignada:<%= tt.fecha_asignada %></p><br>
+				    		<p class="h4">Horas asignadas:<%= tt.hs_asignadas %></p><br>
+			    		</div>
+			    	<% } %>
+			    </div>
+		    </div>
+		    
+		    <% } %>
 </body>
 <script type="text/javascript">
 	

@@ -36,4 +36,15 @@ public class TrabajadorLogic {
 		source.Eliminar(cuil);
 		UsuarioLogic.Eliminar(id);
 	}
+	
+	public static Trabajador toTrabajador(Usuario u)throws Exception{
+		ArrayList<Trabajador> trabs=getOficiales();
+		trabs.addAll(getObreros());
+		for(Trabajador t: trabs) {
+			if(t.getCuil()==u.getCuil()) {
+				return t;
+			}
+		}
+		return null;
+	}
 }

@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import entidades.Material;
@@ -13,6 +15,7 @@ import entidades.Presupuesto;
 import entidades.Tarea;
 import entidades.Tipo_Tarea;
 import entidades.Trabajador;
+import entidades.Trabajador.TareaAsignada;
 
 public class TareaData extends Coneccion
 {		
@@ -95,6 +98,60 @@ public class TareaData extends Coneccion
 				this.close();
 			}
 			return tareas;
+		}
+		
+		public Trabajador getTareasMesEmpleado(Trabajador t) throws SQLException, Exception{
+			try {
+				this.open();
+				PreparedStatement ps= this.getCon().prepareStatement("SELECT t.idtarea, concat(o.direccion,'-',t.descripcion) as descripcion, "
+						+ "t.cant_m2, tt.idtipo_tarea, tt.descripcion, 0.0 as precio, t.fecha_desde, t.fecha_hasta, "
+						+ "trt.fecha, sum(trt.cant_horas_trabajadas) as hs_t "
+						+ "FROM presupuestos p\r\n"
+						+ "INNER JOIN tareas t ON p.idpresupuesto=t.id_presupuesto\r\n"
+						+ "INNER JOIN tipos_tarea tt on t.id_tipo_tarea=tt.idtipo_tarea \r\n"
+						+ "INNER JOIN obras o ON o.idobra=p.id_obra "
+						+ "INNER JOIN trabajador_tarea trt on trt.id_tarea_asignada=t.idtarea "
+						+ "WHERE trt.fecha>=? and trt.fecha<=? and trt.cuil_trabajador=?\r\n"
+						+ "GROUP BY t.idtarea, tt.idtipo_tarea, trt.fecha\r\n"
+						+ "ORDER BY t.idtarea");
+				//ps.setDate(1, new java.sql.Date(d.getTime()));
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");  
+				//Fecha actual
+				Calendar calendar = Calendar.getInstance(); 
+				//se pone dia 1
+				calendar.set(Calendar.DAY_OF_MONTH,1);
+				String dia=sdf.format(calendar.getTime());
+				Date firsdayM=sdf.parse(dia);
+				//se pone el ultimo dia
+				calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+				dia=sdf.format(calendar.getTime());
+				Date lastdayM=sdf.parse(dia);
+				
+				ps.setDate(1, new java.sql.Date(firsdayM.getTime()));
+				ps.setDate(2, new java.sql.Date(lastdayM.getTime()));
+				ps.setLong(3, t.getCuil());
+				
+				ResultSet rs=ps.executeQuery();
+				while(rs.next()) {
+					Date fd=rs.getDate("t.fecha_desde");
+					Date fh=rs.getDate("t.fecha_hasta");
+					Tarea tarea=new Tarea(rs.getInt("t.idtarea"), rs.getString("descripcion"), rs.getFloat("t.cant_m2"), 
+							new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"),rs.getFloat("precio"))//el precio es despreciable
+							,fd,fh);
+					int canths=rs.getInt("hs_t");
+					Date diaAsig=rs.getDate("trt.fecha");
+					t.addTareaAsignada(canths, diaAsig, tarea);
+				}
+				rs.close();
+				ps.close();
+			}
+			catch(Exception e) {
+				throw e;
+			}
+			finally {
+				this.close();
+			}
+			return t;
 		}
 		
 		public int HorasTrabajadas(Date d, long cuil) throws SQLException, Exception{
