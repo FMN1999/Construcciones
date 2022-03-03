@@ -9,7 +9,8 @@
 <body>
 	<jsp:include page="Shared.jsp"></jsp:include>
 	<%@page import="entidades.Obra"%>
-	<%@ page import="java.util.*" %>
+	<%@ page import="java.util.Date" %>
+	<%@ page import="java.util.ArrayList" %>
 	<%@ page import="java.text.SimpleDateFormat"%>
 	<%@page import="logica.Tipo_TareaLogic" %>
 	<%@page import="entidades.Tipo_Tarea" %>

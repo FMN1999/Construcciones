@@ -28,8 +28,8 @@ public class TareaData extends Coneccion
 						+ "FROM presupuestos p\r\n"
 						+ "inner join tareas t on p.idpresupuesto=t.id_presupuesto\r\n"
 						+ "INNER JOIN tipos_tarea tt on t.id_tipo_tarea=tt.idtipo_tarea \r\n"
-						+ "left join precios_tipo_tarea on tt.idtipo_tarea=precios_tipo_tarea.id_tipo_tarea_\r\n"
-						+ "where (t.fecha_desde= (select max(ptt.fecha_desde) from precios_tipo_tarea ptt where tt.idtipo_tarea=ptt.id_tipo_tarea_ and ptt.fecha_desde <= ?)) and t.id_presupuesto =?\r\n"
+						+ "left join precios_tipo_tarea ptt1 on tt.idtipo_tarea=ptt1.id_tipo_tarea_\r\n"
+						+ "where (ptt1.fecha_desde= (select max(ptt.fecha_desde) from precios_tipo_tarea ptt where tt.idtipo_tarea=ptt.id_tipo_tarea_ and ptt.fecha_desde <= ?)) and t.id_presupuesto =?\r\n"
 						+ "group by t.idtarea, tt.idtipo_tarea\r\n"
 						+ "ORDER BY t.idtarea");
 				ps.setDate(1, new java.sql.Date(p.getFecha_emision().getTime()));
