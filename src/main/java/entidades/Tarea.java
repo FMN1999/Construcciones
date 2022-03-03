@@ -34,13 +34,15 @@ public class Tarea {
 		this.cant_m2 = cant_m2;
 	}
 	
-	public Tarea(int idTarea, String descripcion, Float cant_m2, Tipo_Tarea tipo_tarea ) {
+	public Tarea(int idTarea, String descripcion, Float cant_m2, Tipo_Tarea tipo_tarea, Date fecha_desde, Date fecha_hasta ) {
 		this.idTarea = idTarea;
 		this.descripcion = descripcion;
 		this.cant_m2 = cant_m2;
 		this.tipo_tarea= tipo_tarea;
 		this.maquinas=new ArrayList<Maquinaria>();
 		this.materiales=new ArrayList<Material>();
+		this.fechaDesde=fecha_desde;
+		this.fechaHasta=fecha_hasta;
 	}
 	public Tipo_Tarea getTipo_tarea() {
 		return tipo_tarea;
@@ -55,7 +57,14 @@ public class Tarea {
 		this.materiales = materiales;
 	}
 	public Float getMontoParcial() {
-		return this.cant_m2 * this.tipo_tarea.getPrecio();
+		float monto = this.cant_m2 * this.tipo_tarea.getPrecio();
+		for (Material m: this.getMateriales()) {
+			monto += (m.getPrecio() * m.getCantidad());
+		}
+		for (Maquinaria ma: this.getMaquinas()) {
+			monto += (ma.getPrecioHora() * ma.getCantHoras());
+		}
+		return monto;
 	}
 	public ArrayList<Maquinaria> getMaquinas() {
 		return maquinas;

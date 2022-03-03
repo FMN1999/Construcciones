@@ -43,14 +43,6 @@ public class PresupuestoLogic {
 
 	}
 	
-	public static ArrayList<Material_a_usar> getMateriales(Presupuesto p) throws Exception{
-		return source.getMateriales(p);
-	}
-	
-	public static ArrayList<Maquinaria> getMaquinarias(Presupuesto p) throws Exception{
-		return source.getMaquinarias(p);
-	}
-	
 	public static Presupuesto getOne(int id, boolean detalles) throws Exception{
 		Presupuesto p=new Presupuesto();
 		try {

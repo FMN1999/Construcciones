@@ -66,6 +66,8 @@
 							<th>Tipo de Tarea</th>
 							<th>Descripción</th>
 							<th>Cantidad de m2</th>
+							<th>Fecha Inicio</th>
+							<th>Fecha Fin</th>
 							<th>Precio</th>
 						</tr>
 						<tr>
@@ -73,6 +75,8 @@
 							<td><%= t.getTipo_tarea().getDescripcion() %></td>
 							<td><%= t.getDescripcion() %></td>
 							<td><%= t.getCant_m2() %></td>
+							<td><%= t.getFechaDesde() %></td>
+							<td><%= t.getFechaHasta() %></td>
 							<td><%= t.getMontoParcial() %></td>
 						</tr>
 					</table>
@@ -222,6 +226,8 @@
 			<th>Descripcion</th>
 			<th>Cantidad de m2</th>
 			<th>Precio xm2</th>
+			<th>Fecha Inicio</th>
+			<th>Fecha Fin</th>
 			<th>Subtotal</th>
 			<th></th>
 		</table>
@@ -371,6 +377,42 @@
 		td5.appendChild(prec);
 		div.appendChild(td5);
 		
+		//fecha desde
+		const tdfd= document.createElement("td");
+		const inpfd=document.createElement("input");
+		inpfd.setAttribute('id','fd_'+n_tareas);
+		inpfd.setAttribute('name','fd_'+n_tareas);
+		inpfd.setAttribute('type','date');
+		let today = new Date();
+		let dd = today.getDate();
+		let mm = today.getMonth() + 1; //January is 0!
+		let yyyy = today.getFullYear();
+		if (dd < 10) {
+		   dd = '0' + dd;
+		}
+		if (mm < 10) {
+		   mm = '0' + mm;
+		}  
+		today = yyyy + '-' + mm + '-' + dd;
+		inpfd.setAttribute('min', today);
+		inpfd.value=today;
+		inpfd.setAttribute('onchange','min_fecha_hasta('+n_tareas+')');
+		tdfd.appendChild(inpfd);
+		div.appendChild(tdfd);
+		
+		//fecha hasta
+		const tdfh= document.createElement("td");
+		const inpfh=document.createElement("input");
+		inpfh.setAttribute('id','fh_'+n_tareas);
+		inpfh.setAttribute('name','fh_'+n_tareas);
+		inpfh.setAttribute('type','date');
+		inpfh.setAttribute('min', today);
+		inpfh.value=today;
+		tdfh.appendChild(inpfh);
+		div.appendChild(tdfh);
+		
+		
+		
 		//linea de subtotal
 		const td6=document.createElement("td");
 		const subtotal=document.createElement("p");
@@ -399,6 +441,11 @@
         
         
       
+	}
+	function min_fecha_hasta(idx){
+		let fd = document.getElementById('fd_'+idx).value;
+		let fh = document.getElementById('fh_'+idx);
+		fh.setAttribute('min',fd);
 	}
 	
 	function subtotal_linea(idx,precio){
@@ -877,6 +924,15 @@
 			let pre=document.getElementById('precio_'+i);
 			pre.setAttribute('id','precio_'+(i-1));
 			pre.setAttribute('name','precio_'+(i-1));
+			
+			let fd = document.getElementById('fd_'+i);
+			fd.setAttribute('id','fd_'+(i-1));
+			fd.setAttribute('name','fd_'+(i-1));
+			fd.setAttribute('onchange','min_fecha_hasta('+(i-1)+')');
+			
+			let fh = document.getElementById('fh_'+i);
+			fh.setAttribute('id','fh_'+(i-1));
+			fh.setAttribute('name','fh_'+(i-1));
 			
 			m2.setAttribute('onchange','subtotal_linea('+(i-1)+','+parseFloat(pre.innerText)+')');
 			

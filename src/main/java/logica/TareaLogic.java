@@ -34,7 +34,7 @@ public class TareaLogic {
 	}
 	
 	public static void registrarTrabajador(Tarea t, int horas) {
-		source.registrarTrabajador(t, horas);
+		//source.registrarTrabajador(t, horas);
 	}
 	
 	public static void Registrar(int idPresupuesto,ArrayList<Tarea> tareas) throws Exception {

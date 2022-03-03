@@ -1,6 +1,8 @@
 package ui;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -86,16 +88,22 @@ public class VerPresupuesto extends HttpServlet {
 		String accion=(String)request.getParameter("accion");
 		switch(accion) {
 		case "registrar_presupusto":{
-			RegistrarPresupuesto(request,response);
+			try {
+				RegistrarPresupuesto(request,response);
+			} catch (ServletException | IOException | ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		}
 		}
 	}
 	
 	/**
+	 * @throws ParseException 
 	 * @see RegistrarPresupuesto
 	 */
-	protected void RegistrarPresupuesto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void RegistrarPresupuesto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
 		// TODO Auto-generated method stub
 		int i=0;
 		int idObra=Integer.parseInt((String)request.getParameter("idObra"));
@@ -109,16 +117,22 @@ public class VerPresupuesto extends HttpServlet {
 		p.setTareas(new ArrayList<Tarea>());
 		
 		int n_tarea,idtipotarea;
-		String descTarea;
+		String descTarea, dia;
 		float cantm2Tarea;
+		Date fd, fh;
 		Tarea t;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
 		
 		for(i=1;i<=cant_tareas;i++) {
 			n_tarea=Integer.parseInt((String)request.getParameter("n_tar_"+i));
 			idtipotarea=Integer.parseInt((String)request.getParameter("id_"+i));
 			descTarea=(String)request.getParameter("desc_tarea_"+i);
 			cantm2Tarea=Float.parseFloat((String)request.getParameter("m2_"+i));
-			t=new Tarea(n_tarea, descTarea, cantm2Tarea, new Tipo_Tarea(idtipotarea,"",0)); //el precio y descripcion del tipo_tarea es despreciable
+			dia = (String)request.getParameter("fd_"+i);
+			fd = sdf.parse(dia);
+			dia = (String)request.getParameter("fh_"+i);
+			fh = sdf.parse(dia);
+			t=new Tarea(n_tarea, descTarea, cantm2Tarea, new Tipo_Tarea(idtipotarea,"",0),fd, fh); //el precio y descripcion del tipo_tarea es despreciable
 			t.setMaquinas(new ArrayList<Maquinaria>());
 			t.setMaquinas(new ArrayList<Maquinaria>());
 			p.getTareas().add(t);
