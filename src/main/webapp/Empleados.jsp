@@ -10,6 +10,9 @@
 	<jsp:include page="Shared.jsp"></jsp:include>
 	<%@page import="java.util.ArrayList"%>
 	<%@page import="entidades.Trabajador"%>
+	<%@page import="entidades.Tarea"%>
+	<%@page import="entidades.Tipo_Tarea"%>
+	
 	<div class="container mt-3">
 		<div>
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -33,6 +36,7 @@
 			<th style="display: none;">ID</th>
 			<th></th>
 			<th></th>
+			<th></th>
 			<% for(Trabajador t: ofs){ %>
 			<tr>
 				<td><%= t.getCuil() %></td>
@@ -49,6 +53,9 @@
 				<td class="text-danger"><%= "No Disponible" %></td>
 				<% } %>
 				<td style="display: none;"><%= t.getId() %></td>
+				<td><button type="button" class="btn btn-primary"
+						data-bs-toggle="modal" data-bs-target="#ModalTareas">
+						Asignar tarea</button></td>
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal"
 						onClick="editMode()">Editar</button>
@@ -77,6 +84,7 @@
 			<th style="display: none;">ID</th>
 			<th></th>
 			<th></th>
+			<th></th>
 			<% for(Trabajador t: obs){ %>
 			<tr>
 				<td><%= t.getCuil() %></td>
@@ -93,12 +101,15 @@
 				<td class="text-danger"><%= "No Disponible" %></td>
 				<% } %>
 				<td style="display: none;"><%= t.getId() %></td>
+				<td><button type="button" class="btn btn-primary"
+						data-bs-toggle="modal" data-bs-target="#ModalTareas">
+						Asignar tarea</button></td>
 				<td><button type="button" class="btn btn-success"
 						data-bs-toggle="modal" data-bs-target="#myModal"
-						onClick="editMode()">Editar</button>
+						onClick="editMode()">Editar</button></td>
 				<td><button type="button" class="btn btn-danger"
 						data-bs-toggle="modal" data-bs-target="#myModal"
-						onClick="deleteMode()">Eliminar</button>
+						onClick="deleteMode()">Eliminar</button></td>
 			</tr>
 			<% } %>
 
@@ -204,8 +215,104 @@
 			</div>
 		</div>
 	</div>
+	
+
+	<% ArrayList<Tarea> tareas=(ArrayList<Tarea>)request.getAttribute("activas");  %>
+	
+	<div class="modal" id="ModalTareas">
+		<div class="modal-dialog modal-fullscreen-xxl-down">
+			<div class="modal-content">
+	
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalHead2">Asignar una tarea</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+	
+				<div class="container mt-3">
+					<form method="post" action="Empleados">
+						<!-- Modal body -->
+						<div class="form-floating mb-3 mt-3">
+							<input type="text" class="form-control" id="cuilT"
+								placeholder="idtarea" name="cuilT" readonly> 
+								<label for="cuilT">Cuil</label>
+						</div>
+						
+						<div class="form-floating mb-3 mt-3">
+							<input type="text" class="form-control" id="nombreT"
+								placeholder="Nombre" name="nombreT" disabled="disabled"> 
+								<label for="nombreT">Nombre</label>
+						</div>
+						<div class="form-floating mb-3 mt-3">
+							<input type="text" class="form-control" id="apellidoT"
+								placeholder="Apellido" name="apellidoT" disabled="disabled"> 
+								<label for="apellidoT">Apellido</label>
+						</div>
+						
+						<label for="idTarea">Tarea</label> 
+						<select id="idTarea" name="idTarea" class="form-select" 
+						placeholder="Seleccione una tarea" onchange="rango_fechas(this.value)" required="required">
+							<option disabled="disabled" selected="selected">Seleccione una tarea</option>
+						<% for(Tarea t:tareas){ %>
+							<option value=<%= t.getIdTarea() %>><%= t.getDescripcion() %></option>
+						<% } %>	
+						</select>
+						
+						
+						<div class="form-floating mb-3 mt-3">
+							<input type="text" class="form-control" id="descripcion"
+								placeholder="Tipo de tarea" name="descripcion"
+								disabled="disabled">
+							<label for="descripcion">Tipo de tarea a realizar</label>
+						</div>
+						
+						<div class="form-floating mb-3 mt-3">
+							<input type="date" class="form-control" id="f_asignacion"
+								placeholder="Fecha asignada a la tarea" name="f_asignacion" required>
+							<label for="f_asignacion">Fecha a asignar</label>
+						</div>
+						
+						<div class="form-floating mb-3 mt-3">
+							<input type="number" class="form-control" id="cantHoras" min=1
+								max=8 placeholder="Horas a asignar" name="cantHoras" required> 
+								<label for="cantHoras">Cantidad de horas a asignar</label>
+						</div>
+		
+						<select name="accion_2" id="accion_2" style="display: none;">
+							<option selected="selected">Asignar</option>
+						</select>
+						
+						<!-- Modal footer -->
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary" id="btn2">Registrar</button>
+							<button type="button" class="btn btn-danger"
+								data-bs-dismiss="modal">Close</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script type="text/javascript">
+	var tipos=[];
+	var fechas_desde=[];
+	var fechas_hasta=[];
+	<% for(Tarea t: tareas){ %>
+	tipos[<%=t.getIdTarea()%>]="<%= t.getTipo_tarea().getDescripcion() %>";
+	fechas_desde[<%=t.getIdTarea() %>]='<%= t.getFechaDesde() %>';
+	fechas_hasta[<%=t.getIdTarea() %>]='<%= t.getFechaHasta() %>';
+	<% } %>
+	
+	
+	function rango_fechas(idtar){
+		let inp=document.getElementById("f_asignacion");
+		inp.setAttribute('min',fechas_desde[idtar]);
+		inp.setAttribute('max',fechas_hasta[idtar]);
+		let tipo=document.getElementById("descripcion");
+		tipo.value=tipos[idtar];
+	}
+	
 	var table1=document.getElementById('tab_oficiales'), rIndex1;
 	var table2=document.getElementById('tab_obreros'), rIndex2;
 	
@@ -215,9 +322,16 @@
 	        document.getElementById('idusu').value = this.cells[9].innerHTML;
 	        document.getElementById('nombre').value = this.cells[3].innerHTML;
 	        document.getElementById('apellido').value = this.cells[4].innerHTML;
+	        //
+	        document.getElementById('nombreT').value = this.cells[3].innerHTML;
+	        document.getElementById('apellidoT').value = this.cells[4].innerHTML;
+	        //
 	        document.getElementById('email').value = this.cells[5].innerHTML;
 	        document.getElementById('password').value = this.cells[6].innerHTML;
 	        document.getElementById('cuil').value = this.cells[0].innerHTML;
+	        //
+	        document.getElementById('cuilT').value = this.cells[0].innerHTML;
+	        //
 	        for (x = 0; x < document.getElementById('tipodoc').options.length; x++) {
                 if (this.cells[1].innerHTML == document.getElementById('tipodoc').options[x].innerHTML) {
                     document.getElementById('tipodoc').selectedIndex = x;
@@ -242,9 +356,16 @@
 			document.getElementById('idusu').value = this.cells[9].innerHTML;
 	        document.getElementById('nombre').value = this.cells[3].innerHTML;
 	        document.getElementById('apellido').value = this.cells[4].innerHTML;
+	        //
+	        document.getElementById('nombreT').value = this.cells[3].innerHTML;
+	        document.getElementById('apellidoT').value = this.cells[4].innerHTML;
+	        //
 	        document.getElementById('email').value = this.cells[5].innerHTML;
 	        document.getElementById('password').value = this.cells[6].innerHTML;
 	        document.getElementById('cuil').value = this.cells[0].innerHTML;
+	        //
+	        document.getElementById('cuilT').value = this.cells[0].innerHTML;
+	        //
 	        for (x = 0; x < document.getElementById('tipodoc').options.length; x++) {
                 if (this.cells[1].innerHTML == document.getElementById('tipodoc').options[x].innerHTML) {
                     document.getElementById('tipodoc').selectedIndex = x;
@@ -346,6 +467,7 @@
 	 	    }
 	 		
 	 	}
+	 	
 </script>
 
 </body>

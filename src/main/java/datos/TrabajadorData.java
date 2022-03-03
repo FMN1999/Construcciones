@@ -198,12 +198,14 @@ public class TrabajadorData extends Coneccion {
 			
 			ps.close();
 		}catch(SQLException e) {
-			throw new Exception("No fue posible eliminar al trabajador: "+e.getMessage());
+			throw new Exception("No fue posible eliminar al trabajador. Si tiene problemas para eliminar"
+							   +"un trabajador se sugiere cambiar su disponibilidad a 'No disponible' "+e.getMessage());
 		}
 		finally {
 			this.close();
 			if(n==0) {
-				throw new Exception("No fue posible eliminar al trabajador");
+				throw new Exception("No fue posible eliminar al trabajador. Si tiene problemas para eliminar"
+						   +"un trabajador se sugiere cambiar su disponibilidad a 'No disponible' ");
 			}
 		}
 	}

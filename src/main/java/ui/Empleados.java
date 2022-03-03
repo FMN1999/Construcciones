@@ -13,7 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entidades.Tarea;
+import entidades.Tipo_Tarea;
 import entidades.Trabajador;
+import logica.TareaLogic;
+import logica.Tipo_TareaLogic;
 import logica.TrabajadorLogic;
 
 /**
@@ -37,16 +41,20 @@ public class Empleados extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		ArrayList<Trabajador> ofs, obs;
+		ArrayList<Tarea> tareas=new ArrayList<Tarea>();
 		ofs=obs=new ArrayList<Trabajador>();
+		Date now=new Date(System.currentTimeMillis());
 		try {
 			ofs=TrabajadorLogic.getOficiales();
 			obs=TrabajadorLogic.getObreros();
+			tareas=TareaLogic.getTareasActivas(now);
 		}
 		catch(Exception e) {
 			request.setAttribute("error", "Error al solicitar datos de empleados: "+e.getMessage());
 		}
 		request.setAttribute("oficiales", ofs);
 		request.setAttribute("obreros", obs);
+		request.setAttribute("activas", tareas);
 		request.getRequestDispatcher("./Empleados.jsp").forward(request, response);
 	}
 
@@ -55,22 +63,35 @@ public class Empleados extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String accion=(String)request.getParameter("accion");
+		String accion2=null,accion;
 		try {
-		switch(accion) {
-			case "Registrar":{
-				Registrar(request, response);
-				break;
-			}
-			case "Editar":{
-				Modificar(request, response);
-				break;
-			}
-			case "Eliminar":{
-				Eliminar(request, response);
-				break;
-			}
-			}
+			accion2=(String)request.getParameter("accion_2");
+		}
+		catch(Exception e) {}
+		if(accion2!=null) {
+			accion=accion2;
+		}
+		else {
+			accion=(String)request.getParameter("accion");
+		}
+		try {
+			switch(accion) {
+				case "Registrar":{
+					Registrar(request, response);
+					break;
+				}
+				case "Editar":{
+					Modificar(request, response);
+					break;
+				}
+				case "Eliminar":{
+					Eliminar(request, response);
+					break;
+				}
+				case "Asignar":{
+					AsignarEmpleado(request, response);
+				}
+				}
 		}catch(Exception e) {
 			request.setAttribute("error", e.getMessage());
 		}
@@ -140,9 +161,13 @@ public class Empleados extends HttpServlet {
 
 	
 protected void AsignarEmpleado(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		int id=Integer.parseInt(request.getParameter("idtarea"));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+		int id=Integer.parseInt(request.getParameter("idTarea"));
 		long cuil=Long.parseLong(request.getParameter("cuilT"));
-		//recuperar fecha y cant horas
+		String dia = (String)request.getParameter("f_asignacion");
+		Date d=sdf.parse(dia);
+		int cantHoras=Integer.parseInt(request.getParameter("cantHoras"));
+		TareaLogic.AsignarTrabajador(id, cuil, cantHoras, d);
+		request.setAttribute("msg", "Se han asignado las horas con exito!");
 	}
 }

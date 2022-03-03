@@ -384,6 +384,7 @@
 		inpfd.setAttribute('id','fd_'+n_tareas);
 		inpfd.setAttribute('name','fd_'+n_tareas);
 		inpfd.setAttribute('type','date');
+		inpfd.setAttribute('class','form-control');
 		let today = new Date();
 		let dd = today.getDate();
 		let mm = today.getMonth() + 1; //January is 0!
@@ -407,6 +408,7 @@
 		inpfh.setAttribute('id','fh_'+n_tareas);
 		inpfh.setAttribute('name','fh_'+n_tareas);
 		inpfh.setAttribute('type','date');
+		inpfh.setAttribute('class','form-control');
 		inpfh.setAttribute('min', today);
 		inpfh.value=today;
 		tdfh.appendChild(inpfh);

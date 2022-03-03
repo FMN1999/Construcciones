@@ -171,5 +171,12 @@
 		<p><%=error %></p>
 	</div>
 	<% } %>
+	<% String msg=(String)request.getAttribute("msg"); %>
+	<% if(msg!=null){ %>
+	<div class="alert alert-succes">
+		<strong>MENSAJE</strong>
+		<p><%=msg %></p>
+	</div>
+	<% } %>
 	<script src="./assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
