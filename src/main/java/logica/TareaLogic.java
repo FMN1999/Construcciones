@@ -10,8 +10,6 @@ import entidades.Tarea;
 public class TareaLogic {
 	public static TareaData source=new TareaData();
 	
-	//no se captura ningun error, todos van a capa de presentacion
-	
 	/**
 	 * @see _ Recupera todas las tareas del presupuesto p
 	 *  y ademas recupera los materiales asignados(con sus precios correspondientes)
@@ -35,8 +33,8 @@ public class TareaLogic {
 		return tareas; 
 	}
 	
-	public static Tarea getTarea(int id) throws SQLException {
-		return source.getTarea(id);
+	public static void registrarTrabajador(Tarea t, int horas) {
+		source.registrarTrabajador(t, horas);
 	}
 	
 	public static void Registrar(int idPresupuesto,ArrayList<Tarea> tareas) throws Exception {
@@ -46,12 +44,5 @@ public class TareaLogic {
 			MaterialLogic.RegistrarUsoMateriales(t.getIdTarea(), t.getMateriales());
 		}
 	}
-	/*
-	public static void Actualizar(Tarea t) throws Exception {
-		source.Actualizar(t);
-	}
 	
-	public static void Eliminar(int id) throws Exception {
-		source.Eliminar(id);
-	}*/
 }

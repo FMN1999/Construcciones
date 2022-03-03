@@ -46,31 +46,6 @@ public class TrabajadorData extends Coneccion {
 		return tareas;		
 	}
 	
-	public void registrarTareas(Trabajador tr, Tarea ta, int horas) throws Exception {
-		int n=0;
-		
-		try {
-			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO trabajador_tarea(cuil_trabajador, id_tarea_asignada, cant_horas_trabajadas)"
-					+ "VALUES (?,?,?) ");
-			ps.setLong(1, tr.getCuil());
-			ps.setInt(2, ta.getIdTarea());
-			ps.setInt(3, horas);
-			
-			
-			n=ps.executeUpdate();
-			ps.close();
-		} catch (SQLException e) {
-			throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado: "+e.getMessage());
-		}
-		finally {
-			this.close();
-			if(n==0) {
-				throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado");
-				//deberia eliminarse el usuario en caso de error al registrar en trabajadores
-			}
-		}
-	}
 	
 	public ArrayList<Trabajador> getOficiales() throws Exception{
 		ArrayList<Trabajador> trs=new ArrayList<Trabajador>();

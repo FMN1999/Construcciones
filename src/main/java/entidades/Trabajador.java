@@ -10,7 +10,6 @@ public class Trabajador extends Usuario {
 	private boolean disponible;
 	private String tipoEmpleado;
 	private float precioHS;
-	private ArrayList<Tarea> tareas_asignadas;
 	
 	
 	
@@ -69,13 +68,4 @@ public class Trabajador extends Usuario {
 		this.tipoEmpleado = tipoEmpleado;
 		this.precioHS = precioHS;
 	}
-	
-	public ArrayList<Tarea> getTareas_asignadas() {
-		return tareas_asignadas;
-	}
-	public void setTareas_asignadas(ArrayList<Tarea> tareas_asignadas) {
-		this.tareas_asignadas = tareas_asignadas;
-	}
-	
-
 }

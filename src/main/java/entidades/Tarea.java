@@ -1,5 +1,6 @@
 package entidades;
 import java.util.ArrayList;
+import java.util.Date;
 
 import logica.Tipo_TareaLogic;
 
@@ -11,6 +12,8 @@ public class Tarea {
 	private Tipo_Tarea tipo_tarea;
 	private ArrayList<Material> materiales;
 	private ArrayList<Maquinaria> maquinas;
+	private Date fechaDesde;
+	private Date fechaHasta;
 	
 	public int getIdTarea() {
 		return idTarea;
@@ -60,6 +63,16 @@ public class Tarea {
 	public void setMaquinas(ArrayList<Maquinaria> maquinas) {
 		this.maquinas = maquinas;
 	}
-	
-
+	public Date getFechaDesde() {
+		return fechaDesde;
+	}
+	public void setFechaDesde(Date fechaDesde) {
+		this.fechaDesde = fechaDesde;
+	}
+	public Date getFechaHasta() {
+		return fechaHasta;
+	}
+	public void setFechaHasta(Date fechaHasta) {
+		this.fechaHasta = fechaHasta;
+	}
 }

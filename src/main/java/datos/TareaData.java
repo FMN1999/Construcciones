@@ -11,32 +11,13 @@ import entidades.Obra;
 import entidades.Presupuesto;
 import entidades.Tarea;
 import entidades.Tipo_Tarea;
+import entidades.Trabajador;
 
 public class TareaData extends Coneccion
 {		
 		//*************************************************
 		//** Falta cargar el tipo_tarea **
 		//*************************************************
-		public Tarea getTarea(int idTarea) throws SQLException{
-			Tarea tarea= null;
-			try {
-				this.open();
-				PreparedStatement ps=this.getCon().prepareStatement("SELECT idtarea, descripcion, cant_m2, id_presupuesto, id_tipo_tarea FROM tareas WHERE idtarea = ?");
-				ps.setInt(1, idTarea);
-				ResultSet rs=ps.executeQuery();
-				Tipo_Tarea tt= null;
-				tarea=new Tarea(rs.getInt("idtarea"), rs.getString("descripcion"), rs.getFloat("cant_m2"), tt );
-				rs.close();
-				ps.close();
-			} catch (SQLException e) {
-				throw e;
-			}
-			finally {
-				/*this.close();*/ no descomentar hasta que se recupere el tipo_tarea
-			}
-			return tarea;	
-		}
-	
 		public ArrayList<Tarea> getTareas(Presupuesto p) throws SQLException, Exception{
 			ArrayList<Tarea> tareas=new ArrayList<Tarea>();
 			try {
@@ -69,28 +50,32 @@ public class TareaData extends Coneccion
 			}
 			return tareas;
 		}
-		/*
-		public ArrayList<Tarea> getTarea(int idTipo) throws SQLException{
-			ArrayList<Tarea> tareas=new ArrayList<Tarea>();
+		
+		public void registrarTrabajador(Trabajador tr, Tarea ta, int horas) throws Exception {
+			int n=0;
+			
 			try {
 				this.open();
-				PreparedStatement ps=this.getCon().prepareStatement("SELECT idtarea, descripcion, cant_m2, id_presupuesto, id_tipo_tarea FROM tareas WHERE id_tipo_tarea = ?");
-				ps.setInt(1, idTipo);
-				ResultSet rs=ps.executeQuery();
-				while(rs.next()) {
-					Tarea tarea=new Tarea(rs.getInt("idtarea"), rs.getString("descripcion"), rs.getFloat("cant_m2"), rs.getInt("id_presupuesto"), rs.getInt("id_tipo_tarea"));
-					tareas.add(tarea);
-				}
-				rs.close();
+				PreparedStatement ps=this.getCon().prepareStatement("INSERT INTO trabajador_tarea(cuil_trabajador, id_tarea_asignada, cant_horas_trabajadas)"
+						+ "VALUES (?,?,?) ");
+				ps.setLong(1, tr.getCuil());
+				ps.setInt(2, ta.getIdTarea());
+				ps.setInt(3, horas);
+				
+				
+				n=ps.executeUpdate();
 				ps.close();
 			} catch (SQLException e) {
-				throw e;
+				throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado: "+e.getMessage());
 			}
 			finally {
 				this.close();
+				if(n==0) {
+					throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado");
+					//deberia eliminarse el usuario en caso de error al registrar en trabajadores
+				}
 			}
-			return tareas;	
-		}*/
+		}
 		
 		public int Registrar(int idpresupuesto, Tarea t) throws Exception {
 			try {
@@ -116,8 +101,7 @@ public class TareaData extends Coneccion
 					}
 				}
 				ps.close();
-				throw new Exception("No se han registrado las tareas, intentelo de nuevo");
-				
+				throw new Exception("No se han registrado las tareas, intentelo de nuevo");				
 			}
 			catch(Exception e) {
 				throw e;
@@ -125,49 +109,5 @@ public class TareaData extends Coneccion
 			finally {
 				this.close();
 			}
-		}
-		/*
-		public void Actualizar(Tarea t) throws Exception {
-			try {
-				this.open();
-				PreparedStatement ps=this.getCon().prepareStatement("UPDATE tareas SET descripcion=?, cant_m2=?, id_presupuesto=null, id_tipo_tarea=?  WHERE idtarea=?");
-				ps.setString(1, t.getDescripcion());
-				ps.setFloat(2, t.getCant_m2());
-				ps.setInt(3, t.getId_tipo_tarea());
-				ps.setInt(4, t.getIdTarea());
-				
-				int n=ps.executeUpdate();
-				ps.close();
-				if(n==0) {
-					throw new Exception("No se ha actualizado la tarea, intentelo de nuevo");
-				}
-			}
-			catch(Exception e) {
-				throw e;
-			}
-			finally {
-				this.close();
-			}
-		}
-		
-		public void Eliminar(int id) throws Exception {
-			try {
-				this.open();
-				PreparedStatement ps=this.getCon().prepareStatement("DELETE FROM tareas WHERE idtarea=?");
-				ps.setInt(1, id);
-				
-				int n=ps.executeUpdate();
-				ps.close();
-				if(n==0) {
-					throw new Exception("No se ha eliminado la tarea, intentelo de nuevo");
-				}
-			}
-			catch(Exception e) {
-				throw e;
-			}
-			finally {
-				this.close();
-			}
-		}*/
-		
+		}		
 }
