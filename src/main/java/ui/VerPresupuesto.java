@@ -187,7 +187,7 @@ public class VerPresupuesto extends HttpServlet {
 			PresupuestoLogic.RegistrarPresupuesto(idObra, p);
 			Cliente c=ClienteLogic.ObtenerDuenioObra(idObra);
 			Obra o=ObraLogic.getOne(idObra);
-			mail_util.InformarPresupuesto(o.getDireccion(), c.getEmail(), c.getApellido()+" "+c.getNombre());
+			//mail_util.InformarPresupuesto(o.getDireccion(), c.getEmail(), c.getApellido()+" "+c.getNombre());
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
