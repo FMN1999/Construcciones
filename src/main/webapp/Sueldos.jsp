@@ -14,7 +14,12 @@
 	<%@page import="entidades.Tipo_Tarea"%>
 	
 	<div class="container mt-3">
-
+		<br>
+		<p class="h1 text-center">Sueldos del mes</p>
+		<p class="h5 text-center text-break">Se calcula el sueldo de cada empleado en base 
+		a las horas de trabajo que le fueron asignadas este mes</p>
+		<hr>
+		<br>
 		<br>
 		<h1 class="text-center">Oficiales</h1>
 		<br>
@@ -30,14 +35,14 @@
 			<th class="h3">Sueldo</th>
 			<% for(Trabajador t: ofs){ %>
 			<tr>
-				<td><%= t.getCuil() %></td>
-				<td><%= t.getTipo_doc() %></td>
-				<td><%= t.getN_doc() %></td>
-				<td><%= t.getNombre() %></td>
-				<td><%= t.getApellido() %></td>
-				<td><%= t.getEmail() %></td>
-				<td><%= t.getFechaNac() %></td>
-				<td class="h3">$<%= t.calcularSueldo() %></td>
+				<td><p class="h5"><%= t.getCuil() %></p></td>
+				<td><p class="h5"><%= t.getTipo_doc() %></p></td>
+				<td><p class="h5"><%= t.getN_doc() %></p></td>
+				<td><p class="h5"><%= t.getNombre() %></p></td>
+				<td><p class="h5"><%= t.getApellido() %></p></td>
+				<td><p class="h5"><%= t.getEmail() %></p></td>
+				<td><p class="h5"><%= t.getFechaNac() %></p></td>
+				<td class="h3">$<%= t.calcularSueldo() %></p></td>
 	
 			</tr>
 			<% } %>
@@ -59,14 +64,14 @@
 			<th class="h3">Sueldo</th>
 			<% for(Trabajador t: obs){ %>
 			<tr>
-				<td><%= t.getCuil() %></td>
-				<td><%= t.getTipo_doc() %></td>
-				<td><%= t.getN_doc() %></td>
-				<td><%= t.getNombre() %></td>
-				<td><%= t.getApellido() %></td>
-				<td><%= t.getEmail() %></td>
-				<td><%= t.getFechaNac() %></td>
-				<td class="h3">$<%= t.calcularSueldo() %></td>
+				<td><p class="h5"><%= t.getCuil() %></p></td>
+				<td><p class="h5"><%= t.getTipo_doc() %></p></td>
+				<td><p class="h5"><%= t.getN_doc() %></p></td>
+				<td><p class="h5"><%= t.getNombre() %></p></td>
+				<td><p class="h5"><%= t.getApellido() %></p></td>
+				<td><p class="h5"><%= t.getEmail() %></p></td>
+				<td><p class="h5"><%= t.getFechaNac() %></p></td>
+				<td class="h3">$<%= t.calcularSueldo() %></p></td>
 			</tr>
 			<% } %>
 
