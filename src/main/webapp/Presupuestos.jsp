@@ -73,25 +73,26 @@
 		</table>
 	</div>
 		
-	<div>
-		
+	<div class="container mt-3 ">
+		<% if(o.isFinalizado()) { %>
 		<p class="h2 text-center">Balance</p>
 		<div class= "row">
-			<label> Gastos en Materiales: <%= o.gastosMateriales() %></label>
+			<p class="h5 text-center"> Gastos en Materiales: <%= o.gastosMateriales() %></p>
 		</div>
 		<div class= "row">
-			<label> Gastos en Maquinarias: <%= o.gastosMaquinas() %></label>
+			<p class="h5 text-center"> Gastos en Maquinarias: <%= o.gastosMaquinas() %></p>
 		</div>
 		<div class= "row">
-			<label> Gastos en Tareas: <%= o.gastosTareas() %></label>
+			<p class="h5 text-center"> Gastos en Tareas: <%= o.gastosTareas() %></p>
 		</div>
 		<div class= "row">
-			<label> Gastos Totales: <%= o.totalPresupuestado() %></label>
+			<p class="h5 text-center"> Gastos Totales: <%= o.totalPresupuestado() %></p>
 		</div>
+		<hr>
 		<div class = "row">
-			<label> Balance: <%= o.getBalance() %></label>
+			<p class="h5 text-center"> Presupuestado menos gastos: <%= o.getBalance() %></p>
 		</div>
-		
+		<% } %>
 	</div>
 </body>
 </html>
