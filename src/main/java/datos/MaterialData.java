@@ -33,7 +33,8 @@ public class MaterialData extends Coneccion {
 			ps.close();
 		}
 		catch(Exception e) {
-			throw e;
+			throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos de los materiales.");
+
 		}
 		finally {
 			this.close();
@@ -62,7 +63,8 @@ public class MaterialData extends Coneccion {
 			ps.close();
 		}
 		catch(Exception e) {
-			throw e;
+			throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos de las tareas.");
+
 		}
 		finally {
 			this.close();
@@ -90,7 +92,8 @@ public class MaterialData extends Coneccion {
 			ps.close();
 		}
 		catch(Exception e) {
-			throw e;
+			throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos de los materiales.");
+
 		}
 		finally {
 			this.close();
@@ -114,7 +117,8 @@ public class MaterialData extends Coneccion {
 			return m;
 		}
 		catch(Exception e) {
-			throw e;
+			throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos del material.");
+
 		}
 		finally {
 			this.close();
@@ -154,7 +158,8 @@ public class MaterialData extends Coneccion {
 			}
 		}
 		catch(Exception e) {
-			throw e;
+			throw new Exception("Ocurrió un error mientras se intentaba registrar el material.");
+
 		}
 		finally {
 			this.close();
@@ -201,12 +206,12 @@ public class MaterialData extends Coneccion {
 			ps.setInt(1, id);
 			int n=ps.executeUpdate();
 			if(n==0) {
-				throw new Exception("No se ha eliminado el material, intentelo de nuevo");
+				throw new Exception("No se ha eliminado el material, está siendo utilizado en otros registros");
 			}
 		}
 		
 		catch(Exception e) {
-			throw e;
+			throw new Exception("No se ha eliminado el material, está siendo utilizado en otros registros");
 		}
 		finally {
 			this.close();
@@ -238,7 +243,7 @@ public class MaterialData extends Coneccion {
 			this.getCon().commit();
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
 		}
 		finally {
 			this.close();

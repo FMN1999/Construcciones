@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import entidades.Cliente;
+import entidades.Trabajador;
 import entidades.Usuario;
 import logica.ClienteLogic;
+import logica.TareaLogic;
 
 /**
  * Servlet implementation class Home
@@ -48,6 +50,14 @@ public class Home extends HttpServlet {
 			break;
 		}
 		case "Trabajador":{
+			try {
+				Trabajador t=TareaLogic.getEmpleadoTareasActivas(u);
+				request.setAttribute("empleado", t);
+			}
+			catch(Exception e) {
+				request.setAttribute("error", "No fue posible recuperar tus tareas asignadas");
+				return;
+			}
 			break;
 		}
 		}

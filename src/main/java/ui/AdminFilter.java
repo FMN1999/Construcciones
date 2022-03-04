@@ -17,7 +17,10 @@ import entidades.Usuario;
 /**
  * Servlet Filter implementation class AdminFilter
  */
-@WebFilter(urlPatterns = { "/AdminFilter", "/Proveedores", "/Materiales", "/Maquinarias", "/Empleados", "/Clientes", "/Tipo_Tareas", "/VerPresupuesto", "/Tareas", "/Tareas_Empleados" }, servletNames = {"Proveedores", "Materiales", "Maquinarias", "Empleados", "Clientes", "Tipo_Tareas", "VerPresupuesto", "Tareas", "Tareas_Empleados"})
+@WebFilter(urlPatterns = { "/AdminFilter", "/Proveedores", "/Materiales", "/Maquinarias", "/Empleados", "/Clientes",
+		"/Tipo_Tareas", "/VerPresupuesto", "/Tareas", "/Tareas_Empleados", "/Obras", "/Sueldos" }, 
+servletNames = {"Proveedores", "Materiales", "Maquinarias", "Empleados", "Clientes", "Tipo_Tareas", "VerPresupuesto", 
+		"Tareas", "Tareas_Empleados", "Obras", "Sueldos"})
 public class AdminFilter implements Filter {
 
     /**
@@ -42,10 +45,16 @@ public class AdminFilter implements Filter {
 		HttpSession se= ((HttpServletRequest) request).getSession();
 		
 		Usuario user = (Usuario)se.getAttribute("usuario");
-		
-		if(!user.getTipo().equalsIgnoreCase("Administrador")) {
+		if(user!=null) {
+			if(!user.getTipo().equalsIgnoreCase("Administrador")) {
+				r.sendRedirect("Home");
+				request.setAttribute("error", "No tiene los permisos necesarios para ingresar a la p�gina! >:c.");
+				return;
+			}
+		}
+		else {
 			r.sendRedirect("Home");
-			request.setAttribute("error", "No tiene los permisos necesarios para ingresar a la p�gina! >:c.");
+			request.setAttribute("error", "Inicie sesion por favor!");
 			return;
 		}
 		chain.doFilter(request, response);

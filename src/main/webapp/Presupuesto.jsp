@@ -9,7 +9,8 @@
 <body>
 	<jsp:include page="Shared.jsp"></jsp:include>
 	<%@page import="entidades.Obra"%>
-	<%@ page import="java.util.*" %>
+	<%@ page import="java.util.Date" %>
+	<%@ page import="java.util.ArrayList" %>
 	<%@ page import="java.text.SimpleDateFormat"%>
 	<%@page import="logica.Tipo_TareaLogic" %>
 	<%@page import="entidades.Tipo_Tarea" %>
@@ -18,15 +19,22 @@
 	<%@page import="logica.MaquinariaLogic" %>
 	<%@page import="entidades.Maquinaria" %>
 	<%@page import="logica.PresupuestoLogic" %>
-	<%@page import="entidades.Material_a_usar" %>
 	<%@page import="entidades.Tarea"%>
 	<%@page import="entidades.Presupuesto" %>
 	<%@page import="logica.ObraLogic" %>
+	<%@page import="entidades.Usuario" %>
 	
 	<% Presupuesto p = (Presupuesto)request.getAttribute("presupuesto"); %>
+	<% Obra o = (Obra)request.getAttribute("obra"); %>
+	<% Usuario u= (Usuario)session.getAttribute("usuario"); %>
 
 	<hr>
-	
+	<div class="container mt-3 text-center">
+		<h1><%=o.getDireccion() %></h1>
+		<h2><%=o.getDescripcion() %></h2>
+	</div>
+	<br>
+	<hr>
 	<div class="container mt-3">
 		
 		<br>
@@ -35,6 +43,8 @@
 		<h1>Presupuesto nº<%= p.getId_presupuesto() %></h1>
 		<br>
 		<h1>Total presupuestado: $<%=p.getMonto() %></h1>
+		<br>
+		<h1>Estado del presupuesto: <span class="badge bg-secondary"><%= p.getEstado() %></span></h1>
 		<br>
 		<h3 align="center">Tareas a realizar</h3>
 		<%ArrayList<Tarea> ts = p.getTareas(); %>
@@ -56,6 +66,8 @@
 							<th>Tipo de Tarea</th>
 							<th>Descripción</th>
 							<th>Cantidad de m2</th>
+							<th>Fecha Inicio</th>
+							<th>Fecha Fin</th>
 							<th>Precio</th>
 						</tr>
 						<tr>
@@ -63,6 +75,8 @@
 							<td><%= t.getTipo_tarea().getDescripcion() %></td>
 							<td><%= t.getDescripcion() %></td>
 							<td><%= t.getCant_m2() %></td>
+							<td><%= t.getFechaDesde() %></td>
+							<td><%= t.getFechaHasta() %></td>
 							<td><%= t.getMontoParcial() %></td>
 						</tr>
 					</table>
@@ -126,9 +140,28 @@
 		    <span class="carousel-control-next-icon"></span>
 		  </button>
 		</div>
-
-		
 		<br>
+		<hr>
+		<% if(u.getTipo().equalsIgnoreCase("Cliente") && !(p.getFecha_aceptacion()!=null) && !(p.getFecha_caencelacion()!=null) ) { %>
+		<div class="row">
+			<div class="col-4"></div>
+			<div class="col-4"></div>
+			<div class="col-4">
+			<div class="modal-footer">
+				<form action="PresupuestoCliente" method="post">
+					<input type="text" id="accion" name="accion" value="aprobar" style="display: none;">
+					<input type="number" id="idpresupuesto" name="idpresupuesto" value=<%= p.getId_presupuesto() %> style="display: none;">
+					<button type="submit" class="btn btn-primary"><h3>Aprobar</h3></button>
+				</form>
+				<form action="PresupuestoCliente" method="post">
+					<input type="text" id="accion" name="accion" value="rechazar" style="display: none;">
+					<input type="number" id="idpresupuesto" name="idpresupuesto" value=<%= p.getId_presupuesto() %> style="display: none;">
+					<button type="submit" class="btn btn-danger"><h3>Rechazar</h3></button>
+				</form>
+				</div>
+			</div>
+		</div>
+		<% } %>
 		
 	<% } else{ %>
 		<%
@@ -195,6 +228,8 @@
 			<th>Descripcion</th>
 			<th>Cantidad de m2</th>
 			<th>Precio xm2</th>
+			<th>Fecha Inicio</th>
+			<th>Fecha Fin</th>
 			<th>Subtotal</th>
 			<th></th>
 		</table>
@@ -344,6 +379,44 @@
 		td5.appendChild(prec);
 		div.appendChild(td5);
 		
+		//fecha desde
+		const tdfd= document.createElement("td");
+		const inpfd=document.createElement("input");
+		inpfd.setAttribute('id','fd_'+n_tareas);
+		inpfd.setAttribute('name','fd_'+n_tareas);
+		inpfd.setAttribute('type','date');
+		inpfd.setAttribute('class','form-control');
+		let today = new Date();
+		let dd = today.getDate();
+		let mm = today.getMonth() + 1; //January is 0!
+		let yyyy = today.getFullYear();
+		if (dd < 10) {
+		   dd = '0' + dd;
+		}
+		if (mm < 10) {
+		   mm = '0' + mm;
+		}  
+		today = yyyy + '-' + mm + '-' + dd;
+		inpfd.setAttribute('min', today);
+		inpfd.value=today;
+		inpfd.setAttribute('onchange','min_fecha_hasta('+n_tareas+')');
+		tdfd.appendChild(inpfd);
+		div.appendChild(tdfd);
+		
+		//fecha hasta
+		const tdfh= document.createElement("td");
+		const inpfh=document.createElement("input");
+		inpfh.setAttribute('id','fh_'+n_tareas);
+		inpfh.setAttribute('name','fh_'+n_tareas);
+		inpfh.setAttribute('type','date');
+		inpfh.setAttribute('class','form-control');
+		inpfh.setAttribute('min', today);
+		inpfh.value=today;
+		tdfh.appendChild(inpfh);
+		div.appendChild(tdfh);
+		
+		
+		
 		//linea de subtotal
 		const td6=document.createElement("td");
 		const subtotal=document.createElement("p");
@@ -372,6 +445,11 @@
         
         
       
+	}
+	function min_fecha_hasta(idx){
+		let fd = document.getElementById('fd_'+idx).value;
+		let fh = document.getElementById('fh_'+idx);
+		fh.setAttribute('min',fd);
 	}
 	
 	function subtotal_linea(idx,precio){
@@ -850,6 +928,15 @@
 			let pre=document.getElementById('precio_'+i);
 			pre.setAttribute('id','precio_'+(i-1));
 			pre.setAttribute('name','precio_'+(i-1));
+			
+			let fd = document.getElementById('fd_'+i);
+			fd.setAttribute('id','fd_'+(i-1));
+			fd.setAttribute('name','fd_'+(i-1));
+			fd.setAttribute('onchange','min_fecha_hasta('+(i-1)+')');
+			
+			let fh = document.getElementById('fh_'+i);
+			fh.setAttribute('id','fh_'+(i-1));
+			fh.setAttribute('name','fh_'+(i-1));
 			
 			m2.setAttribute('onchange','subtotal_linea('+(i-1)+','+parseFloat(pre.innerText)+')');
 			

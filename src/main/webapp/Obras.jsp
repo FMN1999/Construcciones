@@ -21,6 +21,7 @@
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 				data-bs-target="#myModal" onClick="regMode()">Registrar
 				Obra</button>
+			
 		</div>
 		<br>
 		<% ArrayList<Cliente> clientes=(ArrayList<Cliente>)request.getAttribute("clientes"); %>
@@ -29,6 +30,7 @@
 			<th>Direccion</th>
 			<th>Descripción</th>
 			<th>Cliente</th>
+			<th></th>
 			<th></th>
 			<th></th>
 			<th></th>
@@ -48,6 +50,9 @@
 				<td><button type="button" class="btn btn-danger"
 						data-bs-toggle="modal" data-bs-target="#myModal"
 						onClick="deleteMode()">Eliminar</button></td>
+				<td><% if(!o.isFinalizado()) {%><button type="button" class="btn btn-danger"
+						data-bs-toggle="modal" data-bs-target="#myModal"
+						onClick="bajaMode()">Finalizar</button><%} %></td>
 				<td><form action="Presupuesto" method="get">
 		    				<input id="idObra" name="idObra" style="display:None;" value=<%= o.getIdObra() %>>
 		    				<button type="submit" class="btn btn-primary">Detalles</button>
@@ -99,6 +104,7 @@
 						<option>Registrar</option>
 						<option>Editar</option>
 						<option>Eliminar</option>
+						<option>Finalizar</option>
 					</select>
 					<!-- Modal footer -->
 					<div class="modal-footer">
@@ -179,6 +185,23 @@
 		    }
 			
 			document.getElementById('accion').selectedIndex=2;
+		}
+		function bajaMode(){
+			document.getElementById('modalHead').innerHTML="Finalizar Obra";
+			document.getElementById('btn').className="btn btn-danger";
+			document.getElementById('btn').innerHTML="Finalizar";
+			
+			document.getElementById('idobra').setAttribute("readonly" , "readonly" , false);
+		    document.getElementById('direccion').setAttribute("readonly" , "readonly" , false);
+		    document.getElementById('descripcion').setAttribute("readonly" , "readonly" , false);
+		    var selected=document.getElementById('idcliente').selectedIndex;
+		    for (x = 0; x < document.getElementById('idcliente').options.length; x++){
+		    	if(x!=selected){
+		    		document.getElementById('idcliente').options[x].setAttribute("disabled","disabled",false);
+		    	}
+		    }
+			
+			document.getElementById('accion').selectedIndex=3;
 		}
 
 </script>

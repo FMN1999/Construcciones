@@ -2,15 +2,17 @@ package logica;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import datos.TareaData;
+import entidades.Cliente;
 import entidades.Presupuesto;
 import entidades.Tarea;
+import entidades.Trabajador;
+import entidades.Usuario;
 
 public class TareaLogic {
 	public static TareaData source=new TareaData();
-	
-	//no se captura ningun error, todos van a capa de presentacion
 	
 	/**
 	 * @see _ Recupera todas las tareas del presupuesto p
@@ -35,6 +37,33 @@ public class TareaLogic {
 		return tareas; 
 	}
 	
+	/**@see _ Solo tareas que aun no terminaron
+	 * */
+	public static ArrayList<Tarea> getTareasActivas(Date d) throws Exception{
+		ArrayList<Tarea> tareas=new ArrayList<Tarea>();
+		try{
+			tareas=source.getTareasActivas(d);
+		}
+		catch(Exception e) {
+			throw new Exception("No fue posible recuperar las tareas->"+e.getMessage());
+		}
+		return tareas;
+	}
+	
+	public static void AsignarTrabajador(int idTarea,long cuil, int horas, Date dia) throws Exception{
+		//primero debe verificarse que el empleado no acumule mas de 8 horas trabajando ese dia
+		int hs_trabajadas=source.HorasTrabajadas(dia, cuil);
+		//si no acumula mas de 8 horas se registra la asignacion
+		if((hs_trabajadas+horas)<=8) {
+			source.AsignarTrabajador(idTarea, cuil, horas, dia);
+		}
+		else {
+			//si tiene mas de 8 horas se lanza excepcion
+			throw new Exception("No se asigno la tarea al trabajador-->Ya acumulara mas de 8hs trabajadas el dia "
+					+dia+ ".\n Actualmente posee "+hs_trabajadas+"hs");
+		}
+	}
+	
 	public static void Registrar(int idPresupuesto,ArrayList<Tarea> tareas) throws Exception {
 		for(Tarea t:tareas) {
 			t.setIdTarea(source.Registrar(idPresupuesto, t));
@@ -42,12 +71,24 @@ public class TareaLogic {
 			MaterialLogic.RegistrarUsoMateriales(t.getIdTarea(), t.getMateriales());
 		}
 	}
-	/*
-	public static void Actualizar(Tarea t) throws Exception {
-		source.Actualizar(t);
+	/**
+	 * @see Añade al empleado las tareas del mes actual que le fueron asignadas
+	 * */
+	public static Trabajador getEmpleadoWithTareas(Usuario u)throws Exception{
+		Trabajador t=TrabajadorLogic.toTrabajador(u);
+		t.setTareasAsignadas(new ArrayList<Trabajador.TareaAsignada>());
+		t=source.getTareasMesEmpleado(t);
+		return t;
 	}
 	
-	public static void Eliminar(int id) throws Exception {
-		source.Eliminar(id);
-	}*/
+	/**
+	 * @see Añade al empleado las tareas asignadas posteriores al dia actual
+	 * */
+	public static Trabajador getEmpleadoTareasActivas(Usuario u)throws Exception{
+		Trabajador t=TrabajadorLogic.toTrabajador(u);
+		t.setTareasAsignadas(new ArrayList<Trabajador.TareaAsignada>());
+		t=source.getTareasActivasEmpleado(t);
+		return t;
+	}
+	
 }

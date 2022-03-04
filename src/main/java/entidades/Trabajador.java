@@ -1,5 +1,6 @@
 package entidades;
 import java.util.Date;
+import java.util.ArrayList;
 
 public class Trabajador extends Usuario {
 	private long cuil;
@@ -9,6 +10,8 @@ public class Trabajador extends Usuario {
 	private boolean disponible;
 	private String tipoEmpleado;
 	private float precioHS;
+	private ArrayList<TareaAsignada> tareasAsignadas;
+	
 	
 	public long getCuil() {
 		return cuil;
@@ -64,7 +67,41 @@ public class Trabajador extends Usuario {
 		this.disponible = disponible;
 		this.tipoEmpleado = tipoEmpleado;
 		this.precioHS = precioHS;
+		this.setTareasAsignadas(new ArrayList<TareaAsignada>());
+	}
+	public ArrayList<TareaAsignada> getTareasAsignadas() {
+		return tareasAsignadas;
+	}
+	public void setTareasAsignadas(ArrayList<TareaAsignada> tareasAsignadas) {
+		this.tareasAsignadas = tareasAsignadas;
 	}
 	
-
+	public void addTareaAsignada(int hs, Date fecha, Tarea t) {
+		this.getTareasAsignadas().add(new TareaAsignada(hs, fecha, t));
+	}
+	//usar clase interna para recuperar las tareas asignadas
+	public class TareaAsignada {
+		public Date fecha_asignada;
+		public int hs_asignadas;
+		public Tarea tarea;
+		
+		public TareaAsignada(int hs, Date fecha, Tarea t) {
+			this.fecha_asignada=fecha;
+			this.hs_asignadas=hs;
+			this.tarea=t;
+		}
+	}
+	
+	/**
+	 * @see Calcula sueldo en base a las horas que tiene asignadas
+	 * Es conveniente usarla solo con las tareas de un mes
+	 * */
+	public float calcularSueldo() {
+		float sueldo=0;
+		for(TareaAsignada ta:this.tareasAsignadas) {
+			sueldo+= (this.getPrecioHS()* ta.hs_asignadas);
+		}
+		return sueldo;
+	}
+	
 }

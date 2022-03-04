@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import entidades.Trabajador;
+import entidades.Tarea;
+import entidades.Tipo_Tarea;
 
 public class TrabajadorData extends Coneccion {
 	
@@ -133,7 +135,7 @@ public class TrabajadorData extends Coneccion {
 			n=ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado: "+e.getMessage());
+			throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del empleado: ");
 		}
 		finally {
 			this.close();
@@ -173,7 +175,7 @@ public class TrabajadorData extends Coneccion {
 			ps.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			throw new Exception("No fue posible actualizar los cambios en el trabajador "+t.getApellido()+" "+t.getNombre()+":"+e.getMessage());
+			throw new Exception("No fue posible actualizar los cambios en el trabajador "+t.getApellido()+" "+t.getNombre());
 		}
 		finally {
 			this.close();
@@ -196,12 +198,14 @@ public class TrabajadorData extends Coneccion {
 			
 			ps.close();
 		}catch(SQLException e) {
-			throw new Exception("No fue posible eliminar al trabajador: "+e.getMessage());
+			throw new Exception("No fue posible eliminar al trabajador. Si tiene problemas para eliminar"
+							   +"un trabajador se sugiere cambiar su disponibilidad a 'No disponible' ");
 		}
 		finally {
 			this.close();
 			if(n==0) {
-				throw new Exception("No fue posible eliminar al trabajador");
+				throw new Exception("No fue posible eliminar al trabajador. Si tiene problemas para eliminar"
+						   +"un trabajador se sugiere cambiar su disponibilidad a 'No disponible' ");
 			}
 		}
 	}

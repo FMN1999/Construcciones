@@ -1,23 +1,28 @@
 package ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entidades.Trabajador;
+import logica.TrabajadorLogic;
+
 /**
- * Servlet implementation class Tareas_Empleados
+ * Servlet implementation class Sueldos
  */
-@WebServlet("/Tareas_Empleados")
-public class Tareas_Empleados extends HttpServlet {
+@WebServlet("/Sueldos")
+public class Sueldos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Tareas_Empleados() {
+    public Sueldos() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,7 +32,16 @@ public class Tareas_Empleados extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.getRequestDispatcher("./Tareas_Empleados.jsp").forward(request, response);
+		ArrayList<Trabajador> ofs=null, obs=null;
+		try {
+			obs=TrabajadorLogic.obrerosActivos();
+			ofs=TrabajadorLogic.oficialesActivos();
+		}catch(Exception e) {
+			
+		}
+		request.setAttribute("oficiales", ofs);
+		request.setAttribute("obreros", obs);
+		request.getRequestDispatcher("./Sueldos.jsp").forward(request, response);
 	}
 
 	/**

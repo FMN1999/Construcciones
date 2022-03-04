@@ -36,4 +36,45 @@ public class TrabajadorLogic {
 		source.Eliminar(cuil);
 		UsuarioLogic.Eliminar(id);
 	}
+	
+	public static Trabajador toTrabajador(Usuario u)throws Exception{
+		ArrayList<Trabajador> trabs=getOficiales();
+		trabs.addAll(getObreros());
+		for(Trabajador t: trabs) {
+			if(t.getCuil()==u.getCuil()) {
+				return t;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * @see Recupera los oficiales con la info necesaria para calcular el sueldo del mes actual
+	 * */
+	public static ArrayList<Trabajador> oficialesActivos() throws Exception{
+		ArrayList<Trabajador> trs=source.getOficiales();
+		ArrayList<Trabajador> trs2=new ArrayList<Trabajador>();
+		for(Trabajador t:trs) {
+			if(t.isDisponible()) {
+				t=TareaLogic.getEmpleadoWithTareas(t);
+				trs2.add(t);
+			}
+		}
+		return trs2;
+	}
+	
+	/**
+	 * @see Recupera los obreros con la info necesaria para calcular el sueldo del mes actual
+	 * */
+	public static ArrayList<Trabajador> obrerosActivos() throws Exception{
+		ArrayList<Trabajador> trs=source.getObreros();
+		ArrayList<Trabajador> trs2=new ArrayList<Trabajador>();
+		for(Trabajador t:trs) {
+			if(t.isDisponible()) {
+				t=TareaLogic.getEmpleadoWithTareas(t);
+				trs2.add(t);
+			}
+		}
+		return trs2;
+	}
 }

@@ -21,7 +21,7 @@ public class ProveedorData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos del proveedor.");
 		}
 		finally {
 			this.close();
@@ -43,7 +43,7 @@ public class ProveedorData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos del proveedor.");
 		}
 		finally {
 			this.close();
@@ -65,7 +65,7 @@ public class ProveedorData extends Coneccion {
 			
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("No se ha registrado al provedor, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No se ha registrado al provedor, intentelo de nuevo!");
 		}
 		finally{
 			this.close();
@@ -91,7 +91,7 @@ public class ProveedorData extends Coneccion {
 			
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("No se han registrado los cambios, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No se han registrado los cambios, intentelo de nuevo!");
 		}
 		finally {
 			this.close();
@@ -114,13 +114,13 @@ public class ProveedorData extends Coneccion {
 			
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("No fue posible eliminar provedor, intentelo de nuevo!"+e.getMessage());
+			throw new SQLException("No fue posible eliminar provedor, está siendo utilizado en otros registros.");
 		}
 		finally {
 			this.close();
 			
 			if(n==0) {
-				throw new Exception("No fue posible eliminar provedor, intentelo de nuevo!");
+				throw new SQLException("No fue posible eliminar provedor, está siendo utilizado en otros regstros.");
 			}
 		}
 	}

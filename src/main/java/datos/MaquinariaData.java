@@ -2,6 +2,7 @@ package datos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import entidades.Maquinaria;
@@ -14,15 +15,17 @@ public class MaquinariaData extends Coneccion {
 		Maquinaria m=null;
 		try {
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT idmaquina, descripcion, precioHora FROM maquinarias WHERE idmaquina=?");
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT idmaquina, descripcion, ifnull(pm.valor_hora,0.0) as precio FROM maquinarias "
+					+ "left join precios_maquina pm on pm.id_maquina=idmaquina "
+					+ "WHERE idmaquina=? and ifnull((fecha_desde= (select max(fecha_desde) from precios_maquina where id_maquina=idmaquina)),true)");
 			ps.setInt(1, id);
 			ResultSet rs=ps.executeQuery();
 			rs.next();
-			m= new Maquinaria(rs.getInt("idmaquina"), rs.getString("descripcion"),rs.getFloat("precioHora"));
+			m= new Maquinaria(rs.getInt("idmaquina"), rs.getString("descripcion"),rs.getFloat("precio"));
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos de la maquinaria.");
 		}
 		finally {
 			this.close();
@@ -34,15 +37,17 @@ public class MaquinariaData extends Coneccion {
 		ArrayList<Maquinaria> listaMaq = new ArrayList<Maquinaria>();
 		try {
 			this.open();
-			PreparedStatement ps = this.getCon().prepareStatement("SELECT idmaquina, descripcion, precioHora from maquinarias");
+			PreparedStatement ps=this.getCon().prepareStatement("SELECT idmaquina, descripcion,ifnull(pm.valor_hora,0.0) as precio FROM maquinarias "
+					+ "left join precios_maquina pm on pm.id_maquina=idmaquina "
+					+ "WHERE ifnull((fecha_desde= (select max(fecha_desde) from precios_maquina where id_maquina=idmaquina)),true)");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				listaMaq.add(new Maquinaria(rs.getInt("idmaquina"), rs.getString("descripcion"),rs.getFloat("precioHora")));
+				listaMaq.add(new Maquinaria(rs.getInt("idmaquina"), rs.getString("descripcion"),rs.getFloat("precio")));
 			}
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar las maquinarias.");
 		}
 		finally {
 			this.close();
@@ -55,14 +60,42 @@ public class MaquinariaData extends Coneccion {
 		int n=0;
 		try {
 			this.open();
-			PreparedStatement ps = this.getCon().prepareStatement("INSERT into maquinarias(descripcion, precioHora) values(?,?)");
+			PreparedStatement ps = this.getCon().prepareStatement("INSERT into maquinarias(descripcion) values(?)", Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, m.getDescripcion());
-			ps.setFloat(2, m.getPrecioHora());
 			
 			n = ps.executeUpdate();
-			ps.close();
+			
+			
+			if (n == 0) {
+                ps.close();
+                throw new Exception("No se han registrado las maquinarias, intentelo de nuevo");
+            }
+			else {
+				ResultSet generatedKeys = ps.getGeneratedKeys();
+				if (generatedKeys.next()) {
+			         int idGenerado = generatedKeys.getInt(1);
+			         ps.close();
+			         if(m.getPrecioHora()!=0 && !Float.isNaN(m.getPrecioHora())) {
+							ps=this.getCon().prepareStatement("INSERT INTO precios_maquina(id_maquina, fecha_desde, valor_hora) VALUES (?, sysdate(), ?)");
+							//es necesario obtener el nuevo id_material
+							
+							ps.setInt(1, idGenerado);
+							ps.setFloat(2, m.getPrecioHora());
+							n=ps.executeUpdate();
+							//provoca error si no obtuvo el nuevo id_material
+							ps.close();
+							if(n==0) {
+								throw new Exception("No se ha guardado el precio, intentelo de nuevo");
+							}
+						}
+				}
+			}	
+			
+			
+			
+			
 		} catch (SQLException e) {
-			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
 		}
 		finally {
 			this.close();
@@ -75,25 +108,36 @@ public class MaquinariaData extends Coneccion {
 	public void ActualizarDatos(Maquinaria m) throws SQLException, Exception {
 		int n=0;
 		try {
+			float p = this.getOne(m.getIdMaquina()).getPrecioHora();
 			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("UPDATE maquinarias SET descripcion=?, precioHora=? WHERE (idmaquina=?)");
+			PreparedStatement ps=this.getCon().prepareStatement("UPDATE maquinarias SET descripcion=?  WHERE (idmaquina=?)");
 			ps.setString(1, m.getDescripcion());
-			ps.setFloat(2, m.getPrecioHora());
-			ps.setInt(3, m.getIdMaquina());
+			ps.setInt(2, m.getIdMaquina());
 			
 			n=ps.executeUpdate();
 			
 			ps.close();
+			if(p != m.getPrecioHora()) {
+				ps=this.getCon().prepareStatement("INSERT INTO precios_maquina(id_maquina, fecha_desde, valor_hora) VALUES (?, sysdate(), ?)");
+				ps.setInt(1, m.getIdMaquina());
+				ps.setFloat(2, m.getPrecioHora());
+				
+				n=ps.executeUpdate();
+				ps.close();
+				if(n==0) {
+					throw new Exception("No se ha el precio, intentelo de nuevo!");
+				}
+			}
+			
 		} catch (SQLException e) {
-			throw new Exception("No se han registrado los cambios, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No se han registrado los cambios, intentelo de nuevo!");
 		}
 		finally {
 			this.close();
 		}
 		
-		if(n==0) {
-			throw new Exception("No se han registrado los cambios, intentelo de nuevo!");
-		}
+		
+		
 	}
 	
 	public void Eliminar(int id) throws SQLException, Exception {
@@ -107,14 +151,14 @@ public class MaquinariaData extends Coneccion {
 			
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("No fue posible eliminar la maquinaria, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No fue posible eliminar la maquinaria, intentelo de nuevo!");
 		}
 		finally {
 			this.close();
 		}
 		
 		if(n==0) {
-			throw new Exception("No fue posible eliminar la maquinaria, intentelo de nuevo!");
+			throw new Exception("No fue posible eliminar la maquinaria ya que está siendo utilizada en otro registro.");
 		}
 	}
 	public ArrayList<Maquinaria> getMaquinasTarea(int idTarea) throws Exception {
@@ -139,7 +183,8 @@ public class MaquinariaData extends Coneccion {
 			ps.close();
 		}
 		catch(Exception e) {
-			throw e;
+			throw new Exception("Ocurrió un error mientras se intentaban recuperar las tareas.");
+
 		}
 		finally {
 			this.close();
@@ -165,14 +210,14 @@ public class MaquinariaData extends Coneccion {
                 if (i == 0) {
                     this.getCon().rollback();
                     ps.close();
-                    throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
+                    throw new Exception("No se ha registrado el uso de la maquinaria, intentelo de nuevo!");
                 }
             }
 			this.getCon().commit();
 			
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No se ha registrado el uso de la maquinaria, intentelo de nuevo!");
 		}
 		finally {
 			this.close();

@@ -67,7 +67,7 @@ public class ClientesData extends Coneccion {
 			ps.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			throw new Exception("No fue posible comunicarse con el dueÃ±o de la obra"+e.getMessage());
+			throw new Exception("No fue posible comunicarse con el dueño de la obra.");
 		}
 		finally {
 			this.close();
@@ -90,12 +90,12 @@ public class ClientesData extends Coneccion {
 			n=ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del cliente: "+e.getMessage());
+			throw new Exception("Ocurrió un error mientras se intentaban registrar los datos del cliente.");
 		}
 		finally {
 			this.close();
 			if(n==0) {
-				throw new Exception("Un error ocurrio mientras se intentaban registrar los datos del cliente");
+				throw new Exception("Ocurrió un error mientras se intentaban registrar los datos del cliente");
 				//deberia eliminarse el usuario en caso de error al registrar en clientes
 			}
 			
@@ -117,7 +117,7 @@ public class ClientesData extends Coneccion {
 			ps.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			throw new Exception("No fue posible actualizar los cambios en el cliente "+c.getApellido()+" "+c.getNombre()+":"+e.getMessage());
+			throw new Exception("No fue posible actualizar los cambios en el cliente "+c.getApellido()+" "+c.getNombre());
 		}
 		finally {
 			this.close();
@@ -140,7 +140,7 @@ public class ClientesData extends Coneccion {
 			
 			ps.close();
 		}catch(SQLException e) {
-			throw new Exception("No fue posible eliminar al cliente: "+e.getMessage());
+			throw new Exception("No fue posible eliminar al cliente.");
 		}
 		finally {
 			this.close();

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import entidades.Maquinaria;
 import entidades.Material;
-import entidades.Material_a_usar;
 import entidades.Obra;
 import entidades.Presupuesto;
 import entidades.Tarea;
@@ -30,70 +29,12 @@ public class PresupuestoData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos del prsupuesto.");
 		}
 		finally {
 			this.close();
 		}
 		return presups;
-	}
-	
-	public ArrayList<Material_a_usar> getMateriales(Presupuesto p) throws SQLException{
-		ArrayList<Material_a_usar> ms=new ArrayList<Material_a_usar>();
-		try {
-			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT p.idpresupuesto, t.idtarea, t.descripcion, t.cant_m2, tt.idtipo_tarea, tt.descripcion, ptt.precio_m2, m.idmaterial, m.descripcion, mt.cant_a_usar, pm.precio\r\n"
-					+ "from presupuestos p\r\n"
-					+ "inner join tareas t on t.id_presupuesto=p.idpresupuesto\r\n"
-					+ "inner join tipos_tarea tt on t.id_tipo_tarea = tt.idtipo_tarea\r\n"
-					+ "inner join precios_tipo_tarea ptt on tt.idtipo_tarea = ptt.id_tipo_tarea_\r\n"
-					+ "inner join materiales_tareas mt on mt.id_tarea_=t.idtarea\r\n"
-					+ "inner join materiales m on m.idmaterial=mt.id_material_\r\n"
-					+ "inner join precios_material pm on pm.id_material = m.idmaterial\r\n"
-					+ "where p.idpresupuesto=?");
-			ps.setInt(1, p.getId_presupuesto());
-			ResultSet rs=ps.executeQuery();
-			while(rs.next()) {
-				Material m = new Material(rs.getInt("m.idmaterial"), rs.getString("m.descripcion"), rs.getFloat("pm.precio"));
-				Tipo_Tarea tt= new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"), rs.getFloat("ptt.precio_m2"));
-				Tarea t = new Tarea(rs.getInt("t.idtarea"), rs.getString("t.descripcion"), rs.getFloat("t.cant_m2"), tt);
-				ms.add(new Material_a_usar(m,t,tt,rs.getInt("mt.cant_a_usar")));
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException e) {
-			throw e;
-		}
-		finally {
-			this.close();
-		}
-		return ms;
-	}
-	
-	public ArrayList<Maquinaria> getMaquinarias(Presupuesto p) throws SQLException{
-		ArrayList<Maquinaria> ms=new ArrayList<Maquinaria>();
-		try {
-			this.open();
-			PreparedStatement ps=this.getCon().prepareStatement("SELECT p.idpresupuesto, t.idtarea, m.idmaquina, m.descripcion, m.precioHora\r\n"
-					+ "from presupuestos p\r\n"
-					+ "inner join tareas t on t.id_presupuesto=p.idpresupuesto\r\n"
-					+ "inner join tareas_maquinas tm on tm.id_tarea__=t.idtarea\r\n"
-					+ "inner join maquinarias m on m.idmaquina=mt.id_maquina__\r\n"
-					+ "where p.idpresupuesto=? ");
-			ps.setInt(1, p.getId_presupuesto());
-			ResultSet rs=ps.executeQuery();
-			while(rs.next()) {
-				ms.add(new Maquinaria(rs.getInt("m.idmaquina"), rs.getString("m.descripcion"), rs.getFloat("m.precioHora")));
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException e) {
-			throw e;
-		}
-		finally {
-			this.close();
-		}
-		return ms;
 	}
 	
 	public Presupuesto getOne(int id) throws Exception{
@@ -110,7 +51,7 @@ public class PresupuestoData extends Coneccion {
 			return p;
 		}
 		catch(Exception e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos de la obra.");
 		}
 		finally {
 			this.close();
@@ -138,7 +79,34 @@ public class PresupuestoData extends Coneccion {
 			throw new Exception("No fue posible recuperar la clave de presupuesto autogenerada");
 			
 		}catch (Exception e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban regstrar los datos del presupuesto.");
+		}
+		finally {
+			this.close();
+		}
+	}
+	
+	public void RegistrarEstadoPresupuesto(Presupuesto p) throws Exception{
+		try {
+			this.open();
+			PreparedStatement ps;
+			if(p.getFecha_aceptacion()!=null) {
+				ps=this.getCon().prepareStatement("UPDATE presupuestos SET fecha_aceptacion=? WHERE (idpresupuesto=?)");
+				ps.setDate(1, new java.sql.Date(p.getFecha_aceptacion().getTime()));
+			}
+			else {
+				ps=this.getCon().prepareStatement("UPDATE presupuestos SET fecha_cancelacion=? WHERE (idpresupuesto=?)");
+				ps.setDate(1, new java.sql.Date(p.getFecha_caencelacion().getTime()));
+			}
+			ps.setInt(2, p.getId_presupuesto());
+			int n=ps.executeUpdate();
+			if(n==0) {
+				throw new Exception("No fue posible registrar su respuesta!");
+			}
+			ps.close();
+		}
+		catch(Exception e) {
+			throw new SQLException("Ocurrió un error mientras se intentaban registrar los datos del presupuesto.");
 		}
 		finally {
 			this.close();
