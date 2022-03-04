@@ -17,7 +17,8 @@ import entidades.Usuario;
 /**
  * Servlet Filter implementation class ClienteFilter
  */
-@WebFilter(urlPatterns = { "/ObrasCliente", "/ClienteFilter", "/PresupuestoCliente"}, servletNames = {"ObrasCliente", "PresupuestoCliente"})
+@WebFilter(urlPatterns = { "/ObrasCliente", "/ClienteFilter", "/PresupuestoCliente"}, 
+servletNames = {"ObrasCliente", "PresupuestoCliente"})
 public class ClienteFilter implements Filter {
 
     /**
@@ -45,7 +46,7 @@ public class ClienteFilter implements Filter {
 		
 		if(!user.getTipo().equalsIgnoreCase("Cliente")) {
 			r.sendRedirect("Home");
-			request.setAttribute("error", "No tiene los permisos necesarios para ingresar a la p�gina! >:c.");
+			request.setAttribute("error", "No tiene los permisos necesarios para ingresar a la p�gina!");
 			return;
 		}
 		

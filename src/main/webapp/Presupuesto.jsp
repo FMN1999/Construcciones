@@ -19,7 +19,6 @@
 	<%@page import="logica.MaquinariaLogic" %>
 	<%@page import="entidades.Maquinaria" %>
 	<%@page import="logica.PresupuestoLogic" %>
-	<%@page import="entidades.Material_a_usar" %>
 	<%@page import="entidades.Tarea"%>
 	<%@page import="entidades.Presupuesto" %>
 	<%@page import="logica.ObraLogic" %>

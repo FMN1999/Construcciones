@@ -59,11 +59,6 @@
 					for="floatingPassword">Contraseña</label>
 			</div>
 
-			<div class="checkbox mb-3">
-				<label> <input type="checkbox" value="remember-me">
-					Recordar
-				</label>
-			</div>
 			<% String error=(String)request.getAttribute("error"); %>
 			<% if(error!=null){ %>
 			<div class="alert alert-danger">

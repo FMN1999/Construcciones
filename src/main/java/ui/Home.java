@@ -51,7 +51,7 @@ public class Home extends HttpServlet {
 		}
 		case "Trabajador":{
 			try {
-				Trabajador t=TareaLogic.getEmpleadoWithTareas(u);
+				Trabajador t=TareaLogic.getEmpleadoTareasActivas(u);
 				request.setAttribute("empleado", t);
 			}
 			catch(Exception e) {

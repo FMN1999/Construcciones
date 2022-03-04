@@ -50,7 +50,7 @@ public class TareaData extends Coneccion
 				ps.close();
 			}
 			catch(Exception e) {
-				throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos de las tareas.");
+				throw new Exception("Ocurriï¿½ un error mientras se intentaban recuperar los datos de las tareas.");
 			}
 			finally {
 				this.close();
@@ -92,7 +92,7 @@ public class TareaData extends Coneccion
 				ps.close();
 			}
 			catch(Exception e) {
-				throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos de las tareas.");
+				throw new Exception("Ocurriï¿½ un error mientras se intentaban recuperar los datos de las tareas.");
 			}
 			finally {
 				this.close();
@@ -154,6 +154,53 @@ public class TareaData extends Coneccion
 			return t;
 		}
 		
+		public Trabajador getTareasActivasEmpleado(Trabajador t) throws SQLException, Exception{
+			try {
+				this.open();
+				PreparedStatement ps= this.getCon().prepareStatement("SELECT t.idtarea, concat(o.direccion,'-',t.descripcion) as descripcion, "
+						+ "t.cant_m2, tt.idtipo_tarea, tt.descripcion, 0.0 as precio, t.fecha_desde, t.fecha_hasta, "
+						+ "trt.fecha, sum(trt.cant_horas_trabajadas) as hs_t "
+						+ "FROM presupuestos p\r\n"
+						+ "INNER JOIN tareas t ON p.idpresupuesto=t.id_presupuesto\r\n"
+						+ "INNER JOIN tipos_tarea tt on t.id_tipo_tarea=tt.idtipo_tarea \r\n"
+						+ "INNER JOIN obras o ON o.idobra=p.id_obra "
+						+ "INNER JOIN trabajador_tarea trt on trt.id_tarea_asignada=t.idtarea "
+						+ "WHERE trt.fecha>=? and trt.cuil_trabajador=?\r\n"
+						+ "GROUP BY t.idtarea, tt.idtipo_tarea, trt.fecha\r\n"
+						+ "ORDER BY t.idtarea");
+				//ps.setDate(1, new java.sql.Date(d.getTime()));
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");  
+				//Fecha actual
+				Calendar calendar = Calendar.getInstance(); 
+				String dia=sdf.format(calendar.getTime());
+				Date firsdayM=sdf.parse(dia);
+				
+				ps.setDate(1, new java.sql.Date(firsdayM.getTime()));
+				ps.setLong(2, t.getCuil());
+				
+				ResultSet rs=ps.executeQuery();
+				while(rs.next()) {
+					Date fd=rs.getDate("t.fecha_desde");
+					Date fh=rs.getDate("t.fecha_hasta");
+					Tarea tarea=new Tarea(rs.getInt("t.idtarea"), rs.getString("descripcion"), rs.getFloat("t.cant_m2"), 
+							new Tipo_Tarea(rs.getInt("tt.idtipo_tarea"), rs.getString("tt.descripcion"),rs.getFloat("precio"))//el precio es despreciable
+							,fd,fh);
+					int canths=rs.getInt("hs_t");
+					Date diaAsig=rs.getDate("trt.fecha");
+					t.addTareaAsignada(canths, diaAsig, tarea);
+				}
+				rs.close();
+				ps.close();
+			}
+			catch(Exception e) {
+				throw e;
+			}
+			finally {
+				this.close();
+			}
+			return t;
+		}
+		
 		public int HorasTrabajadas(Date d, long cuil) throws SQLException, Exception{
 			int cant=0;
 			try {
@@ -170,7 +217,7 @@ public class TareaData extends Coneccion
 				ps.close();
 			}
 			catch(Exception e) {
-				throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos de la tarea.");
+				throw new Exception("Ocurriï¿½ un error mientras se intentaban recuperar los datos de la tarea.");
 			}
 			finally {
 				this.close();

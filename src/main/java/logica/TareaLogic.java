@@ -71,11 +71,23 @@ public class TareaLogic {
 			MaterialLogic.RegistrarUsoMateriales(t.getIdTarea(), t.getMateriales());
 		}
 	}
-	
+	/**
+	 * @see Añade al empleado las tareas del mes actual que le fueron asignadas
+	 * */
 	public static Trabajador getEmpleadoWithTareas(Usuario u)throws Exception{
 		Trabajador t=TrabajadorLogic.toTrabajador(u);
 		t.setTareasAsignadas(new ArrayList<Trabajador.TareaAsignada>());
 		t=source.getTareasMesEmpleado(t);
+		return t;
+	}
+	
+	/**
+	 * @see Añade al empleado las tareas asignadas posteriores al dia actual
+	 * */
+	public static Trabajador getEmpleadoTareasActivas(Usuario u)throws Exception{
+		Trabajador t=TrabajadorLogic.toTrabajador(u);
+		t.setTareasAsignadas(new ArrayList<Trabajador.TareaAsignada>());
+		t=source.getTareasActivasEmpleado(t);
 		return t;
 	}
 	

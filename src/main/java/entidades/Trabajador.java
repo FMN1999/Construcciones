@@ -92,4 +92,16 @@ public class Trabajador extends Usuario {
 		}
 	}
 	
+	/**
+	 * @see Calcula sueldo en base a las horas que tiene asignadas
+	 * Es conveniente usarla solo con las tareas de un mes
+	 * */
+	public float calcularSueldo() {
+		float sueldo=0;
+		for(TareaAsignada ta:this.tareasAsignadas) {
+			sueldo+= (this.getPrecioHS()* ta.hs_asignadas);
+		}
+		return sueldo;
+	}
+	
 }
