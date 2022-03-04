@@ -14,6 +14,13 @@
 	<%@page import="entidades.Presupuesto" %>
 	<%@page import="entidades.Usuario" %>
 	<%@page import="logica.PresupuestoLogic" %>
+	<%@page import ="entidades.Tarea" %>
+	<%@page import ="logica.TareaLogic" %>
+	<%@ page import = "entidades.Material" %>
+	<%@page import ="logica.MaterialLogic" %>
+	<%@ page import ="entidades.Maquinaria" %>
+	<%@page import = "logica.MaquinariaLogic" %>
+	
 	<% Obra o = (Obra)request.getAttribute("obra"); %>
 	<% Usuario u= (Usuario)session.getAttribute("usuario"); %>
 	
@@ -40,7 +47,7 @@
     	<% }%>
 		</div>
 		<br>
-		<% ArrayList<Presupuesto> psp= (ArrayList<Presupuesto>)request.getAttribute("presupuestos"); %>
+		<% ArrayList<Presupuesto> psp= o.getPresupuestos(); %>
 		<table class="table" style="background-image: linear-gradient(to bottom right, orange, white);" id="tab_materiales">
 			<th>Fecha Emisión</th>
 			<th>Monto</th>
@@ -66,5 +73,26 @@
 		</table>
 	</div>
 		
+	<div class="container mt-3 ">
+		<% if(o.isFinalizado()) { %>
+		<p class="h2 text-center">Balance</p>
+		<div class= "row">
+			<p class="h5 text-center"> Gastos en Materiales: <%= o.gastosMateriales() %></p>
+		</div>
+		<div class= "row">
+			<p class="h5 text-center"> Gastos en Maquinarias: <%= o.gastosMaquinas() %></p>
+		</div>
+		<div class= "row">
+			<p class="h5 text-center"> Gastos en Tareas: <%= o.gastosTareas() %></p>
+		</div>
+		<div class= "row">
+			<p class="h5 text-center"> Gastos Totales: <%= o.totalPresupuestado() %></p>
+		</div>
+		<hr>
+		<div class = "row">
+			<p class="h5 text-center"> Presupuestado menos gastos: <%= o.getBalance() %></p>
+		</div>
+		<% } %>
+	</div>
 </body>
 </html>
