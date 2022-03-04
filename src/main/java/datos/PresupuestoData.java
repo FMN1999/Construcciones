@@ -29,7 +29,7 @@ public class PresupuestoData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos del prsupuesto.");
 		}
 		finally {
 			this.close();
@@ -51,7 +51,7 @@ public class PresupuestoData extends Coneccion {
 			return p;
 		}
 		catch(Exception e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos de la obra.");
 		}
 		finally {
 			this.close();
@@ -79,7 +79,7 @@ public class PresupuestoData extends Coneccion {
 			throw new Exception("No fue posible recuperar la clave de presupuesto autogenerada");
 			
 		}catch (Exception e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban regstrar los datos del presupuesto.");
 		}
 		finally {
 			this.close();
@@ -106,7 +106,7 @@ public class PresupuestoData extends Coneccion {
 			ps.close();
 		}
 		catch(Exception e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban registrar los datos del presupuesto.");
 		}
 		finally {
 			this.close();

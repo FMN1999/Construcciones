@@ -24,7 +24,7 @@ public class UsuariosData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos de los tipos del usuario.");
 		}
 		finally {
 			this.close();
@@ -50,7 +50,8 @@ public class UsuariosData extends Coneccion {
 			rs.close();
 			st.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos de los usuarios.");
+
 		}
 		finally {
 			this.close();
@@ -79,7 +80,7 @@ public class UsuariosData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos del usuario.");
 		}
 		finally {
 			this.close();
@@ -106,7 +107,8 @@ public class UsuariosData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban actualizar los datos deL usuario.");
+
 		}
 		finally {
 			this.close();
@@ -152,7 +154,7 @@ public class UsuariosData extends Coneccion {
 			n=ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("Un error ocurrio mientras se intentaba registrar el usuario: "+e.getMessage());
+			throw new Exception("Un error ocurrio mientras se intentaba registrar el usuario.");
 		}
 		finally {
 			this.close();
@@ -181,7 +183,7 @@ public class UsuariosData extends Coneccion {
 			ps.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			throw new Exception("No fue posible actualizar los cambios en el usuario :"+e.getMessage());
+			throw new Exception("No fue posible actualizar los cambios en el usuario.");
 		}
 		finally {
 			this.close();
@@ -205,7 +207,7 @@ public class UsuariosData extends Coneccion {
 			
 			ps.close();
 		}catch(SQLException e) {
-			throw new Exception("No fue posible eliminar al usuario "+id+": "+e.getMessage());
+			throw new Exception("No fue posible eliminar al usuario "+id);
 		}
 		finally {
 			this.close();

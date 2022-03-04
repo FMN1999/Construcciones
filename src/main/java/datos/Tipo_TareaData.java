@@ -30,7 +30,7 @@ public class Tipo_TareaData extends Coneccion
 				ps.close();
 			}
 			catch(Exception e) {
-				throw e;
+				throw new Exception("Ocurrió un error mientras se intentaban actualizar los datos de los tipos de tareas.");
 			}
 			finally {
 				this.close();
@@ -54,7 +54,7 @@ public class Tipo_TareaData extends Coneccion
 				return tt;
 			}
 			catch(Exception e) {
-				throw e;
+				throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos del tipo de tarea.");
 			}
 			finally {
 				this.close();
@@ -93,7 +93,7 @@ public class Tipo_TareaData extends Coneccion
 				}
 			}
 			catch(Exception e) {
-				throw e;
+				throw new Exception("Ocurrió un error mientras se intentaban actualizar los datos del tipo de tarea.");
 			}
 			finally {
 				this.close();
@@ -124,7 +124,7 @@ public class Tipo_TareaData extends Coneccion
 				}
 			}
 			catch(Exception e) {
-				throw e;
+				throw new Exception("Ocurrió un error mientras se intentaban actualizar los datos del tipo de tarea.");
 			}
 			finally {
 				this.close();
@@ -144,13 +144,13 @@ public class Tipo_TareaData extends Coneccion
 				ps.setInt(1, id);
 				n=ps.executeUpdate();
 				if(n==0) {
-					throw new Exception("No se ha eliminado el tipo de tarea, intentelo de nuevo");
+					throw new Exception("No se ha eliminado el tipo de tarea, está siendo utilizado en otro registro.");
 				}
 				ps.close();
 			}
 			
 			catch(Exception e) {
-				throw e;
+				throw new Exception("No se ha eliminado el tipo de tarea, está siendo utilizado en otro registro.");
 			}
 			finally {
 				this.close();

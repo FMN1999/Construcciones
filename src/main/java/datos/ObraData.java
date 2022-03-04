@@ -23,7 +23,7 @@ public class ObraData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos de la obra.");
 		}
 		finally {
 			this.close();
@@ -47,7 +47,8 @@ public class ObraData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos de las obras.");
+
 		}
 		finally {
 			this.close();
@@ -72,7 +73,8 @@ public class ObraData extends Coneccion {
 			}
 		}
 		catch(Exception e) {
-			throw e;
+			throw new Exception("Ocurrió un error mientras se intentaban registrar los datos de la obra.");
+
 		}
 		finally {
 			this.close();
@@ -94,7 +96,8 @@ public class ObraData extends Coneccion {
 			}
 		}
 		catch(Exception e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban actualizar los datos de la obra.");
+
 		}
 		finally {
 			this.close();
@@ -114,7 +117,8 @@ public class ObraData extends Coneccion {
 			}
 		}
 		catch(Exception e) {
-			throw e;
+			throw new Exception("No fue posible eliminar la obra, está siendo utilizada en otros registros.");
+
 		}
 		finally {
 			this.close();

@@ -25,7 +25,7 @@ public class MaquinariaData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar los datos de la maquinaria.");
 		}
 		finally {
 			this.close();
@@ -47,7 +47,7 @@ public class MaquinariaData extends Coneccion {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			throw e;
+			throw new SQLException("Ocurrió un error mientras se intentaban recuperar las maquinarias.");
 		}
 		finally {
 			this.close();
@@ -68,7 +68,7 @@ public class MaquinariaData extends Coneccion {
 			
 			if (n == 0) {
                 ps.close();
-                throw new Exception("No se han registrado las tareas, intentelo de nuevo");
+                throw new Exception("No se han registrado las maquinarias, intentelo de nuevo");
             }
 			else {
 				ResultSet generatedKeys = ps.getGeneratedKeys();
@@ -95,7 +95,7 @@ public class MaquinariaData extends Coneccion {
 			
 			
 		} catch (SQLException e) {
-			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
 		}
 		finally {
 			this.close();
@@ -130,7 +130,7 @@ public class MaquinariaData extends Coneccion {
 			}
 			
 		} catch (SQLException e) {
-			throw new Exception("No se han registrado los cambios, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No se han registrado los cambios, intentelo de nuevo!");
 		}
 		finally {
 			this.close();
@@ -151,14 +151,14 @@ public class MaquinariaData extends Coneccion {
 			
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("No fue posible eliminar la maquinaria, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No fue posible eliminar la maquinaria, intentelo de nuevo!");
 		}
 		finally {
 			this.close();
 		}
 		
 		if(n==0) {
-			throw new Exception("No fue posible eliminar la maquinaria, intentelo de nuevo!");
+			throw new Exception("No fue posible eliminar la maquinaria ya que está siendo utilizada en otro registro.");
 		}
 	}
 	public ArrayList<Maquinaria> getMaquinasTarea(int idTarea) throws Exception {
@@ -183,7 +183,8 @@ public class MaquinariaData extends Coneccion {
 			ps.close();
 		}
 		catch(Exception e) {
-			throw e;
+			throw new Exception("Ocurrió un error mientras se intentaban recuperar las tareas.");
+
 		}
 		finally {
 			this.close();
@@ -209,14 +210,14 @@ public class MaquinariaData extends Coneccion {
                 if (i == 0) {
                     this.getCon().rollback();
                     ps.close();
-                    throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!");
+                    throw new Exception("No se ha registrado el uso de la maquinaria, intentelo de nuevo!");
                 }
             }
 			this.getCon().commit();
 			
 			ps.close();
 		} catch (SQLException e) {
-			throw new Exception("No se ha registrado la maquinaria, intentelo de nuevo!"+e.getMessage());
+			throw new Exception("No se ha registrado el uso de la maquinaria, intentelo de nuevo!");
 		}
 		finally {
 			this.close();

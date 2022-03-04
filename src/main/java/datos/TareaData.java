@@ -50,7 +50,7 @@ public class TareaData extends Coneccion
 				ps.close();
 			}
 			catch(Exception e) {
-				throw e;
+				throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos de las tareas.");
 			}
 			finally {
 				this.close();
@@ -92,7 +92,7 @@ public class TareaData extends Coneccion
 				ps.close();
 			}
 			catch(Exception e) {
-				throw e;
+				throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos de las tareas.");
 			}
 			finally {
 				this.close();
@@ -170,7 +170,7 @@ public class TareaData extends Coneccion
 				ps.close();
 			}
 			catch(Exception e) {
-				throw e;
+				throw new Exception("Ocurrió un error mientras se intentaban recuperar los datos de la tarea.");
 			}
 			finally {
 				this.close();
@@ -194,7 +194,7 @@ public class TareaData extends Coneccion
 				n=ps.executeUpdate();
 				ps.close();
 			} catch (SQLException e) {
-				throw new Exception("Un error ocurrio mientras se intentaba registrar la asignacion del empleado: "+e.getMessage());
+				throw new Exception("Un error ocurrio mientras se intentaba registrar la asignacion del empleado.");
 			}
 			finally {
 				this.close();
