@@ -36,10 +36,15 @@ public class Presupuesto extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("idObra"));
 		try {
 			Obra o = ObraLogic.getOne(id);
+			ArrayList<entidades.Presupuesto> psp = null;
+			if(o.isFinalizado() ) {
+				psp= PresupuestoLogic.getPresuspuestos(o, true);
+				
+			}else {
+				psp= PresupuestoLogic.getPresuspuestos(o, false);
+			}
+			o.setPresupuestos(psp);	
 			request.setAttribute("obra", o);
-			
-			ArrayList<entidades.Presupuesto> psp= PresupuestoLogic.getPresuspuestos(o, false);
-			request.setAttribute("presupuestos", psp);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

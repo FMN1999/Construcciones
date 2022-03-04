@@ -90,7 +90,7 @@ public class ObrasCliente extends HttpServlet {
 			Cliente c = ClienteLogic.getOne(cli.getCuil());
 			int id_cli = c.getIdCliente();
 			String desc = (String)request.getParameter("descripcion");
-			Obra o=new Obra(0,direccion, desc);
+			Obra o=new Obra(0,direccion, desc, false);
 			ObraLogic.Registrar(o, id_cli);
 		}
 		catch(Exception e) {
@@ -103,7 +103,7 @@ public class ObrasCliente extends HttpServlet {
 			int id_obra=Integer.parseInt(request.getParameter("idobra"));
 			String direccion=(String)request.getParameter("direccion");
 			String desc = (String)request.getParameter("descripcion");
-			Obra o=new Obra(id_obra, direccion, desc);
+			Obra o=new Obra(id_obra, direccion, desc, false);
 			ObraLogic.Actualizar(o);
 		}
 		catch(Exception e) {
