@@ -60,8 +60,8 @@ public class mail_util {
 	public static void InformarPresupuesto(String direccion_obra,String receptor, String nombreApellido) throws Exception {
 		String asunto="Nuevo presupuesto para:"+direccion_obra;
 		String mensaje="Estimado "+nombreApellido+":\n\n\t"
-				+ "Se le informa que hace un momento se ha\n"
-				+ "registrado un nuevo presupuesto para su\n"
+				+ "Se le informa que hace un momento se ha "
+				+ "registrado un nuevo presupuesto para su "
 				+ "obra registrada en "+direccion_obra;
 		Send(receptor, asunto, mensaje);
 	}
