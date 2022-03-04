@@ -147,6 +147,7 @@
 			<div class="col-4"></div>
 			<div class="col-4"></div>
 			<div class="col-4">
+			<div class="modal-footer">
 				<form action="PresupuestoCliente" method="post">
 					<input type="text" id="accion" name="accion" value="aprobar" style="display: none;">
 					<input type="number" id="idpresupuesto" name="idpresupuesto" value=<%= p.getId_presupuesto() %> style="display: none;">
@@ -157,6 +158,7 @@
 					<input type="number" id="idpresupuesto" name="idpresupuesto" value=<%= p.getId_presupuesto() %> style="display: none;">
 					<button type="submit" class="btn btn-danger"><h3>Rechazar</h3></button>
 				</form>
+				</div>
 			</div>
 		</div>
 		<% } %>

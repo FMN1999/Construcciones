@@ -54,5 +54,7 @@ public class ObraLogic {
 		source.Eliminar(id);
 	}
 	
-	
+	public static void Finalizar(int id) throws Exception{
+		source.Finalizar(id);
+	}
 }

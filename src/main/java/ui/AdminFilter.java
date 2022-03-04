@@ -18,9 +18,9 @@ import entidades.Usuario;
  * Servlet Filter implementation class AdminFilter
  */
 @WebFilter(urlPatterns = { "/AdminFilter", "/Proveedores", "/Materiales", "/Maquinarias", "/Empleados", "/Clientes",
-		"/Tipo_Tareas", "/VerPresupuesto", "/Tareas", "/Tareas_Empleados", "/Obras", "/Presupuesto", "/Sueldos" }, 
+		"/Tipo_Tareas", "/VerPresupuesto", "/Tareas", "/Tareas_Empleados", "/Obras", "/Sueldos" }, 
 servletNames = {"Proveedores", "Materiales", "Maquinarias", "Empleados", "Clientes", "Tipo_Tareas", "VerPresupuesto", 
-		"Tareas", "Tareas_Empleados", "Obras", "Presupuesto", "Sueldos"})
+		"Tareas", "Tareas_Empleados", "Obras", "Sueldos"})
 public class AdminFilter implements Filter {
 
     /**

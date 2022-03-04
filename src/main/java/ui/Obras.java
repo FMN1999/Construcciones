@@ -61,18 +61,22 @@ public class Obras extends HttpServlet {
 		try {
 			String accion=(String)request.getParameter("accion");
 			switch(accion) {
-			case "Registrar":{
-				registrar(request,response);
-				break;
-			}
-			case "Editar":{
-				actualizar(request,response);
-				break;
-			}
-			case "Eliminar":{
-				eliminar(request,response);
-				break;
-			}
+				case "Registrar":{
+					registrar(request,response);
+					break;
+				}
+				case "Editar":{
+					actualizar(request,response);
+					break;
+				}
+				case "Eliminar":{
+					eliminar(request,response);
+					break;
+				}
+				case "Finalizar":{
+					finalizar(request,response);
+					break;
+				}
 			}
 		}
 		catch(Exception e) {
@@ -86,7 +90,7 @@ public class Obras extends HttpServlet {
 			String direccion=(String)request.getParameter("direccion");
 			int id_cli=Integer.parseInt(request.getParameter("idcliente"));
 			String desc = (String)request.getParameter("descripcion");
-			Obra o=new Obra(0,direccion, desc);
+			Obra o=new Obra(0,direccion, desc, false);
 			ObraLogic.Registrar(o, id_cli);
 		}
 		catch(Exception e) {
@@ -100,7 +104,7 @@ public class Obras extends HttpServlet {
 			String direccion=(String)request.getParameter("direccion");
 			int id_cli=Integer.parseInt(request.getParameter("idcliente"));
 			String desc = (String)request.getParameter("descripcion");
-			Obra o=new Obra(id_obra, direccion, desc);
+			Obra o=new Obra(id_obra, direccion, desc, false);
 			ObraLogic.Actualizar(o);
 		}
 		catch(Exception e) {
@@ -115,6 +119,16 @@ public class Obras extends HttpServlet {
 		}
 		catch(Exception e) {
 			request.setAttribute("error", "No fue posible eliminar la obra>> "+e.getMessage());
+		}
+	}
+	
+	protected void finalizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		try {
+			int id=Integer.parseInt(request.getParameter("idobra"));
+			ObraLogic.Finalizar(id);
+		}
+		catch(Exception e) {
+			request.setAttribute("error", "No fue posible finalizar la obra>> "+e.getMessage());
 		}
 	}
 	
