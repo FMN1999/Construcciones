@@ -75,7 +75,7 @@ public class TareaData extends Coneccion
 						+ "INNER JOIN tareas t ON p.idpresupuesto=t.id_presupuesto\r\n"
 						+ "INNER JOIN tipos_tarea tt on t.id_tipo_tarea=tt.idtipo_tarea \r\n"
 						+ "INNER JOIN obras o ON o.idobra=p.id_obra "
-						+ "WHERE t.fecha_hasta>=? \r\n"
+						+ "WHERE t.fecha_hasta>=? and !(p.fecha_aceptacion is null) \r\n"
 						+ "GROUP BY t.idtarea, tt.idtipo_tarea\r\n"
 						+ "ORDER BY t.idtarea");
 				ps.setDate(1, new java.sql.Date(d.getTime()));

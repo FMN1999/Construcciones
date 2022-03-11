@@ -76,6 +76,7 @@ public class ServLogin extends HttpServlet {
 					}
 					}
 					se.setAttribute("usuario", u);
+					se.setMaxInactiveInterval(30*60);
 					response.sendRedirect("Home");
 					return;
 				}
