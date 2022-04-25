@@ -1,4 +1,4 @@
-# Construcciones -Java
+# Sistema de Gestión de Construcciones
 
 ## Acerca de
 
